@@ -12,7 +12,7 @@ Before you begin, ensure you have the following installed:
 ## 🛠️ How to Run the Project
 1.  Clone this repository:
     ```bash
-    git clone [https://github.com/e-magesk/dermalyze.git](https://github.com/your-username/dermalyze.git)
+    git clone [https://github.com/e-magesk/dermalyze.git](https://github.com/e-magesk/dermalyze.git)
     ```
 2.  Navigate to the project folder:
     ```bash
