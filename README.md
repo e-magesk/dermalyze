@@ -4,10 +4,43 @@
 
 ## 🚀 Prerequisites
 Before you begin, ensure you have the following installed:
+
+### Core Development
 *   [Flutter SDK](https://docs.flutter.dev/get-started/install) (latest stable version).
 *   [Dart SDK](https://dart.dev/get-dart).
 *   **VS Code** with *Flutter* and *Dart* extensions.
 *   An Android/iOS emulator or a configured physical device.
+
+### Firebase & Cloud Infrastructure
+
+*   [Node.js & npm] (required to run Firebae CLI)
+*   **Firebase CLI:** Install globally via npm:
+```bash
+npm install -g firebase-tools
+```
+*   **FlutterFire CLI**: Install via Dart:
+    ```bash
+    dart pub global activate flutterfire_cli
+    ```
+
+--- 
+
+### Project Setup & Configuration
+
+#### 1. Firebase Authentication
+This project uses Firebase for secure user authentication and session management.
+1.  Log in to Firebase:
+    ```bash
+    firebase login
+    ```
+2.  Configure FlutterFire (this will generate `firebase_options.dart`):
+    ```bash
+    flutterfire configure
+    ```
+
+#### 2. Local Backend (Research Server)
+The **Dermalyze** hybrid architecture connects to a local server for image and clinical data storage.
+*   Ensure your local backend is running. Access [https://github.com/e-magesk/dermalyze-backend.git](https://github.com/e-magesk/dermalyze-backend.git) to more information.
 
 ## 🛠️ How to Run the Project
 1.  Clone this repository:
@@ -32,6 +65,34 @@ The project follows a modular architecture to ensure separation of concerns:
 *   `lib/src/modules`: Contains features (screens, controllers, and feature-specific widgets).
 *   `lib/src/core`: Global constants, themes, and utilities.
 *   `lib/src/shared`: Reusable components shared across multiple modules.
+*   
+
+## Development Tips
+
+### Localization (l10n)
+This project uses the official `flutter_gen` package to manage multiple languages. To add new strings to the application, follow these steps:
+
+#### 1. Add the key to the ARB files
+Locate the files in `lib/src/core/l10n/` and add the new key to both files (Portuguese and English):
+
+*   `app_pt.arb`:
+
+```JSON
+"minhaNovaString": "Texto em Português"
+```
+
+*   `app_en.arb`:
+
+```JSON
+"minhaNovaString": "Text in English"
+```
+
+#### 2. Generate the Dart code
+After saving the files, run the command below in your terminal so Flutter can generate the automatic methods:
+
+```bash
+flutter gen-l10n
+```
 
 ## 📚 Research & Publications
 
