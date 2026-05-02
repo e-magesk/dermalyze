@@ -1,4 +1,4 @@
-# Dermalyze 🩺
+# Dermalyze
 
 **Dermalyze** is a mobile solution developed with Flutter that utilizes Deep Learning models for skin lesion screening and analysis. The goal is to provide a clinical decision support tool, facilitating the triage of suspicious cases in primary care settings.
 
