@@ -33,7 +33,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get passwordPlaceholder => 'Senha';
 
   @override
-  String get authBtn => 'LOGIN';
+  String get authBtn => 'Login';
 
   @override
   String get triageTitle => 'Triagem de Risco';
@@ -70,4 +70,28 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorUnknown => 'Ocorreu um erro inesperado.';
+
+  @override
+  String get registerTitle => 'Criar Conta';
+
+  @override
+  String get fullNameLabel => 'Nome Completo';
+
+  @override
+  String get confirmPasswordLabel => 'Confirmar Senha';
+
+  @override
+  String get healthAgent => 'Agente de Saúde';
+
+  @override
+  String get doctor => 'Médico(a)';
+
+  @override
+  String get userTypeLabel => 'Eu sou:';
+
+  @override
+  String get registerBtn => 'Finalizar Cadastro';
+
+  @override
+  String get alreadyHaveAccount => 'Já possui uma conta? Faça login';
 }

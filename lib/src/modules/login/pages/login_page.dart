@@ -4,6 +4,7 @@ import '../../../core/l10n/app_localizations.dart';
 import '../controller/login_controller.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:dermalyze/src/shared/widgets/app_primary_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -136,25 +137,10 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 32),
 
               // Botão de Ação
-              ValueListenableBuilder<bool>(
-                valueListenable: _controller.isLoading,
-                builder: (context, loading, child) {
-                  return ElevatedButton(
-                    onPressed: loading ? null : _onLoginPressed,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      minimumSize: const Size(double.infinity, 64),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      elevation: 0,
-                    ),
-                    child: loading 
-                      ? const CircularProgressIndicator(color: AppColors.white)
-                      : Text(
-                          l10n.authBtn,
-                          style: const TextStyle(color: AppColors.white, fontWeight: FontWeight.w900),
-                        ),
-                  );
-                },
+              AppPrimaryButton(
+                text: l10n.authBtn,
+                onPressed: _onLoginPressed,
+                isLoading: _controller.isLoading,
               ),
               const SizedBox(height: 24), // Espaçamento entre o botão e o link
               Row(
@@ -169,8 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Futuramente:
-                      // Navigator.pushNamed(context, '/register');
+                        Navigator.pushNamed(context, '/register');
                     },
                     child: Text(
                       l10n.registerLink,

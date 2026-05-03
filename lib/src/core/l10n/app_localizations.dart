@@ -149,7 +149,7 @@ abstract class AppLocalizations {
   /// No description provided for @authBtn.
   ///
   /// In pt, this message translates to:
-  /// **'LOGIN'**
+  /// **'Login'**
   String get authBtn;
 
   /// No description provided for @triageTitle.
@@ -223,6 +223,54 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Ocorreu um erro inesperado.'**
   String get errorUnknown;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criar Conta'**
+  String get registerTitle;
+
+  /// No description provided for @fullNameLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome Completo'**
+  String get fullNameLabel;
+
+  /// No description provided for @confirmPasswordLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar Senha'**
+  String get confirmPasswordLabel;
+
+  /// No description provided for @healthAgent.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agente de Saúde'**
+  String get healthAgent;
+
+  /// No description provided for @doctor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Médico(a)'**
+  String get doctor;
+
+  /// No description provided for @userTypeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eu sou:'**
+  String get userTypeLabel;
+
+  /// No description provided for @registerBtn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Finalizar Cadastro'**
+  String get registerBtn;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Já possui uma conta? Faça login'**
+  String get alreadyHaveAccount;
 }
 
 class _AppLocalizationsDelegate

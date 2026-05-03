@@ -19,9 +19,9 @@ Before you begin, ensure you have the following installed:
 npm install -g firebase-tools
 ```
 *   **FlutterFire CLI**: Install via Dart:
-    ```bash
-    dart pub global activate flutterfire_cli
-    ```
+```bash
+dart pub global activate flutterfire_cli
+```
 
 --- 
 
@@ -78,13 +78,13 @@ Locate the files in `lib/src/core/l10n/` and add the new key to both files (Port
 *   `app_pt.arb`:
 
 ```JSON
-"minhaNovaString": "Texto em Português"
+"myNewString": "Texto em Português"
 ```
 
 *   `app_en.arb`:
 
 ```JSON
-"minhaNovaString": "Text in English"
+"myNewString": "Text in English"
 ```
 
 #### 2. Generate the Dart code

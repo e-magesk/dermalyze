@@ -8,7 +8,7 @@
     "agentBtn": "AGENTE",
     "emailPlaceholder": "E-mail",
     "passwordPlaceholder": "Senha",
-    "authBtn": "LOGIN",
+    "authBtn": "Login",
     "triageTitle": "Triagem de Risco",
     "diagnosticTitle": "Diagnóstico Diferencial",
     "msgSuccessLogin": "Login realizado com sucesso!",
@@ -20,5 +20,13 @@
     "errorWrongPassword": "Senha incorreta. Tente novamente.",
     "errorInvalidCredential": "E-mail ou senha inválidos.",
     "errorTooManyRequests": "Muitas tentativas. Tente mais tarde.",
-    "errorUnknown": "Ocorreu um erro inesperado."
+    "errorUnknown": "Ocorreu um erro inesperado.",
+    "registerTitle": "Criar Conta",
+    "fullNameLabel": "Nome Completo",
+    "confirmPasswordLabel": "Confirmar Senha",
+    "healthAgent": "Agente de Saúde",
+    "doctor": "Médico(a)",
+    "userTypeLabel": "Eu sou:",
+    "registerBtn": "Finalizar Cadastro",
+    "alreadyHaveAccount": "Já possui uma conta? Faça login"
 }

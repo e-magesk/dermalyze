@@ -7,6 +7,8 @@ class AppTextField extends StatelessWidget {
   final bool isPassword;
   final TextInputType keyboardType;
   final IconData? prefixIcon;
+  final String? Function(String?)? validator;
+  final AutovalidateMode autovalidateMode;
 
   const AppTextField({
     super.key,
@@ -15,6 +17,8 @@ class AppTextField extends StatelessWidget {
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.prefixIcon,
+    this.validator,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction
   });
 
   @override
@@ -31,10 +35,11 @@ class AppTextField extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: isPassword,
         keyboardType: keyboardType,
+        autovalidateMode: autovalidateMode,
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: prefixIcon != null 
@@ -42,9 +47,29 @@ class AppTextField extends StatelessWidget {
               : null,
           hintStyle: const TextStyle(color: AppColors.textLight, fontSize: 14), //
           border: InputBorder.none,
+          // Estilo da mensagem de erro logo abaixo do campo
+          errorStyle: const TextStyle(color: Colors.redAccent, fontSize: 12),
+          
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+          ),
           contentPadding: const EdgeInsets.all(20),
         ),
-      ),
+        validator: validator,
+      )
     );
   }
 }
