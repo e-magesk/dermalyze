@@ -67,7 +67,7 @@ The project follows a modular architecture to ensure separation of concerns:
 *   `lib/src/shared`: Reusable components shared across multiple modules.
 *   
 
-## Development Tips
+## ⚙️ Development Tips
 
 ### Localization (l10n)
 This project uses the official `flutter_gen` package to manage multiple languages. To add new strings to the application, follow these steps:
