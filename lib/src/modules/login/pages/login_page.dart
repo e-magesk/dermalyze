@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_colors.dart';
-import '../../../core/l10n/app_localizations.dart';
-import '../controller/login_controller.dart';
-import '../../../shared/widgets/app_text_field.dart';
+import 'package:provider/provider.dart'; // Importante para o context.read
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dermalyze/src/shared/widgets/app_primary_button.dart';
+
+import '../../../core/theme/app_colors.dart';
+import '../../../core/l10n/app_localizations.dart';
+import '../../../shared/widgets/app_text_field.dart';
+import '../controller/login_controller.dart';
+import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,58 +17,66 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _controller = LoginController();
+  // Usamos late para inicializar os controllers no initState
+  late final AuthController _authController;
+  late final LoginController _loginController;
+  
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _authController = context.read<AuthController>();
+    _loginController = LoginController(_authController);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   void _onLoginPressed() async {
     final l10n = AppLocalizations.of(context)!;
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    // 1. Validação: Campos Vazios
     if (email.isEmpty || password.isEmpty) {
       _showErrorSnackBar(l10n.errorEmptyFields);
       return;
     }
 
-    final error = await _controller.signIn(email, password);
+    // Chamada ao controller da tela
+    final error = await _loginController.signIn(email, password);
 
     if (!mounted) return;
 
-    if (error == null) {
-      Navigator.pushReplacementNamed(context, '/home');
-    } 
-    else {
-      _handleFirebaseError(error, l10n);
+    if (error != null) {
+      _handleLoginError(error, l10n);
     }
   }
 
-  // Função auxiliar para mapear erros do Firebase para suas mensagens l10n
-  void _handleFirebaseError(String errorCode, AppLocalizations l10n) {
+  void _handleLoginError(String errorCode, AppLocalizations l10n) {
     String message;
     
     switch (errorCode) {
       case 'invalid-credential': 
+      case 'wrong-password':
         message = l10n.errorInvalidCredential;
         break;
       case 'user-not-found':
         message = l10n.errorUserNotFound;
         break;
-      case 'wrong-password':
-        message = l10n.errorInvalidCredential;
-        break;
       case 'too-many-requests':
         message = l10n.errorTooManyRequests;
-        break;
-      case 'user-disabled':
-        message = "Esta conta foi desativada.";
         break;
       case 'invalid-email':
         message = l10n.errorInvalidEmail;
         break;
       default:
-        message = l10n.errorUnknown;
+        message = errorCode; 
     }
     
     _showErrorSnackBar(message);
@@ -92,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             children: [
-              // Logo e Título
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
@@ -122,7 +132,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 60),
 
-              // Campos
               AppTextField(
                 controller: _emailController,
                 hintText: l10n.emailPlaceholder, 
@@ -136,27 +145,22 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 32),
 
-              // Botão de Ação
               AppPrimaryButton(
                 text: l10n.authBtn,
                 onPressed: _onLoginPressed,
-                isLoading: _controller.isLoading,
+                isLoading: _loginController.isLoading,
               ),
-              const SizedBox(height: 24), // Espaçamento entre o botão e o link
+              
+              const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     l10n.noAccount,
-                    style: const TextStyle(
-                      color: AppColors.textMedium,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: AppColors.textMedium, fontSize: 14),
                   ),
                   TextButton(
-                    onPressed: () {
-                        Navigator.pushNamed(context, '/register');
-                    },
+                    onPressed: () => Navigator.pushNamed(context, '/register'),
                     child: Text(
                       l10n.registerLink,
                       style: const TextStyle(

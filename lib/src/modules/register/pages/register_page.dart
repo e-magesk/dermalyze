@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/app_primary_button.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
+
+// Importe os controllers da sua arquitetura
+import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
+import '../controller/register_controller.dart';
 
 enum UserType { agent, doctor }
 
@@ -15,6 +21,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // Injeção de dependência dos controllers
+  late final AuthController _authController;
+  late final RegisterController _registerController;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -27,6 +36,23 @@ class _RegisterPageState extends State<RegisterPage> {
   UserType _selectedType = UserType.agent;
 
   @override
+  void initState() {
+    super.initState();
+    // Recupera o estado global e inicializa o controlador local
+    _authController = context.read<AuthController>();
+    _registerController = RegisterController(_authController);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -35,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: BackButton(color: AppColors.primary),
+        leading: const BackButton(color: AppColors.primary),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -137,11 +163,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 32),
 
-                // Botão Modularizado
+                // Botão Modularizado conectado ao estado de carregamento
                 AppPrimaryButton(
                   text: l10n.registerBtn,
                   onPressed: _onRegisterPressed,
-                  // isLoading: _controller.isLoading, // Conectaremos ao controller depois
+                  isLoading: _registerController.isLoading, 
                 ),
 
                 const SizedBox(height: 24),
@@ -162,23 +188,65 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _onRegisterPressed() {
-    // Validação básica de confirmação de senha
+  void _onRegisterPressed() async {
+    // Validação básica do formulário
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      
+      // Converte o enum para a string que o FastAPI aguarda
+      final roleString = _selectedType == UserType.doctor ? 'doctor' : 'agent';
+      
+      final l10n = AppLocalizations.of(context)!;
+      
+      // Dispara a lógica de negócio
+      final error = await _registerController.signUp(
+        _nameController.text.trim(),
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+        roleString,
+      );
+
+      // Previne erros se o usuário fechar a tela enquanto a requisição carrega
+      if (!mounted) return;
+
+      if (error != null) {
+        _handleRegisterError(error, l10n);
+      } else {
+        // Sucesso absoluto! Fecha a tela de registro.
+        // O AuthRouter na main assumirá o controle e carregará o dashboard.
+        Navigator.pop(context);
+      }
+    }
+  }
+
+  void _handleRegisterError(String errorCode, AppLocalizations l10n) {
+    String message;
+    switch (errorCode) {
+      case 'email-already-in-use':
+        message = "Este email já está cadastrado.";
+        break;
+      case 'invalid-email':
+        message = l10n.errorInvalidEmail;
+        break;
+      case 'weak-password':
+        message = "A senha é muito fraca.";
+        break;
+      default:
+        message = errorCode; // Exibe a resposta do backend FastAPI
+    }
+    
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text(
-          'Sucesso! Todos os campos estão válidos.',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        content: Text(
+          message,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.green.shade600, // Cor de sucesso
+        backgroundColor: AppColors.error,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
       ),
     );
-    }
   }
 }

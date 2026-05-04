@@ -1,23 +1,55 @@
-import 'package:dermalyze/src/modules/login/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
 
-import 'src/core/firebase_options/firebase_options.dart'; // Arquivo gerado pelo flutterfire configure
+import 'src/core/firebase_options/firebase_options.dart';
 import 'src/core/theme/app_colors.dart';
-import 'src/modules/login/pages/login_page.dart';
 import 'src/core/l10n/app_localizations.dart';
+import 'src/services/local_storage_service.dart';
+
+import 'src/modules/login/pages/login_page.dart';
+import 'src/modules/register/pages/register_page.dart';
+import 'src/features/auth/repositories/auth_repository.dart';
+import 'src/features/auth/repositories/user_api_repository.dart';
+import 'src/features/auth/controller/auth_controller.dart';
+
+import 'src/modules/home/pages/doctor_dashboard.dart';
+import 'src/modules/home/pages/agent_dashboard.dart';
 
 void main() async {
-  // 1. Garante que os serviços do Flutter estejam prontos antes de iniciar o Firebase
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 2. Inicializa o Firebase com as opções da sua plataforma (Android/iOS)
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const DermalyzeApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        // Serviços de Infraestrutura
+        Provider(create: (_) => Dio()),
+        Provider(create: (_) => LocalStorageService()),
+        Provider(create: (_) => AuthRepository()),
+        
+        // Repositórios de Dados
+        ProxyProvider<Dio, UserApiRepository>(
+          update: (_, dio, __) => UserApiRepository(dio: dio),
+        ),
+
+        // Controller Global de Autenticação
+        ChangeNotifierProvider(
+          create: (context) => AuthController(
+            authRepository: context.read<AuthRepository>(),
+            apiRepository: context.read<UserApiRepository>(),
+            localStorage: context.read<LocalStorageService>(),
+          ),
+        ),
+      ],
+      child: const DermalyzeApp(),
+    ),
+  );
 }
 
 class DermalyzeApp extends StatelessWidget {
@@ -31,11 +63,11 @@ class DermalyzeApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.background,
         primaryColor: AppColors.primary,
-        // Configura o tema global para usar a cor primária do Dermalyze
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+        useMaterial3: true,
       ),
       
-      // Configurações de Idioma
+      // Mantendo suas configurações de Idioma
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -43,18 +75,40 @@ class DermalyzeApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('pt'), // Português
-        Locale('en'), // Inglês
+        Locale('pt'),
+        Locale('en'),
       ],
       
-      // Define a LoginPage como a tela inicial
-      // home: const LoginPage(),
-      initialRoute: '/',
+      // O AuthRouter decide qual é a primeira tela baseada no login
+      home: const AuthRouter(),
+
+      // Mantemos as rotas nomeadas para navegações específicas (como ir para o registro)
       routes: {
-        '/': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
-        // '/home': (context) => const HomePage(),
       },
     );
+  }
+}
+
+/// Widget responsável por escutar o estado de autenticação e trocar a tela base
+class AuthRouter extends StatelessWidget {
+  const AuthRouter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final authController = context.watch<AuthController>();
+
+    switch (authController.state) {
+      case AuthState.loading:
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      case AuthState.unauthenticated:
+        return const LoginPage();
+      case AuthState.doctor:
+        return const Scaffold(body: Center(child: Text("Dashboard Médico")));
+      default:
+        return const Scaffold(body: Center(child: Text("Dashboard Agente")));
+    }
   }
 }
