@@ -1,3 +1,4 @@
+import 'package:dermalyze/src/modules/home/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,9 +15,6 @@ import 'src/modules/register/pages/register_page.dart';
 import 'src/features/auth/repositories/auth_repository.dart';
 import 'src/features/auth/repositories/user_api_repository.dart';
 import 'src/features/auth/controller/auth_controller.dart';
-
-import 'src/modules/home/pages/doctor_dashboard.dart';
-import 'src/modules/home/pages/agent_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -106,9 +104,8 @@ class AuthRouter extends StatelessWidget {
       case AuthState.unauthenticated:
         return const LoginPage();
       case AuthState.doctor:
-        return const Scaffold(body: Center(child: Text("Dashboard Médico")));
-      default:
-        return const Scaffold(body: Center(child: Text("Dashboard Agente")));
+      case AuthState.agent: 
+        return const MainPage();
     }
   }
 }

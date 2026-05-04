@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get doctorAccess => 'Doctor Access';
 
   @override
-  String get agentAccess => 'Agent Access';
+  String get agentAccess => 'AGENT ACCESS';
 
   @override
   String get doctorBtn => 'DOCTOR';
@@ -95,4 +95,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alreadyHaveAccount => 'Already have an account? Log in';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get medicalAccess => 'MEDICAL ACCESS';
+
+  @override
+  String helloUser(Object userName) {
+    return 'Hello, $userName';
+  }
+
+  @override
+  String get connectedHospital => 'CONNECTED: CENTRAL HOSPITAL';
+
+  @override
+  String get databaseUpdated => 'Database Updated';
+
+  @override
+  String get clinicalTriage => 'Clinical Triage';
+
+  @override
+  String get triageLevels => 'LEVELS P1 - P5';
+
+  @override
+  String get differentialAnalysis => 'Differential Analysis';
+
+  @override
+  String get aiDiagnosis => 'AI DIAGNOSIS';
+
+  @override
+  String get quickAccess => 'QUICK ACCESS';
+
+  @override
+  String get appGuide => 'App Guide';
+
+  @override
+  String get instructionsResp => 'Instructions and Responsibilities';
+
+  @override
+  String get navHome => 'HOME';
+
+  @override
+  String get navTriage => 'TRIAGE';
+
+  @override
+  String get navDiagnosis => 'DIAGNOSIS';
+
+  @override
+  String get navLibrary => 'LIBRARY';
+
+  @override
+  String get navGuide => 'GUIDE';
 }

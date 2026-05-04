@@ -12,6 +12,7 @@ class AuthController extends ChangeNotifier {
   final LocalStorageService _localStorage;
 
   AuthState state = AuthState.loading;
+  String? _userName;
 
   AuthController({
     required AuthRepository authRepository,
@@ -21,6 +22,13 @@ class AuthController extends ChangeNotifier {
         _apiRepository = apiRepository,
         _localStorage = localStorage {
     checkAuthStatus();
+  }
+
+  String? get userName => _userName;
+
+  void setUserName(String name) {
+    _userName = name;
+    notifyListeners(); // Isso avisa a Home que o nome chegou!
   }
 
   // -----------------------------------------------------
@@ -35,9 +43,11 @@ class AuthController extends ChangeNotifier {
     } else {
       // Busca a role específica para esse UID no banco local
       final role = await _localStorage.getRole(currentUid);
+      final name = await _localStorage.getName(currentUid);
       
       if (role != null) {
         state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
+        _userName = name;
       } else {
         // Caso raro: UID existe mas os dados foram corrompidos
         state = AuthState.unauthenticated;
@@ -57,16 +67,17 @@ class AuthController extends ChangeNotifier {
 
     // B. Tenta buscar a role localmente usando o UID
     String? role = await _localStorage.getRole(uid);
+    String? name = await _localStorage.getName(uid);
 
     // C. Fallback: Se não achar local (app reinstalado), busca no Backend Python
     if (role == null) {
       try {
         final userData = await _apiRepository.getUserByToken(uid);
         role = userData['role'];
-        final name = userData['full_name'];
+        name = userData['full_name'];
 
         // Salva localmente com o UID para futuros acessos offline
-        await _localStorage.saveUserData(uid: uid, role: role!, name: name);
+        await _localStorage.saveUserData(uid: uid, role: role!, name: name!);
       } catch (e) {
         // Se o usuário não existir no seu banco central, deslogamos do Firebase
         await _authRepository.logout();
@@ -82,6 +93,7 @@ class AuthController extends ChangeNotifier {
       );
     }
 
+    _userName = name;
     state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
     notifyListeners();
   }
@@ -104,6 +116,7 @@ class AuthController extends ChangeNotifier {
     // 3. Salva no armazenamento seguro local usando o UID como chave
     await _localStorage.saveUserData(uid: uid, role: role, name: name);
 
+    _userName = name;
     state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
     notifyListeners();
   }
@@ -116,6 +129,7 @@ class AuthController extends ChangeNotifier {
     // Apenas limpa quem é o usuário ativo, mantendo os dados salvos 
     // localmente para agilizar o próximo login desse mesmo usuário
     await _localStorage.clearCurrentUser();
+    _userName = null;
     state = AuthState.unauthenticated;
     notifyListeners();
   }

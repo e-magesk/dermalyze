@@ -119,7 +119,7 @@ abstract class AppLocalizations {
   /// No description provided for @agentAccess.
   ///
   /// In pt, this message translates to:
-  /// **'Acesso Agente'**
+  /// **'ACESSO AGENTE'**
   String get agentAccess;
 
   /// No description provided for @doctorBtn.
@@ -271,6 +271,108 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Já possui uma conta? Faça login'**
   String get alreadyHaveAccount;
+
+  /// No description provided for @dashboard.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
+  /// No description provided for @medicalAccess.
+  ///
+  /// In pt, this message translates to:
+  /// **'ACESSO MÉDICO'**
+  String get medicalAccess;
+
+  /// No description provided for @helloUser.
+  ///
+  /// In pt, this message translates to:
+  /// **'Olá, {userName}'**
+  String helloUser(Object userName);
+
+  /// No description provided for @connectedHospital.
+  ///
+  /// In pt, this message translates to:
+  /// **'CONECTADO: HOSPITAL CENTRAL'**
+  String get connectedHospital;
+
+  /// No description provided for @databaseUpdated.
+  ///
+  /// In pt, this message translates to:
+  /// **'Base de Dados Atualizada'**
+  String get databaseUpdated;
+
+  /// No description provided for @clinicalTriage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Triagem Clínica'**
+  String get clinicalTriage;
+
+  /// No description provided for @triageLevels.
+  ///
+  /// In pt, this message translates to:
+  /// **'NÍVEIS P1 - P5'**
+  String get triageLevels;
+
+  /// No description provided for @differentialAnalysis.
+  ///
+  /// In pt, this message translates to:
+  /// **'Análise Diferencial'**
+  String get differentialAnalysis;
+
+  /// No description provided for @aiDiagnosis.
+  ///
+  /// In pt, this message translates to:
+  /// **'DIAGNÓSTICO IA'**
+  String get aiDiagnosis;
+
+  /// No description provided for @quickAccess.
+  ///
+  /// In pt, this message translates to:
+  /// **'ACESSO RÁPIDO'**
+  String get quickAccess;
+
+  /// No description provided for @appGuide.
+  ///
+  /// In pt, this message translates to:
+  /// **'Guia do Aplicativo'**
+  String get appGuide;
+
+  /// No description provided for @instructionsResp.
+  ///
+  /// In pt, this message translates to:
+  /// **'Instruções e Responsabilidades'**
+  String get instructionsResp;
+
+  /// No description provided for @navHome.
+  ///
+  /// In pt, this message translates to:
+  /// **'HOME'**
+  String get navHome;
+
+  /// No description provided for @navTriage.
+  ///
+  /// In pt, this message translates to:
+  /// **'TRIAGEM'**
+  String get navTriage;
+
+  /// No description provided for @navDiagnosis.
+  ///
+  /// In pt, this message translates to:
+  /// **'DIAGNÓSTICO'**
+  String get navDiagnosis;
+
+  /// No description provided for @navLibrary.
+  ///
+  /// In pt, this message translates to:
+  /// **'BIBLIOTECA'**
+  String get navLibrary;
+
+  /// No description provided for @navGuide.
+  ///
+  /// In pt, this message translates to:
+  /// **'GUIA'**
+  String get navGuide;
 }
 
 class _AppLocalizationsDelegate

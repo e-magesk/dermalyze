@@ -18,7 +18,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get doctorAccess => 'Acesso Médico';
 
   @override
-  String get agentAccess => 'Acesso Agente';
+  String get agentAccess => 'ACESSO AGENTE';
 
   @override
   String get doctorBtn => 'MÉDICO';
@@ -94,4 +94,57 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get alreadyHaveAccount => 'Já possui uma conta? Faça login';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get medicalAccess => 'ACESSO MÉDICO';
+
+  @override
+  String helloUser(Object userName) {
+    return 'Olá, $userName';
+  }
+
+  @override
+  String get connectedHospital => 'CONECTADO: HOSPITAL CENTRAL';
+
+  @override
+  String get databaseUpdated => 'Base de Dados Atualizada';
+
+  @override
+  String get clinicalTriage => 'Triagem Clínica';
+
+  @override
+  String get triageLevels => 'NÍVEIS P1 - P5';
+
+  @override
+  String get differentialAnalysis => 'Análise Diferencial';
+
+  @override
+  String get aiDiagnosis => 'DIAGNÓSTICO IA';
+
+  @override
+  String get quickAccess => 'ACESSO RÁPIDO';
+
+  @override
+  String get appGuide => 'Guia do Aplicativo';
+
+  @override
+  String get instructionsResp => 'Instruções e Responsabilidades';
+
+  @override
+  String get navHome => 'HOME';
+
+  @override
+  String get navTriage => 'TRIAGEM';
+
+  @override
+  String get navDiagnosis => 'DIAGNÓSTICO';
+
+  @override
+  String get navLibrary => 'BIBLIOTECA';
+
+  @override
+  String get navGuide => 'GUIA';
 }

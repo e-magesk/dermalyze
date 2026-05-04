@@ -20,6 +20,10 @@ class LocalStorageService {
     return await _storage.read(key: _keyCurrentUid);
   }
 
+  Future<String?> getName(String uid) async {
+    return await _storage.read(key: '${uid}_name');
+  }
+
   Future<void> clearCurrentUser() async {
     await _storage.delete(key: _keyCurrentUid);
   }
