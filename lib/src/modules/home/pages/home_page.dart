@@ -1,5 +1,7 @@
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
+import 'package:dermalyze/src/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
 import 'package:dermalyze/src/shared/widgets/app_bento_card.dart';
@@ -13,7 +15,10 @@ const Color _slate200 = Color(0xFFE2E8F0);
 const Color _slate50 = Color(0xFFF8FAFC);
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+
+  final Function(int) onTabChange;
+
+  const HomePage({super.key, required this.onTabChange});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,7 @@ class HomePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          l10n.connectedHospital,
+                          l10n.connectedUFES,
                           style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1.5),
                         ),
                       ],
@@ -83,7 +88,7 @@ class HomePage extends StatelessWidget {
                     child: BentoCard(
                       height: 128,
                       border: Border.all(color: _slate200.withValues(alpha: 0.5)),
-                      onTap: () {},
+                      onTap: () => onTabChange(1),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,7 +112,7 @@ class HomePage extends StatelessWidget {
                       child: BentoCard(
                         height: 128,
                         border: Border.all(color: _slate200.withValues(alpha: 0.5)),
-                        onTap: () {},
+                        onTap: () => onTabChange(2),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,6 +139,7 @@ class HomePage extends StatelessWidget {
               // 3. Quick Access
               BentoCard(
                 border: Border.all(color: _slate200.withValues(alpha: 0.5)),
+                onTap: () => onTabChange(4),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -181,16 +187,27 @@ class HomePage extends StatelessWidget {
         Row(
           children: [
             Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(color: _blue600, borderRadius: BorderRadius.circular(14), boxShadow: [BoxShadow(color: _blue100, blurRadius: 12, offset: const Offset(0, 4))]),
-              child: const Icon(Icons.security, color: Colors.white, size: 24),
-            ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.2), // Sombra suave
+                      blurRadius: 25,
+                      offset: const Offset(0, 10),
+                    )
+                  ],
+                ),
+                child: SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  width: 50,
+                  height: 50,
+                ),
+              ),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.dashboard, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: _slate800, letterSpacing: -0.5)),
+                Text(l10n.appName, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: _slate800, letterSpacing: -0.5)),
                 Text(isDoctor ? l10n.medicalAccess : l10n.agentAccess, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: _blue600, letterSpacing: 1.5)),
               ],
             ),

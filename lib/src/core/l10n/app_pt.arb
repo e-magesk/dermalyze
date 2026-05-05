@@ -29,11 +29,10 @@
     "userTypeLabel": "Eu sou:",
     "registerBtn": "Finalizar Cadastro",
     "alreadyHaveAccount": "Já possui uma conta? Faça login",
-    "dashboard": "Dashboard",
     "medicalAccess": "ACESSO MÉDICO",
     "agentAccess": "ACESSO AGENTE",
     "helloUser": "Olá, {userName}",
-    "connectedHospital": "CONECTADO: HOSPITAL CENTRAL",
+    "connectedUFES": "CONECTADO: LIFE-UFES",
     "databaseUpdated": "Base de Dados Atualizada",
     "clinicalTriage": "Triagem Clínica",
     "triageLevels": "NÍVEIS P1 - P5",
@@ -46,5 +45,11 @@
     "navTriage": "TRIAGEM",
     "navDiagnosis": "DIAGNÓSTICO",
     "navLibrary": "BIBLIOTECA",
-    "navGuide": "GUIA"
+    "navGuide": "GUIA",
+    "settings": "Configurações",
+    "language": "Idioma",
+    "activeSession": "Sessão Ativa",
+    "logout": "ENCERRAR SESSÃO",
+    "portuguese": "Português",
+    "english": "Inglês"
 }

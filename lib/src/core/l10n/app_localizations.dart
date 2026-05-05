@@ -272,12 +272,6 @@ abstract class AppLocalizations {
   /// **'Já possui uma conta? Faça login'**
   String get alreadyHaveAccount;
 
-  /// No description provided for @dashboard.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dashboard'**
-  String get dashboard;
-
   /// No description provided for @medicalAccess.
   ///
   /// In pt, this message translates to:
@@ -290,11 +284,11 @@ abstract class AppLocalizations {
   /// **'Olá, {userName}'**
   String helloUser(Object userName);
 
-  /// No description provided for @connectedHospital.
+  /// No description provided for @connectedUFES.
   ///
   /// In pt, this message translates to:
-  /// **'CONECTADO: HOSPITAL CENTRAL'**
-  String get connectedHospital;
+  /// **'CONECTADO: LIFE-UFES'**
+  String get connectedUFES;
 
   /// No description provided for @databaseUpdated.
   ///
@@ -373,6 +367,42 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'GUIA'**
   String get navGuide;
+
+  /// No description provided for @settings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Configurações'**
+  String get settings;
+
+  /// No description provided for @language.
+  ///
+  /// In pt, this message translates to:
+  /// **'Idioma'**
+  String get language;
+
+  /// No description provided for @activeSession.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sessão Ativa'**
+  String get activeSession;
+
+  /// No description provided for @logout.
+  ///
+  /// In pt, this message translates to:
+  /// **'ENCERRAR SESSÃO'**
+  String get logout;
+
+  /// No description provided for @portuguese.
+  ///
+  /// In pt, this message translates to:
+  /// **'Português'**
+  String get portuguese;
+
+  /// No description provided for @english.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inglês'**
+  String get english;
 }
 
 class _AppLocalizationsDelegate

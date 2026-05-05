@@ -30,11 +30,10 @@
     "userTypeLabel": "I am a:",
     "registerBtn": "Sign Up",
     "alreadyHaveAccount": "Already have an account? Log in",
-    "dashboard": "Dashboard",
     "medicalAccess": "MEDICAL ACCESS",
     "agentAccess": "AGENT ACCESS",
     "helloUser": "Hello, {userName}",
-    "connectedHospital": "CONNECTED: CENTRAL HOSPITAL",
+    "connectedUFES": "CONNECTED: LIFE-UFES",
     "databaseUpdated": "Database Updated",
     "clinicalTriage": "Clinical Triage",
     "triageLevels": "LEVELS P1 - P5",
@@ -47,5 +46,11 @@
     "navTriage": "TRIAGE",
     "navDiagnosis": "DIAGNOSIS",
     "navLibrary": "LIBRARY",
-    "navGuide": "GUIDE"
+    "navGuide": "GUIDE",
+    "settings": "Settings",
+    "language": "Language",
+    "activeSession": "Active Session",
+    "logout": "LOGOUT",
+    "portuguese": "Portuguese",
+    "english": "English"
 }

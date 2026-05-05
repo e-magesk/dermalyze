@@ -21,16 +21,24 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const Center(child: Text("Triage Screen")),
-    const Center(child: Text("Diagnosis Screen")),
-    const Center(child: Text("Library Screen")),
-    const Center(child: Text("Guide Screen")),
-  ];
+  void _changeTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Widget> pages = [
+      HomePage(onTabChange: _changeTab), // Passamos a função aqui
+      const Center(child: Text("Triage Screen")),
+      const Center(child: Text("Diagnosis Screen")),
+      const Center(child: Text("Library Screen")),
+      const Center(child: Text("Guide Screen")),
+    ];
+
     final authController = context.watch<AuthController>();
     final isDoctor = authController.state == AuthState.doctor;
     final l10n = AppLocalizations.of(context)!; // Atalho para as traduções
@@ -39,7 +47,7 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: const Color(0xFFF8FAFC),
       body: IndexedStack(
         index: _currentIndex,
-        children: _pages,
+        children: pages,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

@@ -96,9 +96,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get alreadyHaveAccount => 'Já possui uma conta? Faça login';
 
   @override
-  String get dashboard => 'Dashboard';
-
-  @override
   String get medicalAccess => 'ACESSO MÉDICO';
 
   @override
@@ -107,7 +104,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get connectedHospital => 'CONECTADO: HOSPITAL CENTRAL';
+  String get connectedUFES => 'CONECTADO: LIFE-UFES';
 
   @override
   String get databaseUpdated => 'Base de Dados Atualizada';
@@ -147,4 +144,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get navGuide => 'GUIA';
+
+  @override
+  String get settings => 'Configurações';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get activeSession => 'Sessão Ativa';
+
+  @override
+  String get logout => 'ENCERRAR SESSÃO';
+
+  @override
+  String get portuguese => 'Português';
+
+  @override
+  String get english => 'Inglês';
 }
