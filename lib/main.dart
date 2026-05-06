@@ -1,3 +1,4 @@
+import 'package:dermalyze/src/features/analysis/controller/analysis_controller.dart';
 import 'package:dermalyze/src/features/language/controller/locale_controller.dart';
 import 'package:dermalyze/src/modules/home/pages/main_page.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,8 @@ void main() async {
             localStorage: context.read<LocalStorageService>(),
             )
         ),
+        ChangeNotifierProvider(
+          create: (_) => AnalysisController()),
       ],
       child: const DermalyzeApp(),
     ),

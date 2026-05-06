@@ -1,0 +1,119 @@
+import 'package:dermalyze/src/models/analysys_type.dart';
+import 'package:dermalyze/src/shared/widgets/app_clinical_data_form.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:dermalyze/src/core/l10n/app_localizations.dart';
+import 'package:dermalyze/src/features/analysis/controller/analysis_controller.dart';
+
+class DiagnosisPage extends StatelessWidget {
+  const DiagnosisPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = context.watch<AnalysisController>();
+    final l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC),
+      body: SafeArea(
+        child: _buildBody(context, controller, l10n),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, AnalysisController controller, AppLocalizations l10n) {
+    // 1. Estado de Carregamento (Processando modelos de diagnóstico)
+    if (controller.state == AnalysisState.loading) {
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFF2563EB)),
+      );
+    }
+
+    // 2. Estado de Sucesso (Exibir resultado patológico)
+    if (controller.state == AnalysisState.success) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.diagnosisSuggested,
+              style: const TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "${controller.result?.label}",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B)),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () => controller.reset(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2563EB),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              ),
+              child: Text(
+                l10n.diagnosisNew,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // 3. Estado de Imagem Inválida (Validação OOD)
+    if (controller.state == AnalysisState.invalidImage) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.warning_amber_rounded, size: 64, color: Color(0xFFE11D48)),
+              const SizedBox(height: 16),
+              Text(
+                l10n.valImageErrorTitle,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.valImageErrorDesc,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Color(0xFF64748B)),
+              ),
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: () => controller.reset(),
+                child: Text(l10n.analysisTryAgain),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // 4. Estado Inicial (Exibir Formulário de Diagnóstico)[cite: 2]
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.clinicalDiagnosis,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B)),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.diagnosisSubtitle,
+            style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B8), fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 24),
+          
+          ClinicalDataForm(
+            onSubmit: (record) => controller.startAnalysis(record, AnalysisType.diagnosis),
+          ),
+        ],
+      ),
+    );
+  }
+}
