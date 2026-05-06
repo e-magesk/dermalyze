@@ -150,7 +150,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get language => 'Language';
+  String get language => 'Languages';
 
   @override
   String get activeSession => 'Active Session';

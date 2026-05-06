@@ -5,6 +5,7 @@ class LocalStorageService {
 
   // Guarda quem é o usuário logado no momento para abrir o app direto depois
   static const _keyCurrentUid = 'current_uid'; 
+  static const _keyLanguage = 'app_language';
 
   Future<void> saveUserData({required String uid, required String role, required String name}) async {
     await _storage.write(key: '${uid}_role', value: role);
@@ -26,5 +27,13 @@ class LocalStorageService {
 
   Future<void> clearCurrentUser() async {
     await _storage.delete(key: _keyCurrentUid);
+  }
+
+  Future<void> saveLanguage(String languageCode) async {
+    await _storage.write(key: _keyLanguage, value: languageCode);
+  }
+
+  Future<String?> getLanguage() async {
+    return await _storage.read(key: _keyLanguage);
   }
 }

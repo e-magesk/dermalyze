@@ -213,12 +213,19 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle, border: Border.all(color: _slate200)),
-          padding: const EdgeInsets.all(4),
-          child: Container(decoration: const BoxDecoration(color: _slate50, shape: BoxShape.circle), child: const Icon(Icons.person, color: _slate400, size: 20)),
+        // BOTÃO DE CONFIGURAÇÕES
+        GestureDetector(
+          onTap: () => onTabChange(5), // Chama o índice 5 da MainPage
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: _slate200),
+            ),
+            child: const Icon(Icons.settings_outlined, color: _slate400, size: 24),
+          ),
         ),
       ],
     );

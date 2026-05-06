@@ -1,4 +1,5 @@
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
+import 'package:dermalyze/src/modules/settings/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import 'home_page.dart'; 
@@ -32,11 +33,12 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
 
     final List<Widget> pages = [
-      HomePage(onTabChange: _changeTab), // Passamos a função aqui
+      HomePage(onTabChange: _changeTab),
       const Center(child: Text("Triage Screen")),
       const Center(child: Text("Diagnosis Screen")),
       const Center(child: Text("Library Screen")),
       const Center(child: Text("Guide Screen")),
+      SettingsPage(onTabChange: _changeTab),
     ];
 
     final authController = context.watch<AuthController>();

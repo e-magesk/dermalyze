@@ -149,7 +149,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settings => 'Configurações';
 
   @override
-  String get language => 'Idioma';
+  String get language => 'Idiomas';
 
   @override
   String get activeSession => 'Sessão Ativa';

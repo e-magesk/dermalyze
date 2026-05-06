@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// No description provided for @language.
   ///
   /// In pt, this message translates to:
-  /// **'Idioma'**
+  /// **'Idiomas'**
   String get language;
 
   /// No description provided for @activeSession.

@@ -1,3 +1,4 @@
+import 'package:dermalyze/src/features/language/controller/locale_controller.dart';
 import 'package:dermalyze/src/modules/home/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,6 +45,11 @@ void main() async {
             localStorage: context.read<LocalStorageService>(),
           ),
         ),
+        ChangeNotifierProvider(
+          create: (context) => LocaleController(
+            localStorage: context.read<LocalStorageService>(),
+            )
+        ),
       ],
       child: const DermalyzeApp(),
     ),
@@ -55,9 +61,12 @@ class DermalyzeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeController = context.watch<LocaleController>();
+
     return MaterialApp(
       title: 'Dermalyze',
       debugShowCheckedModeBanner: false,
+      locale: localeController.locale,
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.background,
         primaryColor: AppColors.primary,
