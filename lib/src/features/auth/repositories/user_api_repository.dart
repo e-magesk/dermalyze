@@ -15,8 +15,6 @@ class UserApiRepository {
     required String firebaseToken,
   }) async {
     try {
-      debugPrint('$baseUrl/user/register');
-      debugPrint(fullName + ' ' + firebaseToken + ' ' + role);
       final response = await _dio.post(
         '$baseUrl/user/register',
         data: {

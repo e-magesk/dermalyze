@@ -89,7 +89,7 @@ class AuthController extends ChangeNotifier {
       await _localStorage.saveUserData(
         uid: uid, 
         role: role, 
-        name: 'Usuário' // Poderia ser recuperado localmente também
+        name: name!,
       );
     }
 
