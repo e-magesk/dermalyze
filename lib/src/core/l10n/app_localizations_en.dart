@@ -286,7 +286,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get valImageErrorDesc =>
-      'The captured image does not have enough quality or was not recognized as a valid skin lesion. Please try again, ensuring good lighting and focus.';
+      'Our system detected that the captured image does not show clear characteristics of a skin lesion. Please try again with better lighting and focus.';
 
   @override
   String get triageP1Label => 'P1';

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
+import 'package:dermalyze/src/features/analysis/service/inference_service.dart';
 import 'package:dermalyze/src/models/clinical_record.dart';
 import 'package:dermalyze/src/shared/widgets/app_bento_card.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class ClinicalDataForm extends StatefulWidget {
 class _ClinicalDataFormState extends State<ClinicalDataForm> {
   int _currentStep = 0;
   String? _imagePath;
+  bool _isImageValidating = false;
 
   // Estado do formulário
   int? _age;
@@ -32,6 +34,8 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
     'change': null,
     'elevate': null,
   };
+
+  final InferenceService _inferenceService = InferenceService();
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +143,7 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
           
           // Área de Preview ou Placeholder
           GestureDetector(
-            onTap: () => _showPickImageOptions(l10n),
+            onTap: _isImageValidating ? null : () => _showPickImageOptions(l10n),
             child: Container(
               height: 300,
               width: double.infinity,
@@ -148,26 +152,32 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: const Color(0xFFE2E8F0)),
               ),
-              child: _imagePath == null
-                  ? Column(
+              child: _isImageValidating
+                  ? const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.add_a_photo_outlined, color: Color(0xFF2563EB), size: 40),
-                        const SizedBox(height: 12),
-                        Text(
-                          l10n.formBtnCapture,
-                          style: const TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold),
-                        ),
+                        CircularProgressIndicator(color: Color(0xFF2563EB)),
+                        SizedBox(height: 16),
+                        Text("Validando qualidade da imagem...", style: TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold)),
                       ],
                     )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Image.file(File(_imagePath!), fit: BoxFit.cover),
-                    ),
+                  : _imagePath == null
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.add_a_photo_outlined, color: Color(0xFF2563EB), size: 40),
+                            const SizedBox(height: 12),
+                            Text(l10n.formBtnCapture, style: const TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold)),
+                          ],
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(18),
+                          child: Image.file(File(_imagePath!), fit: BoxFit.cover),
+                        ),
             ),
           ),
           
-          if (_imagePath != null)
+          if (_imagePath != null && !_isImageValidating)
             Padding(
               padding: const EdgeInsets.only(top: 12),
               child: TextButton.icon(
@@ -445,7 +455,42 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
       );
 
       if (croppedFile != null) {
-        setState(() => _imagePath = croppedFile.path);
+        setState(() {
+          _isImageValidating = true;
+          _imagePath = null; // Limpa a imagem anterior, se houver
+        });
+
+        final isValid = await _inferenceService.isValidImage(croppedFile.path);
+
+        if (!mounted) return;
+        setState(() {
+          _isImageValidating = false;
+        });
+
+        if (isValid) {
+          setState(() {
+            _imagePath = croppedFile.path;
+          });
+        } else {
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.valImageErrorTitle, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  const SizedBox(height: 4),
+                  Text(l10n.valImageErrorDesc),
+                ],
+              ),
+              backgroundColor: const Color(0xFFE11D48), // Vermelho erro
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          );
+        }
       }
     }
   }

@@ -647,7 +647,7 @@ abstract class AppLocalizations {
   /// No description provided for @valImageErrorDesc.
   ///
   /// In pt, this message translates to:
-  /// **'A imagem capturada não apresenta qualidade suficiente ou não foi reconhecida como uma lesão de pele válida. Por favor, tente novamente garantindo boa iluminação e foco na lesão.'**
+  /// **'O nosso sistema detectou que a imagem capturada não apresenta características claras de uma lesão de pele. Por favor, tente novamente com melhor iluminação e foco.'**
   String get valImageErrorDesc;
 
   /// No description provided for @triageP1Label.

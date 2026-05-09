@@ -61,38 +61,7 @@ class DiagnosisPage extends StatelessWidget {
       );
     }
 
-    // 3. Estado de Imagem Inválida (Validação OOD)
-    if (controller.state == AnalysisState.invalidImage) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.warning_amber_rounded, size: 64, color: Color(0xFFE11D48)),
-              const SizedBox(height: 16),
-              Text(
-                l10n.valImageErrorTitle,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                l10n.valImageErrorDesc,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Color(0xFF64748B)),
-              ),
-              const SizedBox(height: 24),
-              TextButton(
-                onPressed: () => controller.reset(),
-                child: Text(l10n.analysisTryAgain),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // 4. Estado Inicial (Exibir Formulário de Diagnóstico)[cite: 2]
+    // 3. Estado Inicial (Exibir Formulário de Diagnóstico)[cite: 2]
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Column(

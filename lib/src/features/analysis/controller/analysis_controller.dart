@@ -3,7 +3,7 @@ import 'package:dermalyze/src/models/analysys_type.dart';
 import 'package:dermalyze/src/models/clinical_record.dart';
 import 'package:flutter/material.dart';
 
-enum AnalysisState { idle, loading, success, error, invalidImage }
+enum AnalysisState { idle, loading, success, error }
 
 class AnalysisController extends ChangeNotifier {
   final InferenceService _service = InferenceService();
@@ -15,16 +15,6 @@ class AnalysisController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      // 1. Validação OOD (Imagem é válida?)
-      final isValid = await _service.isValidImage(record.imagePath!);
-      
-      if (!isValid) {
-        state = AnalysisState.invalidImage;
-        notifyListeners();
-        return;
-      }
-
-      // 2. Inferência do Modelo Principal (Triagem ou Diagnóstico)
       result = await _service.runInference(record, type);
       state = AnalysisState.success;
     } catch (e) {

@@ -156,5 +156,9 @@
     "analysisClinicalFeatures": "Clinical Features",
     "analysisManagementTitle": "Management and Guidance",
 
-    "triageNew": "New Triage"
+    "triageNew": "New Triage",
+
+    "valImageErrorTitle": "Invalid Image",
+    "valImageErrorDesc": "Our system detected that the captured image does not show clear characteristics of a skin lesion. Please try again with better lighting and focus.",
+    "analysisTryAgain": "TRY AGAIN"
 }

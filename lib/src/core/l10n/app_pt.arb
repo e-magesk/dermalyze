@@ -156,5 +156,9 @@
     "analysisClinicalFeatures": "Características Clínicas",
     "analysisManagementTitle": "Manejo e Conduta",
 
-    "triageNew": "Nova Triagem"
+    "triageNew": "Nova Triagem",
+
+    "valImageErrorTitle": "Imagem Inválida",
+    "valImageErrorDesc": "O nosso sistema detectou que a imagem capturada não apresenta características claras de uma lesão de pele. Por favor, tente novamente com melhor iluminação e foco.",
+    "analysisTryAgain": "TENTAR NOVAMENTE"
 }
