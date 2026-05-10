@@ -160,5 +160,16 @@
 
     "valImageErrorTitle": "Imagem Inválida",
     "valImageErrorDesc": "O nosso sistema detectou que a imagem capturada não apresenta características claras de uma lesão de pele. Por favor, tente novamente com melhor iluminação e foco.",
-    "analysisTryAgain": "TENTAR NOVAMENTE"
+    "analysisTryAgain": "TENTAR NOVAMENTE",
+
+    "syncStatusUpdated": "Base de dados atualizada",
+    "syncStatusPending": "Aguardando conexão para enviar {count} dados...",
+    "@syncStatusPending": {
+        "placeholders": {
+        "count": {
+            "type": "int",
+            "example": "3"
+        }
+        }
+    }
 }

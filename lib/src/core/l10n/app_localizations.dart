@@ -937,6 +937,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Nova Triagem'**
   String get triageNew;
+
+  /// No description provided for @syncStatusUpdated.
+  ///
+  /// In pt, this message translates to:
+  /// **'Base de dados atualizada'**
+  String get syncStatusUpdated;
+
+  /// No description provided for @syncStatusPending.
+  ///
+  /// In pt, this message translates to:
+  /// **'Aguardando conexão para enviar {count} dados...'**
+  String syncStatusPending(int count);
 }
 
 class _AppLocalizationsDelegate

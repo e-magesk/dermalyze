@@ -160,5 +160,16 @@
 
     "valImageErrorTitle": "Invalid Image",
     "valImageErrorDesc": "Our system detected that the captured image does not show clear characteristics of a skin lesion. Please try again with better lighting and focus.",
-    "analysisTryAgain": "TRY AGAIN"
+    "analysisTryAgain": "TRY AGAIN",
+
+    "syncStatusUpdated": "Database up to date",
+    "syncStatusPending": "Waiting for connection to send {count} records...",
+    "@syncStatusPending": {
+        "placeholders": {
+        "count": {
+            "type": "int",
+            "example": "3"
+        }
+        }
+    }
 }

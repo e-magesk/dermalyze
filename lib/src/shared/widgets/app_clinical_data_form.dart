@@ -64,9 +64,10 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
           
           // Idade
           _buildLabel(l10n.formPatientAge),
-          TextField(
+          TextFormField(
+            initialValue: _age?.toString(),
             keyboardType: TextInputType.number,
-            onChanged: (v) => _age = int.tryParse(v),
+            onChanged: (v) => setState(() => _age = int.tryParse(v)),
             decoration: _inputDecoration("Ex: 45"),
           ),
           
@@ -85,6 +86,7 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
           // Região (Dropdown)
           _buildLabel(l10n.formBodyRegion),
           DropdownButtonFormField<String>(
+            initialValue: _selectedRegion,
             decoration: _inputDecoration("Selecione..."),
             items: _getRegionItems(l10n),
             onChanged: (v) => setState(() => _selectedRegion = v),
@@ -286,6 +288,9 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
     // Validação: Passo 1 exige que todos os sintomas tenham uma resposta (Sim, Não ou Não Sei)
     bool isStep1Valid = !_symptoms.values.contains(null);
 
+    // Validação: Passo 2 exige que uma imagem válida tenha sido selecionada 
+    bool isStep2Valid = _imagePath != null; // <-- 1. Adicione a validação do passo 2
+
     return Row(
       children: [
         // Botão VOLTAR: Só aparece se não estivermos no primeiro passo[cite: 2]
@@ -308,7 +313,7 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
           flex: 2,
           child: _actionButton(
             label: _currentStep < 2 ? l10n.formBtnNext : l10n.formBtnAnalyze,
-            onPressed: (_currentStep == 0 && isStep0Valid) || (_currentStep == 1 && isStep1Valid)
+            onPressed: (_currentStep == 0 && isStep0Valid) || (_currentStep == 1 && isStep1Valid) || (_currentStep == 2 && isStep2Valid)
                 ? () {
                     if (_currentStep < 2) {
                       setState(() => _currentStep++);
@@ -319,6 +324,7 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
                         history: _history,
                         region: _selectedRegion,
                         symptoms: Map<String, TripleOption>.from(_symptoms as Map),
+                        imagePath: _imagePath,
                       ));
                     }
                   }
@@ -333,24 +339,22 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
 
   List<DropdownMenuItem<String>> _getRegionItems(AppLocalizations l10n) {
     // Mapeamento das chaves técnicas para as strings traduzidas[cite: 1]
-    final Map<String, String> regions = {
-      'face': l10n.regionFace,
-      'nose': l10n.regionNose,
-      'ear': l10n.regionEar,
-      'lips': l10n.regionLips,
-      'scalp': l10n.regionScalp,
-      'neck': l10n.regionNeck,
-      'chest': l10n.regionChest,
-      'abdomen': l10n.regionAbdomen,
-      'back': l10n.regionDorsum,
-      'dorsum': l10n.regionDorsum,
-      'shoulder': l10n.regionShoulder,
-      'arm': l10n.regionArm,
-      'forearm': l10n.regionForearm,
-      'hand': l10n.regionHand,
-      'thigh': l10n.regionThigh,
-      'leg': l10n.regionLeg,
-      'foot': l10n.regionFoot,
+final Map<String, String> regions = {
+      'FACE': l10n.regionFace,
+      'NOSE': l10n.regionNose,
+      'EAR': l10n.regionEar,
+      'LIPS': l10n.regionLips,
+      'SCALP': l10n.regionScalp,
+      'NECK': l10n.regionNeck,
+      'CHEST': l10n.regionChest,
+      'ABDOMEN': l10n.regionAbdomen,
+      'BACK': l10n.regionDorsum,
+      'ARM': l10n.regionArm,
+      'FOREARM': l10n.regionForearm,
+      'HAND': l10n.regionHand,
+      'THIGH': l10n.regionThigh,
+      'LEG': l10n.regionLeg,
+      'FOOT': l10n.regionFoot,
     };
 
     return regions.entries.map((e) {

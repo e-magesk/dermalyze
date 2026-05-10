@@ -53,7 +53,7 @@ dependencies:
   
   # --- Utilitários para Imagens e Offline (Dermalyze) ---
   path_provider: ^2.1.5       # Para encontrar caminhos de pastas no celular
-  connectivity_plus: ^6.0.3
+  connectivity_plus: ^7.1.1
   flutter_svg: ^2.2.4
   image_picker: ^1.2.2
   image_cropper: ^12.2.1

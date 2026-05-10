@@ -1,5 +1,6 @@
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 import 'package:dermalyze/src/core/theme/app_colors.dart';
+import 'package:dermalyze/src/features/sync/controller/sync_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -65,17 +66,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(16)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(l10n.databaseUpdated, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
-                          Container(width: 8, height: 8, decoration: const BoxDecoration(color: Colors.greenAccent, shape: BoxShape.circle)),
-                        ],
-                      ),
-                    ),
+                    _buildDatabaseStatus(context, l10n)
                   ],
                 ),
               ),
@@ -228,6 +219,62 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+    Widget _buildDatabaseStatus(BuildContext context, AppLocalizations l10n) {
+    final syncController = context.watch<SyncController>();
+    
+    final bool isSynced = !syncController.hasPendingSync;
+    final Color dotColor = isSynced ? const Color(0xFF10B981) : const Color(0xFFE11D48); // Verde ou Vermelho
+    
+    // Usando as strings puras do l10n. 
+    // O Flutter gera automaticamente o parâmetro `count` para a chave syncStatusPending!
+    final String statusText = isSynced 
+        ? l10n.syncStatusUpdated 
+        : l10n.syncStatusPending(syncController.pendingCount);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0)),
+      ),
+      child: Row(
+        children: [
+          // A bolinha reativa
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: dotColor,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: dotColor.withValues(alpha: 0.4),
+                  blurRadius: 6,
+                  spreadRadius: 2,
+                )
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              statusText,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: isSynced ? const Color(0xFF64748B) : const Color(0xFFE11D48),
+              ),
+            ),
+          ),
+          // Ícone opcional
+          if (!isSynced)
+            const Icon(Icons.cloud_upload_outlined, size: 16, color: Color(0xFFE11D48)),
+        ],
+      ),
     );
   }
 }

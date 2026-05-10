@@ -1,5 +1,6 @@
 import 'package:dermalyze/src/features/analysis/controller/analysis_controller.dart';
 import 'package:dermalyze/src/features/language/controller/locale_controller.dart';
+import 'package:dermalyze/src/features/sync/controller/sync_controller.dart';
 import 'package:dermalyze/src/modules/home/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,7 +16,7 @@ import 'src/services/local_storage_service.dart';
 import 'src/modules/login/pages/login_page.dart';
 import 'src/modules/register/pages/register_page.dart';
 import 'src/features/auth/repositories/auth_repository.dart';
-import 'src/features/auth/repositories/user_api_repository.dart';
+import 'src/features/auth/repositories/api_repository.dart';
 import 'src/features/auth/controller/auth_controller.dart';
 
 void main() async {
@@ -48,11 +49,10 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => LocaleController(
-            localStorage: context.read<LocalStorageService>(),
-            )
+            localStorage: context.read<LocalStorageService>())
         ),
-        ChangeNotifierProvider(
-          create: (_) => AnalysisController()),
+        ChangeNotifierProvider(create: (_) => SyncController()),
+        ChangeNotifierProvider(create: (_) => AnalysisController()),
       ],
       child: const DermalyzeApp(),
     ),

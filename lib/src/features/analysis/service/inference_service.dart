@@ -1,6 +1,7 @@
-import 'package:dermalyze/src/models/analysys_type.dart';
+import 'package:dermalyze/src/models/analysis_type.dart';
 import 'package:dermalyze/src/models/clinical_record.dart';
 import 'package:dermalyze/src/features/analysis/service/ood_onnx_service.dart';
+import 'package:flutter/foundation.dart';
 
 class InferenceService {
   final OodOnnxService _oodService = OodOnnxService();
@@ -8,13 +9,16 @@ class InferenceService {
   Future<bool> isValidImage(String imagePath) async {
     try {
       // Chama o modelo ONNX real
-      final double? score = await _oodService.predictQualityScore(imagePath);    
+      final double? score = await _oodService.predictQualityScore(imagePath);
+      debugPrint('================================================================');
+      debugPrint('OOD Score: $score'); 
       if (score == null) {
         return false; // Retorna inválido em caso de falha de leitura
       }
-      return score > 2.5;
+      return score > 1.5;
     } catch (e) {
-      print("Falha ao validar a imagem OOD: $e");
+      debugPrint('================================================================');
+      debugPrint("Falha ao validar a imagem OOD: $e");
       return false;
     }
   }

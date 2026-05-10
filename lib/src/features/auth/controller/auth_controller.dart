@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dermalyze/src/features/auth/repositories/auth_repository.dart';
-import 'package:dermalyze/src/features/auth/repositories/user_api_repository.dart';
+import 'package:dermalyze/src/features/auth/repositories/api_repository.dart';
 import 'package:dermalyze/src/services/local_storage_service.dart';
 
 enum AuthState { loading, unauthenticated, doctor, agent }

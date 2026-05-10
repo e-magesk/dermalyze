@@ -1,5 +1,6 @@
+import 'package:dermalyze/src/models/analysis_type.dart';
+import 'package:dermalyze/src/models/clinical_record.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class UserApiRepository {
   final Dio _dio;
@@ -36,5 +37,18 @@ class UserApiRepository {
     } on DioException catch (e) {
       throw Exception('Erro ao buscar usuário no servidor: ${e.response?.data['detail'] ?? e.message}');
     }
+  }
+}
+
+// Mock do Serviço de API (Pode ficar em outro arquivo depois)
+class AnalysisApiRepository {
+  Future<void> saveAnalysis({
+    required ClinicalRecord record,
+    required InferenceResult result,
+  }) async {
+    // Aqui você enviaria um multipart/form-data com a imagem, 
+    // JSON dos metadados, result.label e result.confidence para o seu servidor.
+    print("Enviando para o servidor... ${result.label} (${result.confidence * 100}%)");
+    await Future.delayed(const Duration(seconds: 1)); 
   }
 }

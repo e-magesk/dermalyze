@@ -453,4 +453,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get triageNew => 'Nova Triagem';
+
+  @override
+  String get syncStatusUpdated => 'Base de dados atualizada';
+
+  @override
+  String syncStatusPending(int count) {
+    return 'Aguardando conexão para enviar $count dados...';
+  }
 }
