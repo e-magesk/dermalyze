@@ -362,7 +362,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get diagMelanomaDesc =>
-      'Neoplasia maligna originada nos melanócitos. Caracteriza-se por assimetria, bordas irregulares, variação de cores e potencial agressivo de metástase se não tratada precocemente.';
+      'Neoplasia maligna originada nos melanócitos. Apresenta alto potencial de metástase se não tratada precocemente. Caracteriza-se por assimetria, bordas irregulares e variação de cores.';
 
   @override
   String get diagMelanomaConduta =>
@@ -373,7 +373,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get diagBCCDesc =>
-      'Câncer de pele mais comum. Apresenta crescimento lento e é localmente invasivo, porém com baixíssimo potencial de metástase. Frequentemente apresenta aspecto perláceo, bordas elevadas e telangiectasias.';
+      'Câncer de pele mais comum. Crescimento lento, localmente invasivo, mas com baixíssimo potencial de metástase. Frequentemente apresenta aspecto perláceo e telangiectasias.';
 
   @override
   String get diagBCCConduta =>
@@ -384,18 +384,18 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get diagSCCDesc =>
-      'Segunda neoplasia maligna cutânea mais comum. Origina-se nas células escamosas. Pode apresentar crescimento rápido, aspecto úlcero-vegetante e possui maior potencial de metástase que o Carcinoma Basocelular.';
+      'Segundo tipo mais comum. Origina-se nas células escamosas da epiderme. Pode apresentar crescimento rápido e possui potencial de metástase maior que o CBC.';
 
   @override
   String get diagSCCConduta =>
       'Excisão cirúrgica com margens adequadas (geralmente 4 a 6 mm). Requer palpação de linfonodos regionais para descartar disseminação. Monitoramento rigoroso pós-operatório.';
 
   @override
-  String get diagAKName => 'Ceratose Actínica';
+  String get diagAKName => 'Ceratose actínica';
 
   @override
   String get diagAKDesc =>
-      'Lesão pré-cancerosa causada por exposição solar crônica. Caracteriza-se por placas ou pápulas eritematosas, com superfície áspera e descamativa (aspecto de lixa). Pode evoluir para Carcinoma Espinocelular.';
+      'Lesão pré-cancerosa causada pela exposição solar crônica. Caracteriza-se por superfície áspera e descamativa. Pode evoluir para carcinoma espinocelular.';
 
   @override
   String get diagAKConduta =>
@@ -406,7 +406,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get diagSKDesc =>
-      'Tumor benigno epidérmico muito frequente em adultos. Apresenta aspecto verrucoso ou \'colado\' na pele, com cores variando de castanho claro a preto. Sem potencial de malignização.';
+      'Tumor benigno epidérmico muito comum. Aspecto verrucoso ou \'colado\' na pele, com cores variando de bronze a preto. Sem potencial maligno.';
 
   @override
   String get diagSKConduta =>
@@ -461,4 +461,220 @@ class AppLocalizationsPt extends AppLocalizations {
   String syncStatusPending(int count) {
     return 'Aguardando conexão para enviar $count dados...';
   }
+
+  @override
+  String get libTitle => 'Biblioteca Técnica';
+
+  @override
+  String get libHeroTitle => 'Conhecimento';
+
+  @override
+  String get libHeroSubtitle => 'Central de Apoio PAD-UFES';
+
+  @override
+  String get libMenuAbcdeTitle => 'ABCDE do Câncer';
+
+  @override
+  String get libMenuAbcdeDesc => 'Manual Visual de Risco';
+
+  @override
+  String get libMenuDiseasesTitle => 'Principais Doenças';
+
+  @override
+  String get libMenuDiseasesDesc => 'Enciclopédia Dermatológica';
+
+  @override
+  String get libMenuTriageTitle => 'Metodologia e Triagem';
+
+  @override
+  String get libMenuTriageDesc => 'Como os casos são agrupados';
+
+  @override
+  String get libAbcdeHeroTitle => 'O que é a regra do ABCDE?';
+
+  @override
+  String get libAbcdeHeroDesc1 =>
+      'A regra do ABCDE é uma metodologia clínica padronizada mundialmente para auxiliar na detecção precoce do câncer de pele, especificamente o Melanoma.';
+
+  @override
+  String get libAbcdeHeroDesc2 =>
+      'Ela serve como um guia prático para profissionais da saúde e pacientes avaliarem características morfológicas de lesões pigmentadas.';
+
+  @override
+  String get libAbcdeCriteria => 'Critérios de Avaliação';
+
+  @override
+  String get libAbcdeBenign => 'Benigno';
+
+  @override
+  String get libAbcdeMalign => 'Suspeito';
+
+  @override
+  String get libDiseasesHeroTitle => 'Patologias Analisadas';
+
+  @override
+  String get libDiseasesHeroDesc1 =>
+      'Nesta seção, apresentamos as principais doenças dermatológicas que são retratadas e classificadas pelo sistema.';
+
+  @override
+  String get libDiseasesHeroDesc2 =>
+      'O Nível de Prioridade indica o grau de urgência clínica associado àquela condição.';
+
+  @override
+  String get libDiseasesEncyclopedia => 'Enciclopédia Clínica';
+
+  @override
+  String get libTriageHeroTitle => 'Metodologia P1-P5';
+
+  @override
+  String get libTriageHeroSubtitle => 'Lógica de agrupamento e gravidade';
+
+  @override
+  String get libTriageHeroDesc =>
+      'Nosso sistema utiliza uma hierarquia de gravidade dividida em 5 níveis.';
+
+  @override
+  String get libAbcdeLetterA => 'A';
+
+  @override
+  String get libAbcdeTitleA => 'Assimetria';
+
+  @override
+  String get libAbcdeDescA => 'Metades desiguais.';
+
+  @override
+  String get libAbcdeBenignA => 'Simétrico';
+
+  @override
+  String get libAbcdeMalignA => 'Assimétrico';
+
+  @override
+  String get libAbcdeLetterB => 'B';
+
+  @override
+  String get libAbcdeTitleB => 'Bordas';
+
+  @override
+  String get libAbcdeDescB => 'Irregulares ou serrilhadas.';
+
+  @override
+  String get libAbcdeBenignB => 'Regulares';
+
+  @override
+  String get libAbcdeMalignB => 'Irregulares';
+
+  @override
+  String get libAbcdeLetterC => 'C';
+
+  @override
+  String get libAbcdeTitleC => 'Cores';
+
+  @override
+  String get libAbcdeDescC => 'Múltiplos tons presentes.';
+
+  @override
+  String get libAbcdeBenignC => 'Cor Única';
+
+  @override
+  String get libAbcdeMalignC => 'Várias Cores';
+
+  @override
+  String get libAbcdeLetterD => 'D';
+
+  @override
+  String get libAbcdeTitleD => 'Diâmetro';
+
+  @override
+  String get libAbcdeDescD => 'Extensão maior que 6mm.';
+
+  @override
+  String get libAbcdeBenignD => '< 6mm';
+
+  @override
+  String get libAbcdeMalignD => '> 6mm';
+
+  @override
+  String get libAbcdeLetterE => 'E';
+
+  @override
+  String get libAbcdeTitleE => 'Evolução';
+
+  @override
+  String get libAbcdeDescE => 'Mudança de forma ou cor.';
+
+  @override
+  String get libAbcdeBenignE => 'Estável';
+
+  @override
+  String get libAbcdeMalignE => 'Mudando';
+
+  @override
+  String get diagLentigoName => 'Lentigo maligno';
+
+  @override
+  String get diagLentigoDesc =>
+      'Forma de melanoma in situ que ocorre em pele cronicamente exposta ao sol, geralmente em idosos. Evolução lenta com pigmentação irregular.';
+
+  @override
+  String get diagNevoD22Name => 'Nevo melanocítico (D22)';
+
+  @override
+  String get diagNevoD22Desc =>
+      'Nevo com características atípicas ou suspeitas que requerem monitoramento rigoroso devido ao potencial de transformação ou confusão diagnóstica com melanoma.';
+
+  @override
+  String get diagBowenName => 'Doença de Bowen';
+
+  @override
+  String get diagBowenDesc =>
+      'Carcinoma espinocelular in situ. Apresenta-se como placa eritemato-escamosa persistente e bem delimitada.';
+
+  @override
+  String get diagKeratoacanthomaName => 'Ceratoacantoma';
+
+  @override
+  String get diagKeratoacanthomaDesc =>
+      'Nódulo de crescimento rápido com cratera central de queratina. Frequentemente involui, mas é clinicamente difícil de distinguir do CEC.';
+
+  @override
+  String get diagCutaneousHornName => 'Corno Cutâneo';
+
+  @override
+  String get diagCutaneousHornDesc =>
+      'Projeção queratótica cônica. É um diagnóstico morfológico que pode ocultar desde lesões benignas até carcinomas na base.';
+
+  @override
+  String get diagEczemaName => 'Eczema';
+
+  @override
+  String get diagEczemaDesc =>
+      'Condição inflamatória da pele que causa vermelhidão, coceira e descamação. Requer manejo clínico para controle de sintomas e barreira cutânea.';
+
+  @override
+  String get diagDermatitisName => 'Dermatite';
+
+  @override
+  String get diagDermatitisDesc =>
+      'Termo amplo para inflamações cutâneas que podem ser causadas por contato, alergia ou fatores genéticos. Requer diagnóstico etiológico.';
+
+  @override
+  String get diagNevusL78Name => 'Nevo (L78)';
+
+  @override
+  String get diagNevusL78Desc =>
+      'Lesão pigmentada benigna e estável (pinta comum). Composta por aglomerados de melanócitos com arquitetura regular e coloração homogênea.';
+
+  @override
+  String get diagAcneName => 'Acne';
+
+  @override
+  String get diagAcneDesc =>
+      'Condição inflamatória das glândulas pilossebáceas. Apresenta-se como comedões, pápulas ou pústulas. Sem relevância oncológica.';
+
+  @override
+  String get diagNoLesionName => 'Ausência de lesão';
+
+  @override
+  String get diagNoLesionDesc =>
+      'Pele com características de normalidade, sem evidência de patologias dermatológicas no local analisado.';
 }

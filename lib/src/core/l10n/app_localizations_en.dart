@@ -363,7 +363,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagMelanomaDesc =>
-      'Malignant neoplasm originating from melanocytes. Characterized by asymmetry, irregular borders, color variation, and aggressive metastatic potential if not treated early.';
+      'Malignant neoplasm originating from melanocytes. High metastatic potential if not treated early. Characterized by asymmetry, irregular borders, and color variation.';
 
   @override
   String get diagMelanomaConduta =>
@@ -374,7 +374,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagBCCDesc =>
-      'The most common skin cancer. Presents slow growth and is locally invasive, but with very low metastatic potential. Often features a pearly appearance, elevated borders, and telangiectasias.';
+      'Most common skin cancer. Slow-growing, locally invasive, with very low metastatic potential. Often presents a pearly appearance and telangiectasia.';
 
   @override
   String get diagBCCConduta =>
@@ -385,7 +385,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagSCCDesc =>
-      'The second most common malignant skin neoplasm. Originates in squamous cells. Can present rapid growth, ulcero-vegetative appearance, and has a higher metastatic potential than Basal Cell Carcinoma.';
+      'Second most common type. Originates in the squamous cells of the epidermis. Can grow rapidly and has a higher metastatic potential than BCC.';
 
   @override
   String get diagSCCConduta =>
@@ -396,7 +396,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagAKDesc =>
-      'Pre-cancerous lesion caused by chronic sun exposure. Characterized by erythematous plaques or papules with a rough, scaly surface (sandpaper feel). Can evolve into Squamous Cell Carcinoma.';
+      'Precancerous lesion caused by chronic sun exposure. Characterized by a rough, scaly surface. May progress to squamous cell carcinoma.';
 
   @override
   String get diagAKConduta =>
@@ -407,7 +407,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagSKDesc =>
-      'Very common benign epidermal tumor in adults. Presents a warty or \'stuck on\' appearance, with colors ranging from light brown to black. No potential for malignancy.';
+      'Very common benign epidermal tumor. Warty or \'stuck-on\' appearance, with colors ranging from tan to black. No malignant potential.';
 
   @override
   String get diagSKConduta =>
@@ -462,4 +462,220 @@ class AppLocalizationsEn extends AppLocalizations {
   String syncStatusPending(int count) {
     return 'Waiting for connection to send $count records...';
   }
+
+  @override
+  String get libTitle => 'Technical Library';
+
+  @override
+  String get libHeroTitle => 'Knowledge';
+
+  @override
+  String get libHeroSubtitle => 'PAD-UFES Support Center';
+
+  @override
+  String get libMenuAbcdeTitle => 'ABCDE Rule';
+
+  @override
+  String get libMenuAbcdeDesc => 'Visual Risk Manual';
+
+  @override
+  String get libMenuDiseasesTitle => 'Main Diseases';
+
+  @override
+  String get libMenuDiseasesDesc => 'Dermatological Encyclopedia';
+
+  @override
+  String get libMenuTriageTitle => 'Methodology & Triage';
+
+  @override
+  String get libMenuTriageDesc => 'How cases are grouped';
+
+  @override
+  String get libAbcdeHeroTitle => 'What is the ABCDE rule?';
+
+  @override
+  String get libAbcdeHeroDesc1 =>
+      'The ABCDE rule is a globally standardized clinical methodology to assist in the early detection of skin cancer, specifically Melanoma.';
+
+  @override
+  String get libAbcdeHeroDesc2 =>
+      'It serves as a practical guide for healthcare professionals and patients to evaluate the morphological characteristics of pigmented lesions.';
+
+  @override
+  String get libAbcdeCriteria => 'Evaluation Criteria';
+
+  @override
+  String get libAbcdeBenign => 'Benign';
+
+  @override
+  String get libAbcdeMalign => 'Suspicious';
+
+  @override
+  String get libDiseasesHeroTitle => 'Analyzed Pathologies';
+
+  @override
+  String get libDiseasesHeroDesc1 =>
+      'In this section, we present the main dermatological diseases that are depicted and classified by the system.';
+
+  @override
+  String get libDiseasesHeroDesc2 =>
+      'The Priority Level indicates the degree of clinical urgency associated with that condition.';
+
+  @override
+  String get libDiseasesEncyclopedia => 'Clinical Encyclopedia';
+
+  @override
+  String get libTriageHeroTitle => 'P1-P5 Methodology';
+
+  @override
+  String get libTriageHeroSubtitle => 'Grouping and severity logic';
+
+  @override
+  String get libTriageHeroDesc =>
+      'Our system utilizes a severity hierarchy divided into 5 levels.';
+
+  @override
+  String get libAbcdeLetterA => 'A';
+
+  @override
+  String get libAbcdeTitleA => 'Asymmetry';
+
+  @override
+  String get libAbcdeDescA => 'Unequal halves.';
+
+  @override
+  String get libAbcdeBenignA => 'Symmetrical';
+
+  @override
+  String get libAbcdeMalignA => 'Asymmetrical';
+
+  @override
+  String get libAbcdeLetterB => 'B';
+
+  @override
+  String get libAbcdeTitleB => 'Border';
+
+  @override
+  String get libAbcdeDescB => 'Irregular or scalloped.';
+
+  @override
+  String get libAbcdeBenignB => 'Regular';
+
+  @override
+  String get libAbcdeMalignB => 'Irregular';
+
+  @override
+  String get libAbcdeLetterC => 'C';
+
+  @override
+  String get libAbcdeTitleC => 'Color';
+
+  @override
+  String get libAbcdeDescC => 'Multiple shades present.';
+
+  @override
+  String get libAbcdeBenignC => 'Single Color';
+
+  @override
+  String get libAbcdeMalignC => 'Multiple Colors';
+
+  @override
+  String get libAbcdeLetterD => 'D';
+
+  @override
+  String get libAbcdeTitleD => 'Diameter';
+
+  @override
+  String get libAbcdeDescD => 'Larger than 6mm.';
+
+  @override
+  String get libAbcdeBenignD => '< 6mm';
+
+  @override
+  String get libAbcdeMalignD => '> 6mm';
+
+  @override
+  String get libAbcdeLetterE => 'E';
+
+  @override
+  String get libAbcdeTitleE => 'Evolving';
+
+  @override
+  String get libAbcdeDescE => 'Change in shape or color.';
+
+  @override
+  String get libAbcdeBenignE => 'Stable';
+
+  @override
+  String get libAbcdeMalignE => 'Changing';
+
+  @override
+  String get diagLentigoName => 'Lentigo maligna';
+
+  @override
+  String get diagLentigoDesc =>
+      'A form of melanoma in situ occurring on chronically sun-exposed skin, usually in the elderly. Slow evolution with irregular pigmentation.';
+
+  @override
+  String get diagNevoD22Name => 'Melanocytic Nevus (D22)';
+
+  @override
+  String get diagNevoD22Desc =>
+      'Nevus with atypical or suspicious features requiring close monitoring due to potential for transformation or diagnostic confusion with melanoma.';
+
+  @override
+  String get diagBowenName => 'Bowen\'s Disease';
+
+  @override
+  String get diagBowenDesc =>
+      'Squamous cell carcinoma in situ. Presents as a persistent, well-defined erythematous-squamous plaque.';
+
+  @override
+  String get diagKeratoacanthomaName => 'Keratoacanthoma';
+
+  @override
+  String get diagKeratoacanthomaDesc =>
+      'Fast-growing nodule with a central keratin crater. Often involutes, but is clinically difficult to distinguish from SCC.';
+
+  @override
+  String get diagCutaneousHornName => 'Cutaneous Horn';
+
+  @override
+  String get diagCutaneousHornDesc =>
+      'Conical keratotic projection. A morphological diagnosis that can hide anything from benign lesions to carcinomas at the base.';
+
+  @override
+  String get diagEczemaName => 'Eczema';
+
+  @override
+  String get diagEczemaDesc =>
+      'Inflammatory skin condition causing redness, itching, and scaling. Requires clinical management for symptom control and skin barrier repair.';
+
+  @override
+  String get diagDermatitisName => 'Dermatitis';
+
+  @override
+  String get diagDermatitisDesc =>
+      'Broad term for skin inflammations caused by contact, allergy, or genetic factors. Requires etiological diagnosis.';
+
+  @override
+  String get diagNevusL78Name => 'Nevus (L78)';
+
+  @override
+  String get diagNevusL78Desc =>
+      'Stable and benign pigmented lesion (common mole). Composed of melanocyte clusters with regular architecture and homogeneous coloring.';
+
+  @override
+  String get diagAcneName => 'Acne';
+
+  @override
+  String get diagAcneDesc =>
+      'Inflammatory condition of the pilosebaceous glands. Presents as comedones, papules, or pustules. No oncological relevance.';
+
+  @override
+  String get diagNoLesionName => 'Absence of lesion';
+
+  @override
+  String get diagNoLesionDesc =>
+      'Skin with normal characteristics, with no evidence of dermatological pathologies at the analyzed site.';
 }

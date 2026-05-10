@@ -779,7 +779,7 @@ abstract class AppLocalizations {
   /// No description provided for @diagMelanomaDesc.
   ///
   /// In pt, this message translates to:
-  /// **'Neoplasia maligna originada nos melanócitos. Caracteriza-se por assimetria, bordas irregulares, variação de cores e potencial agressivo de metástase se não tratada precocemente.'**
+  /// **'Neoplasia maligna originada nos melanócitos. Apresenta alto potencial de metástase se não tratada precocemente. Caracteriza-se por assimetria, bordas irregulares e variação de cores.'**
   String get diagMelanomaDesc;
 
   /// No description provided for @diagMelanomaConduta.
@@ -797,7 +797,7 @@ abstract class AppLocalizations {
   /// No description provided for @diagBCCDesc.
   ///
   /// In pt, this message translates to:
-  /// **'Câncer de pele mais comum. Apresenta crescimento lento e é localmente invasivo, porém com baixíssimo potencial de metástase. Frequentemente apresenta aspecto perláceo, bordas elevadas e telangiectasias.'**
+  /// **'Câncer de pele mais comum. Crescimento lento, localmente invasivo, mas com baixíssimo potencial de metástase. Frequentemente apresenta aspecto perláceo e telangiectasias.'**
   String get diagBCCDesc;
 
   /// No description provided for @diagBCCConduta.
@@ -815,7 +815,7 @@ abstract class AppLocalizations {
   /// No description provided for @diagSCCDesc.
   ///
   /// In pt, this message translates to:
-  /// **'Segunda neoplasia maligna cutânea mais comum. Origina-se nas células escamosas. Pode apresentar crescimento rápido, aspecto úlcero-vegetante e possui maior potencial de metástase que o Carcinoma Basocelular.'**
+  /// **'Segundo tipo mais comum. Origina-se nas células escamosas da epiderme. Pode apresentar crescimento rápido e possui potencial de metástase maior que o CBC.'**
   String get diagSCCDesc;
 
   /// No description provided for @diagSCCConduta.
@@ -827,13 +827,13 @@ abstract class AppLocalizations {
   /// No description provided for @diagAKName.
   ///
   /// In pt, this message translates to:
-  /// **'Ceratose Actínica'**
+  /// **'Ceratose actínica'**
   String get diagAKName;
 
   /// No description provided for @diagAKDesc.
   ///
   /// In pt, this message translates to:
-  /// **'Lesão pré-cancerosa causada por exposição solar crônica. Caracteriza-se por placas ou pápulas eritematosas, com superfície áspera e descamativa (aspecto de lixa). Pode evoluir para Carcinoma Espinocelular.'**
+  /// **'Lesão pré-cancerosa causada pela exposição solar crônica. Caracteriza-se por superfície áspera e descamativa. Pode evoluir para carcinoma espinocelular.'**
   String get diagAKDesc;
 
   /// No description provided for @diagAKConduta.
@@ -851,7 +851,7 @@ abstract class AppLocalizations {
   /// No description provided for @diagSKDesc.
   ///
   /// In pt, this message translates to:
-  /// **'Tumor benigno epidérmico muito frequente em adultos. Apresenta aspecto verrucoso ou \'colado\' na pele, com cores variando de castanho claro a preto. Sem potencial de malignização.'**
+  /// **'Tumor benigno epidérmico muito comum. Aspecto verrucoso ou \'colado\' na pele, com cores variando de bronze a preto. Sem potencial maligno.'**
   String get diagSKDesc;
 
   /// No description provided for @diagSKConduta.
@@ -949,6 +949,408 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Aguardando conexão para enviar {count} dados...'**
   String syncStatusPending(int count);
+
+  /// No description provided for @libTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Biblioteca Técnica'**
+  String get libTitle;
+
+  /// No description provided for @libHeroTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conhecimento'**
+  String get libHeroTitle;
+
+  /// No description provided for @libHeroSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Central de Apoio PAD-UFES'**
+  String get libHeroSubtitle;
+
+  /// No description provided for @libMenuAbcdeTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'ABCDE do Câncer'**
+  String get libMenuAbcdeTitle;
+
+  /// No description provided for @libMenuAbcdeDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Manual Visual de Risco'**
+  String get libMenuAbcdeDesc;
+
+  /// No description provided for @libMenuDiseasesTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Principais Doenças'**
+  String get libMenuDiseasesTitle;
+
+  /// No description provided for @libMenuDiseasesDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enciclopédia Dermatológica'**
+  String get libMenuDiseasesDesc;
+
+  /// No description provided for @libMenuTriageTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Metodologia e Triagem'**
+  String get libMenuTriageTitle;
+
+  /// No description provided for @libMenuTriageDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como os casos são agrupados'**
+  String get libMenuTriageDesc;
+
+  /// No description provided for @libAbcdeHeroTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que é a regra do ABCDE?'**
+  String get libAbcdeHeroTitle;
+
+  /// No description provided for @libAbcdeHeroDesc1.
+  ///
+  /// In pt, this message translates to:
+  /// **'A regra do ABCDE é uma metodologia clínica padronizada mundialmente para auxiliar na detecção precoce do câncer de pele, especificamente o Melanoma.'**
+  String get libAbcdeHeroDesc1;
+
+  /// No description provided for @libAbcdeHeroDesc2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ela serve como um guia prático para profissionais da saúde e pacientes avaliarem características morfológicas de lesões pigmentadas.'**
+  String get libAbcdeHeroDesc2;
+
+  /// No description provided for @libAbcdeCriteria.
+  ///
+  /// In pt, this message translates to:
+  /// **'Critérios de Avaliação'**
+  String get libAbcdeCriteria;
+
+  /// No description provided for @libAbcdeBenign.
+  ///
+  /// In pt, this message translates to:
+  /// **'Benigno'**
+  String get libAbcdeBenign;
+
+  /// No description provided for @libAbcdeMalign.
+  ///
+  /// In pt, this message translates to:
+  /// **'Suspeito'**
+  String get libAbcdeMalign;
+
+  /// No description provided for @libDiseasesHeroTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Patologias Analisadas'**
+  String get libDiseasesHeroTitle;
+
+  /// No description provided for @libDiseasesHeroDesc1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nesta seção, apresentamos as principais doenças dermatológicas que são retratadas e classificadas pelo sistema.'**
+  String get libDiseasesHeroDesc1;
+
+  /// No description provided for @libDiseasesHeroDesc2.
+  ///
+  /// In pt, this message translates to:
+  /// **'O Nível de Prioridade indica o grau de urgência clínica associado àquela condição.'**
+  String get libDiseasesHeroDesc2;
+
+  /// No description provided for @libDiseasesEncyclopedia.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enciclopédia Clínica'**
+  String get libDiseasesEncyclopedia;
+
+  /// No description provided for @libTriageHeroTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Metodologia P1-P5'**
+  String get libTriageHeroTitle;
+
+  /// No description provided for @libTriageHeroSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lógica de agrupamento e gravidade'**
+  String get libTriageHeroSubtitle;
+
+  /// No description provided for @libTriageHeroDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nosso sistema utiliza uma hierarquia de gravidade dividida em 5 níveis.'**
+  String get libTriageHeroDesc;
+
+  /// No description provided for @libAbcdeLetterA.
+  ///
+  /// In pt, this message translates to:
+  /// **'A'**
+  String get libAbcdeLetterA;
+
+  /// No description provided for @libAbcdeTitleA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assimetria'**
+  String get libAbcdeTitleA;
+
+  /// No description provided for @libAbcdeDescA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Metades desiguais.'**
+  String get libAbcdeDescA;
+
+  /// No description provided for @libAbcdeBenignA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Simétrico'**
+  String get libAbcdeBenignA;
+
+  /// No description provided for @libAbcdeMalignA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assimétrico'**
+  String get libAbcdeMalignA;
+
+  /// No description provided for @libAbcdeLetterB.
+  ///
+  /// In pt, this message translates to:
+  /// **'B'**
+  String get libAbcdeLetterB;
+
+  /// No description provided for @libAbcdeTitleB.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bordas'**
+  String get libAbcdeTitleB;
+
+  /// No description provided for @libAbcdeDescB.
+  ///
+  /// In pt, this message translates to:
+  /// **'Irregulares ou serrilhadas.'**
+  String get libAbcdeDescB;
+
+  /// No description provided for @libAbcdeBenignB.
+  ///
+  /// In pt, this message translates to:
+  /// **'Regulares'**
+  String get libAbcdeBenignB;
+
+  /// No description provided for @libAbcdeMalignB.
+  ///
+  /// In pt, this message translates to:
+  /// **'Irregulares'**
+  String get libAbcdeMalignB;
+
+  /// No description provided for @libAbcdeLetterC.
+  ///
+  /// In pt, this message translates to:
+  /// **'C'**
+  String get libAbcdeLetterC;
+
+  /// No description provided for @libAbcdeTitleC.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cores'**
+  String get libAbcdeTitleC;
+
+  /// No description provided for @libAbcdeDescC.
+  ///
+  /// In pt, this message translates to:
+  /// **'Múltiplos tons presentes.'**
+  String get libAbcdeDescC;
+
+  /// No description provided for @libAbcdeBenignC.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cor Única'**
+  String get libAbcdeBenignC;
+
+  /// No description provided for @libAbcdeMalignC.
+  ///
+  /// In pt, this message translates to:
+  /// **'Várias Cores'**
+  String get libAbcdeMalignC;
+
+  /// No description provided for @libAbcdeLetterD.
+  ///
+  /// In pt, this message translates to:
+  /// **'D'**
+  String get libAbcdeLetterD;
+
+  /// No description provided for @libAbcdeTitleD.
+  ///
+  /// In pt, this message translates to:
+  /// **'Diâmetro'**
+  String get libAbcdeTitleD;
+
+  /// No description provided for @libAbcdeDescD.
+  ///
+  /// In pt, this message translates to:
+  /// **'Extensão maior que 6mm.'**
+  String get libAbcdeDescD;
+
+  /// No description provided for @libAbcdeBenignD.
+  ///
+  /// In pt, this message translates to:
+  /// **'< 6mm'**
+  String get libAbcdeBenignD;
+
+  /// No description provided for @libAbcdeMalignD.
+  ///
+  /// In pt, this message translates to:
+  /// **'> 6mm'**
+  String get libAbcdeMalignD;
+
+  /// No description provided for @libAbcdeLetterE.
+  ///
+  /// In pt, this message translates to:
+  /// **'E'**
+  String get libAbcdeLetterE;
+
+  /// No description provided for @libAbcdeTitleE.
+  ///
+  /// In pt, this message translates to:
+  /// **'Evolução'**
+  String get libAbcdeTitleE;
+
+  /// No description provided for @libAbcdeDescE.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudança de forma ou cor.'**
+  String get libAbcdeDescE;
+
+  /// No description provided for @libAbcdeBenignE.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estável'**
+  String get libAbcdeBenignE;
+
+  /// No description provided for @libAbcdeMalignE.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mudando'**
+  String get libAbcdeMalignE;
+
+  /// No description provided for @diagLentigoName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lentigo maligno'**
+  String get diagLentigoName;
+
+  /// No description provided for @diagLentigoDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Forma de melanoma in situ que ocorre em pele cronicamente exposta ao sol, geralmente em idosos. Evolução lenta com pigmentação irregular.'**
+  String get diagLentigoDesc;
+
+  /// No description provided for @diagNevoD22Name.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nevo melanocítico (D22)'**
+  String get diagNevoD22Name;
+
+  /// No description provided for @diagNevoD22Desc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nevo com características atípicas ou suspeitas que requerem monitoramento rigoroso devido ao potencial de transformação ou confusão diagnóstica com melanoma.'**
+  String get diagNevoD22Desc;
+
+  /// No description provided for @diagBowenName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Doença de Bowen'**
+  String get diagBowenName;
+
+  /// No description provided for @diagBowenDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Carcinoma espinocelular in situ. Apresenta-se como placa eritemato-escamosa persistente e bem delimitada.'**
+  String get diagBowenDesc;
+
+  /// No description provided for @diagKeratoacanthomaName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ceratoacantoma'**
+  String get diagKeratoacanthomaName;
+
+  /// No description provided for @diagKeratoacanthomaDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nódulo de crescimento rápido com cratera central de queratina. Frequentemente involui, mas é clinicamente difícil de distinguir do CEC.'**
+  String get diagKeratoacanthomaDesc;
+
+  /// No description provided for @diagCutaneousHornName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Corno Cutâneo'**
+  String get diagCutaneousHornName;
+
+  /// No description provided for @diagCutaneousHornDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Projeção queratótica cônica. É um diagnóstico morfológico que pode ocultar desde lesões benignas até carcinomas na base.'**
+  String get diagCutaneousHornDesc;
+
+  /// No description provided for @diagEczemaName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Eczema'**
+  String get diagEczemaName;
+
+  /// No description provided for @diagEczemaDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Condição inflamatória da pele que causa vermelhidão, coceira e descamação. Requer manejo clínico para controle de sintomas e barreira cutânea.'**
+  String get diagEczemaDesc;
+
+  /// No description provided for @diagDermatitisName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dermatite'**
+  String get diagDermatitisName;
+
+  /// No description provided for @diagDermatitisDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Termo amplo para inflamações cutâneas que podem ser causadas por contato, alergia ou fatores genéticos. Requer diagnóstico etiológico.'**
+  String get diagDermatitisDesc;
+
+  /// No description provided for @diagNevusL78Name.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nevo (L78)'**
+  String get diagNevusL78Name;
+
+  /// No description provided for @diagNevusL78Desc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lesão pigmentada benigna e estável (pinta comum). Composta por aglomerados de melanócitos com arquitetura regular e coloração homogênea.'**
+  String get diagNevusL78Desc;
+
+  /// No description provided for @diagAcneName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acne'**
+  String get diagAcneName;
+
+  /// No description provided for @diagAcneDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Condição inflamatória das glândulas pilossebáceas. Apresenta-se como comedões, pápulas ou pústulas. Sem relevância oncológica.'**
+  String get diagAcneDesc;
+
+  /// No description provided for @diagNoLesionName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ausência de lesão'**
+  String get diagNoLesionName;
+
+  /// No description provided for @diagNoLesionDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pele com características de normalidade, sem evidência de patologias dermatológicas no local analisado.'**
+  String get diagNoLesionDesc;
 }
 
 class _AppLocalizationsDelegate
