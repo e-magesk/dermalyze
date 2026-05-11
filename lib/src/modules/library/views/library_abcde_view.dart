@@ -28,11 +28,35 @@ class LibraryAbcdeView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.track_changes_rounded, color: AppColors.primary, size: 32),
-              const SizedBox(height: 16),
-              Text(l10n.libAbcdeHeroTitle, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppColors.textDark, letterSpacing: -1)),
-              const SizedBox(height: 12),
-              Text(l10n.libAbcdeHeroDesc1, style: const TextStyle(fontSize: 13, color: AppColors.textMedium, fontWeight: FontWeight.w500, height: 1.5)),
+              // Linha agrupando o Ícone e o Título
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.track_changes_rounded, color: AppColors.primary, size: 32),
+                  const SizedBox(width: 12), // Espaçamento horizontal entre ícone e texto
+                  Expanded(
+                    child: Text(
+                      l10n.libAbcdeHeroTitle, 
+                      style: const TextStyle(
+                        fontSize: 22, 
+                        fontWeight: FontWeight.w900, 
+                        color: AppColors.textDark, 
+                        letterSpacing: -1
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16), // Espaçamento vertical antes do subtítulo/descrição
+              Text(
+                l10n.libAbcdeHeroDesc1, 
+                style: const TextStyle(
+                  fontSize: 13, 
+                  color: AppColors.textMedium, 
+                  fontWeight: FontWeight.w500, 
+                  height: 1.5
+                ),
+              ),
             ],
           ),
         ),

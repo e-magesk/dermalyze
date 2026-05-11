@@ -56,11 +56,35 @@ class LibraryDiseasesView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.biotech_rounded, color: Color(0xFF4F46E5), size: 32),
-              const SizedBox(height: 16),
-              Text(l10n.libDiseasesHeroTitle, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppColors.textDark, letterSpacing: -1)),
-              const SizedBox(height: 12),
-              Text(l10n.libDiseasesHeroDesc1, style: const TextStyle(fontSize: 13, color: AppColors.textMedium, fontWeight: FontWeight.w500, height: 1.5)),
+              // Linha agrupando o Ícone e o Título
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.biotech_rounded, color: Color(0xFF4F46E5), size: 32),
+                  const SizedBox(width: 12), // Espaçamento horizontal entre ícone e texto
+                  Expanded(
+                    child: Text(
+                      l10n.libDiseasesHeroTitle, 
+                      style: const TextStyle(
+                        fontSize: 22, 
+                        fontWeight: FontWeight.w900, 
+                        color: AppColors.textDark, 
+                        letterSpacing: -1
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16), // Espaçamento vertical antes do subtítulo/descrição
+              Text(
+                l10n.libDiseasesHeroDesc1, 
+                style: const TextStyle(
+                  fontSize: 13, 
+                  color: AppColors.textMedium, 
+                  fontWeight: FontWeight.w500, 
+                  height: 1.5
+                ),
+              ),
             ],
           ),
         ),
