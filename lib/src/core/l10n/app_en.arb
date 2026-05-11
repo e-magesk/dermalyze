@@ -259,5 +259,20 @@
     "diagAcneName": "Acne",
     "diagAcneDesc": "Inflammatory condition of the pilosebaceous glands. Presents as comedones, papules, or pustules. No oncological relevance.",
     "diagNoLesionName": "Absence of lesion",
-    "diagNoLesionDesc": "Skin with normal characteristics, with no evidence of dermatological pathologies at the analyzed site."
+    "diagNoLesionDesc": "Skin with normal characteristics, with no evidence of dermatological pathologies at the analyzed site.",
+
+    "guideTitle": "User Guide",
+    "guideRespTitle": "Professional Responsibility",
+    "guideRespBody": "This app is a clinical decision support (CAD) tool. The analysis performed by Artificial Intelligence is advisory in nature.",
+    "guideRespFooter": "The final decision on diagnosis, referral, and treatment remains, in all cases, the exclusive responsibility of the attending health professional.",
+    "guideFlowTitleAgent": "Triage Flow",
+    "guideFlowTitleDoctor": "Triage/Diagnosis Flow",
+    "guideStep1Title": "Patient Data",
+    "guideStep1Desc": "Enter the patient's age and clinical history of skin cancer to contextualize the analysis.",
+    "guideStep2Title": "Symptomatology",
+    "guideStep2Desc": "Note the presence of itching, pain, bleeding, or rapid growth of the lesion.",
+    "guideStep3Title": "Image Capture",
+    "guideStep3Desc": "Take a clear macroscopic photo of the lesion. Avoid excessive shadows or reflections.",
+    "guideStep4Title": "Score and Management",
+    "guideStep4Desc": "The system will generate a priority level or diagnostic report. Evaluate the recommended management according to the result obtained."
 }

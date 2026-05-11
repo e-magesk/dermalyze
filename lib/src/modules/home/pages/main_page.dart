@@ -1,5 +1,6 @@
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 import 'package:dermalyze/src/modules/diagnosis/pages/diagnosis_page.dart';
+import 'package:dermalyze/src/modules/guide/pages/guide_page.dart';
 import 'package:dermalyze/src/modules/library/pages/library_page.dart';
 import 'package:dermalyze/src/modules/settings/pages/settings_page.dart';
 import 'package:dermalyze/src/modules/triage/pages/triage_page.dart';
@@ -40,7 +41,7 @@ class _MainPageState extends State<MainPage> {
       TriagePage(),
       DiagnosisPage(),
       LibraryPage(),
-      const Center(child: Text("Guide Screen")),
+      GuidePage(),
       SettingsPage(onTabChange: _changeTab),
     ];
 

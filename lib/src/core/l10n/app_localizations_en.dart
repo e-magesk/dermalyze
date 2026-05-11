@@ -678,4 +678,52 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get diagNoLesionDesc =>
       'Skin with normal characteristics, with no evidence of dermatological pathologies at the analyzed site.';
+
+  @override
+  String get guideTitle => 'User Guide';
+
+  @override
+  String get guideRespTitle => 'Professional Responsibility';
+
+  @override
+  String get guideRespBody =>
+      'This app is a clinical decision support (CAD) tool. The analysis performed by Artificial Intelligence is advisory in nature.';
+
+  @override
+  String get guideRespFooter =>
+      'The final decision on diagnosis, referral, and treatment remains, in all cases, the exclusive responsibility of the attending health professional.';
+
+  @override
+  String get guideFlowTitleAgent => 'Triage Flow';
+
+  @override
+  String get guideFlowTitleDoctor => 'Triage/Diagnosis Flow';
+
+  @override
+  String get guideStep1Title => 'Patient Data';
+
+  @override
+  String get guideStep1Desc =>
+      'Enter the patient\'s age and clinical history of skin cancer to contextualize the analysis.';
+
+  @override
+  String get guideStep2Title => 'Symptomatology';
+
+  @override
+  String get guideStep2Desc =>
+      'Note the presence of itching, pain, bleeding, or rapid growth of the lesion.';
+
+  @override
+  String get guideStep3Title => 'Image Capture';
+
+  @override
+  String get guideStep3Desc =>
+      'Take a clear macroscopic photo of the lesion. Avoid excessive shadows or reflections.';
+
+  @override
+  String get guideStep4Title => 'Score and Management';
+
+  @override
+  String get guideStep4Desc =>
+      'The system will generate a priority level or diagnostic report. Evaluate the recommended management according to the result obtained.';
 }

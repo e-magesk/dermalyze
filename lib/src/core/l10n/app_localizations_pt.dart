@@ -677,4 +677,52 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get diagNoLesionDesc =>
       'Pele com características de normalidade, sem evidência de patologias dermatológicas no local analisado.';
+
+  @override
+  String get guideTitle => 'Guia de Uso';
+
+  @override
+  String get guideRespTitle => 'Responsabilidade Profissional';
+
+  @override
+  String get guideRespBody =>
+      'Este aplicativo é uma ferramenta de suporte à decisão clínica (CAD). A análise realizada pela Inteligência Artificial tem caráter consultivo.';
+
+  @override
+  String get guideRespFooter =>
+      'A decisão final sobre o diagnóstico, encaminhamento e tratamento permanece, em todos os casos, sob responsabilidade exclusiva do profissional de saúde assistente.';
+
+  @override
+  String get guideFlowTitleAgent => 'Fluxo Triagem';
+
+  @override
+  String get guideFlowTitleDoctor => 'Fluxo Triagem/Diagnóstico';
+
+  @override
+  String get guideStep1Title => 'Dados do Paciente';
+
+  @override
+  String get guideStep1Desc =>
+      'Insira a idade e o histórico clínico de câncer de pele para contextualizar a análise.';
+
+  @override
+  String get guideStep2Title => 'Sintomatologia';
+
+  @override
+  String get guideStep2Desc =>
+      'Assinale a presença de coceira, dor, sangramento ou crescimento rápido da lesão.';
+
+  @override
+  String get guideStep3Title => 'Captura de Imagem';
+
+  @override
+  String get guideStep3Desc =>
+      'Tire uma foto macroscópica nítida da lesão. Evite sombras ou reflexos excessivos.';
+
+  @override
+  String get guideStep4Title => 'Score e Conduta';
+
+  @override
+  String get guideStep4Desc =>
+      'O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.';
 }

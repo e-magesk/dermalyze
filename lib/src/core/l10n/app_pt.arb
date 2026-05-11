@@ -259,5 +259,20 @@
     "diagAcneName": "Acne",
     "diagAcneDesc": "Condição inflamatória das glândulas pilossebáceas. Apresenta-se como comedões, pápulas ou pústulas. Sem relevância oncológica.",
     "diagNoLesionName": "Ausência de lesão",
-    "diagNoLesionDesc": "Pele com características de normalidade, sem evidência de patologias dermatológicas no local analisado."
+    "diagNoLesionDesc": "Pele com características de normalidade, sem evidência de patologias dermatológicas no local analisado.",
+
+    "guideTitle": "Guia de Uso",
+    "guideRespTitle": "Responsabilidade Profissional",
+    "guideRespBody": "Este aplicativo é uma ferramenta de suporte à decisão clínica (CAD). A análise realizada pela Inteligência Artificial tem caráter consultivo.",
+    "guideRespFooter": "A decisão final sobre o diagnóstico, encaminhamento e tratamento permanece, em todos os casos, sob responsabilidade exclusiva do profissional de saúde assistente.",
+    "guideFlowTitleAgent": "Fluxo Triagem",
+    "guideFlowTitleDoctor": "Fluxo Triagem/Diagnóstico",
+    "guideStep1Title": "Dados do Paciente",
+    "guideStep1Desc": "Insira a idade e o histórico clínico de câncer de pele para contextualizar a análise.",
+    "guideStep2Title": "Sintomatologia",
+    "guideStep2Desc": "Assinale a presença de coceira, dor, sangramento ou crescimento rápido da lesão.",
+    "guideStep3Title": "Captura de Imagem",
+    "guideStep3Desc": "Tire uma foto macroscópica nítida da lesão. Evite sombras ou reflexos excessivos.",
+    "guideStep4Title": "Score e Conduta",
+    "guideStep4Desc": "O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido."
 }

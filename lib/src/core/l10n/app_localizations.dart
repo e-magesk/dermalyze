@@ -1351,6 +1351,90 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Pele com características de normalidade, sem evidência de patologias dermatológicas no local analisado.'**
   String get diagNoLesionDesc;
+
+  /// No description provided for @guideTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Guia de Uso'**
+  String get guideTitle;
+
+  /// No description provided for @guideRespTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Responsabilidade Profissional'**
+  String get guideRespTitle;
+
+  /// No description provided for @guideRespBody.
+  ///
+  /// In pt, this message translates to:
+  /// **'Este aplicativo é uma ferramenta de suporte à decisão clínica (CAD). A análise realizada pela Inteligência Artificial tem caráter consultivo.'**
+  String get guideRespBody;
+
+  /// No description provided for @guideRespFooter.
+  ///
+  /// In pt, this message translates to:
+  /// **'A decisão final sobre o diagnóstico, encaminhamento e tratamento permanece, em todos os casos, sob responsabilidade exclusiva do profissional de saúde assistente.'**
+  String get guideRespFooter;
+
+  /// No description provided for @guideFlowTitleAgent.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fluxo Triagem'**
+  String get guideFlowTitleAgent;
+
+  /// No description provided for @guideFlowTitleDoctor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fluxo Triagem/Diagnóstico'**
+  String get guideFlowTitleDoctor;
+
+  /// No description provided for @guideStep1Title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dados do Paciente'**
+  String get guideStep1Title;
+
+  /// No description provided for @guideStep1Desc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Insira a idade e o histórico clínico de câncer de pele para contextualizar a análise.'**
+  String get guideStep1Desc;
+
+  /// No description provided for @guideStep2Title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sintomatologia'**
+  String get guideStep2Title;
+
+  /// No description provided for @guideStep2Desc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assinale a presença de coceira, dor, sangramento ou crescimento rápido da lesão.'**
+  String get guideStep2Desc;
+
+  /// No description provided for @guideStep3Title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Captura de Imagem'**
+  String get guideStep3Title;
+
+  /// No description provided for @guideStep3Desc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tire uma foto macroscópica nítida da lesão. Evite sombras ou reflexos excessivos.'**
+  String get guideStep3Desc;
+
+  /// No description provided for @guideStep4Title.
+  ///
+  /// In pt, this message translates to:
+  /// **'Score e Conduta'**
+  String get guideStep4Title;
+
+  /// No description provided for @guideStep4Desc.
+  ///
+  /// In pt, this message translates to:
+  /// **'O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.'**
+  String get guideStep4Desc;
 }
 
 class _AppLocalizationsDelegate
