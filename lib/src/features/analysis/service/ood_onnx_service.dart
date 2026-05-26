@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:onnxruntime/onnxruntime.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_onnxruntime/flutter_onnxruntime.dart';
 import 'package:image/image.dart' as img;
 
 class OodOnnxService {
@@ -13,18 +12,14 @@ class OodOnnxService {
   OrtSession? _session;
   String? _inputName;
 
-  // Inicializa o modelo OOD
   Future<void> initModel() async {
     if (_session != null) return;
     
-    final modelData = await rootBundle.load('assets/models/ood_model.onnx');
-    final sessionOptions = OrtSessionOptions();
-    
-    _session = OrtSession.fromBuffer(modelData.buffer.asUint8List(), sessionOptions);
+    final ort = OnnxRuntime();
+    _session = await ort.createSessionFromAsset('assets/models/ood_model.onnx');
     _inputName = _session?.inputNames[0];
   }
 
-  // Pré-processamento: Redimensiona para 224x224 e aplica normalização ImageNet
   Float32List _preProcess(img.Image image) {
     var inputData = Float32List(1 * 3 * 224 * 224);
     int pixelCount = 0;
@@ -48,9 +43,7 @@ class OodOnnxService {
     return inputData;
   }
 
-  // Realiza a inferência OOD e retorna a nota (1 a 5)
   Future<double?> predictQualityScore(String imagePath) async {
-
     await initModel();
 
     final imageFile = File(imagePath);
@@ -60,7 +53,7 @@ class OodOnnxService {
     final resizedImage = img.copyResize(rawImage, width: 224, height: 224);
     final inputData = _preProcess(resizedImage);
 
-    final inputOrt = OrtValueTensor.createTensorWithDataList(
+    final inputOrt = await OrtValue.fromList(
       inputData,
       [1, 3, 224, 224], 
     );
@@ -68,27 +61,27 @@ class OodOnnxService {
     final inputs = {_inputName!: inputOrt};
     
     try {
-      final outputs = await _session!.run(OrtRunOptions(), inputs);
+      final outputs = await _session!.run(inputs, options: OrtRunOptions());
       
-      // Diferente da classificação (SoftMax), o modelo de regressão 
-      // geralmente devolve uma matriz [[score]]
-      final rawOutput = (outputs[0]?.value as List<List<double>>);
-      final double score = rawOutput[0][0];
+      final outputName = _session!.outputNames[0];
+      final rawOutput = await outputs[outputName]!.asFlattenedList();
+      final double score = rawOutput[0].toDouble(); // Regressão simples
 
-      inputOrt.release();
+      await inputOrt.dispose();
+      await outputs[outputName]!.dispose();
 
       return score;
 
     } catch (e) {
       debugPrint("Erro na inferência OOD: $e");
-      inputOrt.release();
+      await inputOrt.dispose();
       return null;
     }
   }
 
-  // Libera a memória quando não for mais usar
-  void dispose() {
-    _session?.release();
+  // O dispose da sessão precisa ser async agora
+  Future<void> dispose() async {
+    await _session?.close();
     _session = null;
   }
 }

@@ -36,30 +36,14 @@ class AnalysisController extends ChangeNotifier {
         diagState = AnalysisState.loading;
         notifyListeners();
 
-        debugPrint('================================================================');
-        debugPrint('Iniciando análise de diagnóstico');
-
         // 1. Transforma o record no vetor de 96 colunas
-        // final metaVector = MetadataEncoder.encode(record);
-
-        debugPrint('=================================================================');
-        debugPrint('Realizando inferência local com modelo ONNX...');
+        final metaVector = MetadataEncoder.encode(record);
 
         // 2. Roda a predição local
-        // final inference = await _diagService.predict(record.imagePath!, metaVector);
-
-        await Future.delayed(const Duration(seconds: 2));
-        final inference = InferenceResult(
-          label: "ACK", // Vamos simular que a IA detectou Melanoma
-          confidence: 0.945, // 94.5% de certeza
-          type: AnalysisType.diagnosis,
-        );
+        final inference = await _diagService.predict(record.imagePath!, metaVector);
 
         if (inference != null) {
           diagResult = inference;
-
-          debugPrint('=================================================================');
-          debugPrint('Predição concluída: $diagResult)');
           
           // 3. Salva no Servidor logo após obter a predição
           syncController.enqueueOrSync(record: record, result: diagResult!);

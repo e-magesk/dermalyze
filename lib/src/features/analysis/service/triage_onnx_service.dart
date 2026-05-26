@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:onnxruntime/onnxruntime.dart';
+import 'package:flutter_onnxruntime/flutter_onnxruntime.dart';
 import 'package:image/image.dart' as img;
 import 'package:dermalyze/src/models/analysis_type.dart';
 
@@ -18,26 +18,12 @@ class TriageOnnxService {
 
   Future<void> initModel() async {
     if (_session != null) return;
-    
     try {
-      debugPrint('--> [initModel] Carregando arquivo do modelo dos assets...');
-      
-      // VERIFIQUE SE O NOME DO ARQUIVO AQUI É EXATAMENTE O QUE ESTÁ NA SUA PASTA E NO PUBSPEC
-      final modelData = await rootBundle.load('assets/models/triage_model.onnx');
-      
-      debugPrint('--> [initModel] Arquivo lido. Criando sessão ONNX...');
-      _session = OrtSession.fromBuffer(modelData.buffer.asUint8List(), OrtSessionOptions());
+      final ort = OnnxRuntime();
+      _session = await ort.createSessionFromAsset('assets/models/triage_model.onnx');
       _inputNames = _session!.inputNames;
-      
-      debugPrint('--> [initModel] Sessão criada com sucesso. Inputs: $_inputNames');
-      
-    } catch (e, stackTrace) {
-      debugPrint('================================================================');
-      debugPrint('ERRO FATAL AO CARREGAR O MODELO ONNX:');
-      debugPrint(e.toString());
-      debugPrint(stackTrace.toString());
-      debugPrint('================================================================');
-      // Repassa o erro para frente para que a tela não fique em loading eterno
+    } catch (e) {
+      debugPrint('ERRO FATAL AO CARREGAR O MODELO DE TRIAGEM ONNX: $e');
       rethrow; 
     }
   }
@@ -67,54 +53,35 @@ class TriageOnnxService {
   }
 
   Future<InferenceResult?> predict(String imagePath, Float32List metadataVec) async {
-
-    debugPrint('================================================================');
-    debugPrint('Iniciando análise de triagem para imagem: $imagePath');
-
     await initModel();
 
-    debugPrint('Modelo ONNX carregado com sucesso. Preparando dados para inferência...');
-
-    // 1. Prepara a Imagem
     final rawImage = img.decodeImage(File(imagePath).readAsBytesSync());
     if (rawImage == null) return null;
     final resizedImage = img.copyResize(rawImage, width: 224, height: 224);
     final imageFloat32 = _preProcessImage(resizedImage);
 
-    debugPrint('Imagem preparada para inferência.');
+    final imageTensor = await OrtValue.fromList(imageFloat32, [1, 3, 224, 224]);
+    final metaTensor = await OrtValue.fromList(metadataVec, [1, 96]);
 
-    // 2. Cria os Tensores (Shape da Imagem: [1, 3, 224, 224] | Shape do Metadado: [1, 96])
-    final imageTensor = OrtValueTensor.createTensorWithDataList(imageFloat32, [1, 3, 224, 224]);
-    final metaTensor = OrtValueTensor.createTensorWithDataList(metadataVec, [1, 96]);
-
-    debugPrint('Tensores criados com sucesso.');
-
-    // O modelo python usa input_names[0] para a imagem e [1] para o metadado.
     final inputs = {
       _inputNames[0]: imageTensor,
       _inputNames[1]: metaTensor,
     };
     
-    debugPrint('Executando inferência...');
-
     try {
-      final outputs = await _session!.run(OrtRunOptions(), inputs);
+      final outputs = await _session!.run(inputs, options: OrtRunOptions());
       
-      debugPrint('Inferência concluída. Processando resultados...');
-
-      // A saída bruta de scores
-      final rawScores = (outputs[0]?.value as List<List<double>>)[0];
+      final outputName = _session!.outputNames[0];
+      final rawOutput = await outputs[outputName]!.asFlattenedList();
+      final rawScores = rawOutput.cast<double>();
       final probabilities = _softMax(rawScores);
       
-      // Pega a classe majoritária
       double maxProb = probabilities.reduce(max);
       int predIndex = probabilities.indexOf(maxProb);
 
-      imageTensor.release();
-      metaTensor.release();
-
-      debugPrint('================================================================');
-      debugPrint('Predicted Class: ${LABELS[predIndex]} with confidence: $maxProb');
+      await imageTensor.dispose();
+      await metaTensor.dispose();
+      await outputs[outputName]!.dispose();
 
       return InferenceResult(
         label: LABELS[predIndex], 
@@ -124,8 +91,8 @@ class TriageOnnxService {
 
     } catch (e) {
       debugPrint("Erro na inferência de triagem: $e");
-      imageTensor.release();
-      metaTensor.release();
+      await imageTensor.dispose();
+      await metaTensor.dispose();
       return null;
     }
   }

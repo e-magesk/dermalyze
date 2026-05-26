@@ -2,8 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:onnxruntime/onnxruntime.dart';
+import 'package:flutter_onnxruntime/flutter_onnxruntime.dart'; // Atualizado
 import 'package:image/image.dart' as img;
 import 'package:dermalyze/src/models/analysis_type.dart';
 
@@ -21,24 +20,17 @@ class DiagnosticOnnxService {
     if (_session != null) return;
     
     try {
-      debugPrint('--> [initModel] Carregando arquivo do modelo dos assets...');
+      debugPrint('--> [initModel] Inicializando motor ONNX Runtime nativo...');
       
-      // VERIFIQUE SE O NOME DO ARQUIVO AQUI É EXATAMENTE O QUE ESTÁ NA SUA PASTA E NO PUBSPEC
-      final modelData = await rootBundle.load('assets/models/diag_model.onnx');
-      
-      debugPrint('--> [initModel] Arquivo lido. Criando sessão ONNX...');
-      _session = OrtSession.fromBuffer(modelData.buffer.asUint8List(), OrtSessionOptions());
+      final ort = OnnxRuntime();
+      // A própria lib agora cuida de carregar o asset nativamente
+      _session = await ort.createSessionFromAsset('assets/models/diag_model_v2.onnx');
       _inputNames = _session!.inputNames;
       
       debugPrint('--> [initModel] Sessão criada com sucesso. Inputs: $_inputNames');
-      
     } catch (e, stackTrace) {
-      debugPrint('================================================================');
-      debugPrint('ERRO FATAL AO CARREGAR O MODELO ONNX:');
-      debugPrint(e.toString());
+      debugPrint('ERRO FATAL AO CARREGAR O MODELO ONNX: $e');
       debugPrint(stackTrace.toString());
-      debugPrint('================================================================');
-      // Repassa o erro para frente para que a tela não fique em loading eterno
       rethrow; 
     }
   }
@@ -68,13 +60,8 @@ class DiagnosticOnnxService {
   }
 
   Future<InferenceResult?> predict(String imagePath, Float32List metadataVec) async {
-
-    debugPrint('================================================================');
     debugPrint('Iniciando análise de diagnóstico para imagem: $imagePath');
-
     await initModel();
-
-    debugPrint('Modelo ONNX carregado com sucesso. Preparando dados para inferência...');
 
     // 1. Prepara a Imagem
     final rawImage = img.decodeImage(File(imagePath).readAsBytesSync());
@@ -82,39 +69,36 @@ class DiagnosticOnnxService {
     final resizedImage = img.copyResize(rawImage, width: 224, height: 224);
     final imageFloat32 = _preProcessImage(resizedImage);
 
-    debugPrint('Imagem preparada para inferência.');
+    // 2. Cria os Tensores (Agora é assíncrono e usa OrtValue)
+    final imageTensor = await OrtValue.fromList(imageFloat32, [1, 3, 224, 224]);
+    final metaTensor = await OrtValue.fromList(metadataVec, [1, 100]);
 
-    // 2. Cria os Tensores (Shape da Imagem: [1, 3, 224, 224] | Shape do Metadado: [1, 96])
-    final imageTensor = OrtValueTensor.createTensorWithDataList(imageFloat32, [1, 3, 224, 224]);
-    final metaTensor = OrtValueTensor.createTensorWithDataList(metadataVec, [1, 96]);
+    debugPrint('===================== kakakakakak ==============================');
 
-    debugPrint('Tensores criados com sucesso.');
-
-    // O modelo python usa input_names[0] para a imagem e [1] para o metadado.
     final inputs = {
       _inputNames[0]: imageTensor,
       _inputNames[1]: metaTensor,
     };
     
-    debugPrint('Executando inferência...');
-
     try {
-      final outputs = await _session!.run(OrtRunOptions(), inputs);
+      // 3. Roda a inferência
+      final outputs = await _session!.run(inputs, options: OrtRunOptions());
       
-      debugPrint('Inferência concluída. Processando resultados...');
-
-      // A saída bruta de scores
-      final rawScores = (outputs[0]?.value as List<List<double>>)[0];
+      // 4. Lê os resultados do Native e converte
+      final outputName = _session!.outputNames[0];
+      final rawOutput = await outputs[outputName]!.asFlattenedList();
+      final rawScores = rawOutput.cast<double>(); // Converte de List<dynamic> para List<double>
+      
       final probabilities = _softMax(rawScores);
       
-      // Pega a classe majoritária
       double maxProb = probabilities.reduce(max);
       int predIndex = probabilities.indexOf(maxProb);
 
-      imageTensor.release();
-      metaTensor.release();
+      // 5. Liberação de memória assíncrona
+      await imageTensor.dispose();
+      await metaTensor.dispose();
+      await outputs[outputName]!.dispose();
 
-      debugPrint('================================================================');
       debugPrint('Predicted Class: ${LABELS[predIndex]} with confidence: $maxProb');
 
       return InferenceResult(
@@ -125,8 +109,8 @@ class DiagnosticOnnxService {
 
     } catch (e) {
       debugPrint("Erro na inferência de diagnóstico: $e");
-      imageTensor.release();
-      metaTensor.release();
+      await imageTensor.dispose();
+      await metaTensor.dispose();
       return null;
     }
   }

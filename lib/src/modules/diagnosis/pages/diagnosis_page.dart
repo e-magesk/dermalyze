@@ -63,40 +63,6 @@ class DiagnosisPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // CARD 1: Diagnóstico e Confiança (Dinâmico)
-            // BentoCard(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Text(
-            //             "${priority.label} - ${l10n.diagnosisSuggested}".toUpperCase(),
-            //             style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: priority.color),
-            //           ),
-            //           const SizedBox(height: 4),
-            //           Text(
-            //             diagnosisData['name']!,
-            //             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: priority.color),
-            //           ),
-            //         ],
-            //       ),
-            //       // Badge de Confiança com a cor do diagnóstico
-            //       Container(
-            //         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            //         decoration: BoxDecoration(
-            //           color: priority.bgColor,
-            //           borderRadius: BorderRadius.circular(14),
-            //         ),
-            //         child: Text(
-            //           "${(result.confidence * 100).toStringAsFixed(1)}%",
-            //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: priority.color),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             BentoCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,96 +232,6 @@ class DiagnosisPage extends StatelessWidget {
         ),
       );
     }
-    // if (controller.state == AnalysisState.success && controller.result != null) {
-    //   final result = controller.result!;
-    //   final diagnosisData = _getDiagnosisContent(result.label, l10n);
-
-    //   return SingleChildScrollView(
-    //     padding: const EdgeInsets.all(24.0),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         // Título Principal
-    //         Text(
-    //           l10n.analysisResultsTitle,
-    //           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B)),
-    //         ),
-    //         const SizedBox(height: 24),
-
-    //         // CARD 1: Diagnóstico e Confiança
-    //         BentoCard(
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //             children: [
-    //               Column(
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 children: [
-    //                   Text(
-    //                     l10n.diagnosisSuggested.toUpperCase(),
-    //                     style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: Color(0xFF94A3B8)),
-    //                   ),
-    //                   const SizedBox(height: 4),
-    //                   Text(
-    //                     diagnosisData['name']!,
-    //                     style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Color(0xFF2563EB)),
-    //                   ),
-    //                 ],
-    //               ),
-    //               // Badge de Confiança de alta densidade
-    //               Container(
-    //                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-    //                 decoration: BoxDecoration(
-    //                   color: const Color(0xFFEFF6FF),
-    //                   borderRadius: BorderRadius.circular(14),
-    //                 ),
-    //                 child: Text(
-    //                   "${(result.confidence * 100).toStringAsFixed(1)}%",
-    //                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Color(0xFF2563EB)),
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         const SizedBox(height: 16),
-
-    //         // CARD 2: Características Clínicas
-    //         _buildBentoSection(
-    //           title: l10n.analysisClinicalFeatures,
-    //           content: diagnosisData['desc']!,
-    //           icon: Icons.analytics_outlined,
-    //         ),
-    //         const SizedBox(height: 16),
-
-    //         // CARD 3: Manejo e Conduta
-    //         _buildBentoSection(
-    //           title: l10n.analysisManagementTitle,
-    //           content: diagnosisData['conduta']!,
-    //           icon: Icons.medical_services_outlined,
-    //           accentColor: const Color(0xFF059669), // Verde para indicação de conduta
-    //         ),
-            
-    //         const SizedBox(height: 40),
-            
-    //         // Botão Finalizador
-    //         SizedBox(
-    //           width: double.infinity,
-    //           height: 56,
-    //           child: ElevatedButton(
-    //             onPressed: () => controller.reset(),
-    //             style: ElevatedButton.styleFrom(
-    //               backgroundColor: const Color(0xFF1E293B),
-    //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    //             ),
-    //             child: Text(
-    //               l10n.diagnosisNew.toUpperCase(),
-    //               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.2),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
 
     // 3. Estado Inicial (Exibir Formulário de Diagnóstico)[cite: 2]
     return SingleChildScrollView(
@@ -447,32 +323,32 @@ class DiagnosisPage extends StatelessWidget {
       case 'MEL':
         return {
           'name': l10n.diagMelanomaName, 'desc': l10n.diagMelanomaDesc, 'conduta': l10n.diagMelanomaConduta,
-          'priority': PriorityData('P1 - ALTO RISCO', AppColors.p1Malign, AppColors.p1Bg)
-        };
-      case 'BCC':
-        return {
-          'name': l10n.diagBCCName, 'desc': l10n.diagBCCDesc, 'conduta': l10n.diagBCCConduta,
-          'priority': PriorityData('P2 - ALTA PRIORIDADE', AppColors.p2High, AppColors.p2Bg)
-        };
-      case 'SCC':
-        return {
-          'name': l10n.diagSCCName, 'desc': l10n.diagSCCDesc, 'conduta': l10n.diagSCCConduta,
-          'priority': PriorityData('P2 - ALTA PRIORIDADE', AppColors.p2High, AppColors.p2Bg)
-        };
-      case 'ACK':
-        return {
-          'name': l10n.diagAKName, 'desc': l10n.diagAKDesc, 'conduta': l10n.diagAKConduta,
-          'priority': PriorityData('P3 - PRIORIDADE MÉDIA', AppColors.p3Medium, AppColors.p3Bg)
-        };
-      case 'SEK':
-        return {
-          'name': l10n.diagSKName, 'desc': l10n.diagSKDesc, 'conduta': l10n.diagSKConduta,
-          'priority': PriorityData('P4 - BAIXA PRIORIDADE', AppColors.p4Low, AppColors.p4Bg)
+          'priority': PriorityData(l10n.triageP1Title, AppColors.p1Malign, AppColors.p1Bg)
         };
       case 'NEV':
         return {
           'name': l10n.diagNevusName, 'desc': l10n.diagNevusDesc, 'conduta': l10n.diagNevusConduta,
-          'priority': PriorityData('P4 - BAIXA PRIORIDADE', AppColors.p4Low, AppColors.p4Bg)
+          'priority': PriorityData(l10n.triageP1Title, AppColors.p4Low, AppColors.p4Bg)
+        };
+      case 'BCC':
+        return {
+          'name': l10n.diagBCCName, 'desc': l10n.diagBCCDesc, 'conduta': l10n.diagBCCConduta,
+          'priority': PriorityData(l10n.triageP2Title, AppColors.p2High, AppColors.p2Bg)
+        };
+      case 'SCC':
+        return {
+          'name': l10n.diagSCCName, 'desc': l10n.diagSCCDesc, 'conduta': l10n.diagSCCConduta,
+          'priority': PriorityData(l10n.triageP2Title, AppColors.p2High, AppColors.p2Bg)
+        };
+      case 'ACK':
+        return {
+          'name': l10n.diagAKName, 'desc': l10n.diagAKDesc, 'conduta': l10n.diagAKConduta,
+          'priority': PriorityData(l10n.triageP3Title, AppColors.p3Medium, AppColors.p3Bg)
+        };
+      case 'SEK':
+        return {
+          'name': l10n.diagSKName, 'desc': l10n.diagSKDesc, 'conduta': l10n.diagSKConduta,
+          'priority': PriorityData(l10n.triageP4Title, AppColors.p4Low, AppColors.p4Bg)
         };
       default:
         // Fallback genérico
