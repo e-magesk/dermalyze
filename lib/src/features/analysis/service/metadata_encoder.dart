@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:dermalyze/src/models/clinical_record.dart'; 
 
 class MetadataEncoder {
-  // A lista exata do seu arquivo Python (96 colunas)
+  // A lista exata do seu arquivo Python (100 colunas)
   static const List<String> columns = [
     "age", "gender_F", "gender_UNK", "gender_M", "motherDescendancy_AFRICA",
     "motherDescendancy_GERMANY", "motherDescendancy_BELGIUM", "motherDescendancy_BRAZIL",

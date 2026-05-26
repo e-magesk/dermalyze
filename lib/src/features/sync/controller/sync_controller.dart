@@ -1,28 +1,42 @@
-import 'package:dermalyze/src/models/analysis_type.dart';
-import 'package:flutter/material.dart';
-import 'package:dermalyze/src/models/clinical_record.dart';
-
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+
+import 'package:dermalyze/src/models/analysis_type.dart';
+import 'package:dermalyze/src/models/clinical_record.dart';
+import 'package:dermalyze/src/repositories/api_repository.dart';
+import 'package:dermalyze/src/repositories/local_repository.dart';
 
 class SyncController extends ChangeNotifier {
   bool hasPendingSync = false;
   int pendingCount = 0;
+  bool isSyncing = false;
   
-  // O espião da conexão de internet
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
+  
+  // Nossos novos repositórios modularizados
+  final ApiRepository _apiRepo = ApiRepository();
+  final LocalRepository _localRepo = LocalRepository();
 
   SyncController() {
-    // Inicia o monitoramento assim que o Controller é criado (no main.dart)
+    _initCheck();
     _connectivitySubscription = Connectivity().onConnectivityChanged.listen(_handleConnectionChange);
   }
 
-  /// Método automático chamado sempre que a rede muda (ex: sai do modo avião)
+  // Verifica ao abrir o app se ficou algo para trás
+  Future<void> _initCheck() async {
+    final queue = await _localRepo.getQueue();
+    if (queue.isNotEmpty) {
+      hasPendingSync = true;
+      pendingCount = queue.length;
+      notifyListeners();
+    }
+  }
+
   void _handleConnectionChange(List<ConnectivityResult> results) {
-    // Se o resultado NÃO for "none" (ou seja, temos wifi ou rede móvel)
     if (!results.contains(ConnectivityResult.none)) {
-      if (hasPendingSync) {
-        print("Internet detectada! Iniciando sincronização em background...");
+      if (hasPendingSync && !isSyncing) {
+        debugPrint("Internet detectada! Iniciando sincronização em background...");
         syncPendingData();
       }
     }
@@ -30,53 +44,69 @@ class SyncController extends ChangeNotifier {
 
   @override
   void dispose() {
-    _connectivitySubscription.cancel(); // Boa prática de memória
+    _connectivitySubscription.cancel();
     super.dispose();
   }
 
+  // MÉTODO PRINCIPAL DE ENTRADA DE DADOS
   Future<void> enqueueOrSync({
     required ClinicalRecord record,
     required InferenceResult result,
   }) async {
     try {
-      await _sendToServer(record, result);
+      // 1. Tenta enviar direto pro servidor
+      await _apiRepo.uploadCase(record, result);
+      debugPrint("Enviado ao servidor imediatamente com sucesso!");
+      
+      // 2. Aproveita a boa conexão pra esvaziar a fila, se houver
       if (hasPendingSync) await syncPendingData();
+
     } catch (e) {
-      print("Sem internet. Salvando localmente...");
-      await _saveLocally(record, result);
+      debugPrint("Falha na conexão com servidor. Salvando localmente: $e");
+      // 3. Se deu erro (sem internet, timeout, server offline), salva local
+      await _localRepo.saveToQueue(record, result);
+      
+      hasPendingSync = true;
+      pendingCount++;
+      notifyListeners(); 
     }
   }
 
+  // MÉTODO QUE PROCESSA A FILA
   Future<void> syncPendingData() async {
-    if (!hasPendingSync) return;
+    if (!hasPendingSync || isSyncing) return;
+    
+    isSyncing = true;
+    notifyListeners();
 
     try {
-      // 1. Busca do banco local...
-      // 2. Envia para a API...
+      final queue = await _localRepo.getQueue();
       
-      // 3. Sucesso!
-      print("Sincronização em lote concluída com sucesso!");
-      hasPendingSync = false;
-      pendingCount = 0;
+      for (var task in queue) {
+        try {
+          // Tenta enviar o caso pendente
+          await _apiRepo.uploadCase(task.record, task.result);
+          // Se deu sucesso, remove da fila local
+          await _localRepo.removeFromQueue(task.id);
+          
+          pendingCount--;
+          notifyListeners();
+        } catch (e) {
+          debugPrint("Falha ao sincronizar o caso ${task.id}: $e");
+          // Aborta o loop se o primeiro falhou (provavelmente a net caiu de novo)
+          break; 
+        }
+      }
+
+      // Atualiza o estado final
+      if (pendingCount <= 0) {
+        hasPendingSync = false;
+        pendingCount = 0;
+        debugPrint("Sincronização em lote concluída com sucesso!");
+      }
+    } finally {
+      isSyncing = false;
       notifyListeners();
-    } catch (e) {
-      print("A sincronização falhou (conexão instável). Tentaremos depois.");
     }
-  }
-
-  // --- MÉTODOS PRIVADOS SIMULADOS ---
-
-  Future<void> _sendToServer(ClinicalRecord record, InferenceResult result) async {
-    // Simula uma tentativa de API que falha 50% das vezes (para você testar)
-    await Future.delayed(const Duration(seconds: 1));
-    // throw Exception("Erro de rede"); // Descomente para forçar o erro e testar o offline
-  }
-
-  Future<void> _saveLocally(ClinicalRecord record, InferenceResult result) async {
-    // Aqui você salvaria no SQLite/Hive.
-    // O ideal é salvar o caminho da imagem e um JSON dos metadados.
-    hasPendingSync = true;
-    pendingCount++;
-    notifyListeners(); // <--- ISSO AVISA A HOME PARA FICAR VERMELHA
   }
 }

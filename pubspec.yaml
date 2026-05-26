@@ -60,6 +60,8 @@ dependencies:
   path: ^1.9.1
   flutter_onnxruntime: ^1.6.0
   image: ^4.8.0
+  http: ^1.6.0
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
