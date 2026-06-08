@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dermalyze/src/services/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -15,7 +16,7 @@ class SyncController extends ChangeNotifier {
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   
   // Nossos novos repositórios modularizados
-  final ApiRepository _apiRepo = ApiRepository();
+  final ApiRepository _apiRepo = ApiRepository(localStorage: LocalStorageService());
   final LocalRepository _localRepo = LocalRepository();
 
   SyncController() {
