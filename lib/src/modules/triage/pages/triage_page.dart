@@ -194,6 +194,7 @@ class TriagePage extends StatelessWidget {
           const SizedBox(height: 24),
           
           ClinicalDataForm(
+            initialStep: 2,
             onSubmit: (record) => controller.startAnalysis(record, AnalysisType.triage, context.read<SyncController>()),
           ),
         ],

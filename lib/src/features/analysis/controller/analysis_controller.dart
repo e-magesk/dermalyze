@@ -63,19 +63,11 @@ class AnalysisController extends ChangeNotifier {
 
 
         // 2. Roda a predição local
-        // final inference = await _triageService.predict(record.imagePath!, metaVector);
-        
-        // Simulação de inferência de Triagem
-        await Future.delayed(const Duration(seconds: 2));
-        final inference = InferenceResult(
-          label: "P1", // Retorno mockado de Triagem
-          confidence: 0.982, 
-          type: AnalysisType.triage,
-        );
+        final inference = await _triageService.predict(record.imagePath!);
 
         if (inference != null) {
           triageResult = inference;
-          syncController.enqueueOrSync(record: record, result: triageResult!);
+          // syncController.enqueueOrSync(record: record, result: triageResult!);
           triageState = AnalysisState.success;
         } 
       }

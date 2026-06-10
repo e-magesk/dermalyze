@@ -20,7 +20,7 @@ class TriageOnnxService {
     if (_session != null) return;
     try {
       final ort = OnnxRuntime();
-      _session = await ort.createSessionFromAsset('assets/models/triage_model.onnx');
+      _session = await ort.createSessionFromAsset('assets/models/mobilenet-triage-no-meta.onnx');
       _inputNames = _session!.inputNames;
     } catch (e) {
       debugPrint('ERRO FATAL AO CARREGAR O MODELO DE TRIAGEM ONNX: $e');
@@ -52,7 +52,7 @@ class TriageOnnxService {
     return expValues.map((e) => e / sumExp).toList();
   }
 
-  Future<InferenceResult?> predict(String imagePath, Float32List metadataVec) async {
+  Future<InferenceResult?> predict(String imagePath) async {
     await initModel();
 
     final rawImage = img.decodeImage(File(imagePath).readAsBytesSync());
@@ -61,11 +61,9 @@ class TriageOnnxService {
     final imageFloat32 = _preProcessImage(resizedImage);
 
     final imageTensor = await OrtValue.fromList(imageFloat32, [1, 3, 224, 224]);
-    final metaTensor = await OrtValue.fromList(metadataVec, [1, 96]);
 
     final inputs = {
       _inputNames[0]: imageTensor,
-      _inputNames[1]: metaTensor,
     };
     
     try {
@@ -80,7 +78,6 @@ class TriageOnnxService {
       int predIndex = probabilities.indexOf(maxProb);
 
       await imageTensor.dispose();
-      await metaTensor.dispose();
       await outputs[outputName]!.dispose();
 
       return InferenceResult(
@@ -92,7 +89,6 @@ class TriageOnnxService {
     } catch (e) {
       debugPrint("Erro na inferência de triagem: $e");
       await imageTensor.dispose();
-      await metaTensor.dispose();
       return null;
     }
   }

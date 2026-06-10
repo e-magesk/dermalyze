@@ -10,15 +10,16 @@ import 'package:image_picker/image_picker.dart';
 
 class ClinicalDataForm extends StatefulWidget {
   final Function(ClinicalRecord) onSubmit;
+  final int initialStep;
 
-  const ClinicalDataForm({super.key, required this.onSubmit});
+  const ClinicalDataForm({super.key, required this.onSubmit, this.initialStep = 0});
 
   @override
   State<ClinicalDataForm> createState() => _ClinicalDataFormState();
 }
 
 class _ClinicalDataFormState extends State<ClinicalDataForm> {
-  int _currentStep = 0;
+  late int _currentStep;
   String? _imagePath;
   bool _isImageValidating = false;
 
@@ -36,6 +37,12 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
   };
 
   final InferenceService _inferenceService = InferenceService();
+
+  @override
+  void initState() {
+    super.initState();
+    _currentStep = widget.initialStep; 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -294,7 +301,7 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
     return Row(
       children: [
         // Botão VOLTAR: Só aparece se não estivermos no primeiro passo[cite: 2]
-        if (_currentStep > 0)
+        if (_currentStep > widget.initialStep)
           Expanded(
             flex: 1,
             child: Padding(
@@ -319,11 +326,15 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
                       setState(() => _currentStep++);
                     } else {
                       // Executa o callback final enviando os dados coletados[cite: 1]
+                      debugPrint('==============================================================');
+                      debugPrint('Dados do formulário prontos para análise:');
                       widget.onSubmit(ClinicalRecord(
                         age: _age,
                         history: _history,
                         region: _selectedRegion,
-                        symptoms: Map<String, TripleOption>.from(_symptoms as Map),
+                        symptoms: _symptoms.map(
+                          (key, value) => MapEntry(key, value ?? TripleOption.dontKnow)
+                        ),
                         imagePath: _imagePath,
                       ));
                     }
