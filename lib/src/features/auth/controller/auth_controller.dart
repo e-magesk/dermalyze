@@ -107,11 +107,11 @@ class AuthController extends ChangeNotifier {
     final uid = credential.user!.uid;
 
     // 2. Envia para o seu Backend FastAPI na UFES
-    await _apiRepository.registerInBackend(
-      fullName: name,
-      role: role,
-      firebaseToken: uid,
-    );
+    // await _apiRepository.registerInBackend(
+    //   fullName: name,
+    //   role: role,
+    //   firebaseToken: uid,
+    // );
 
     // 3. Salva no armazenamento seguro local usando o UID como chave
     await _localStorage.saveUserData(uid: uid, role: role, name: name);

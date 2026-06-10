@@ -90,7 +90,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/abcde/
-    - assets/models/
+    - assets/models/diag_model_v2.onnx
+    - assets/models/ood_model.onnx
+    - assets/models/mobilenet-triage-no-meta.onnx
 
   # To add assets to your application, add an assets section, like this:
   # assets:
