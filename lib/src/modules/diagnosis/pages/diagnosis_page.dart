@@ -4,6 +4,7 @@ import 'package:dermalyze/src/core/theme/app_colors.dart';
 import 'package:dermalyze/src/features/sync/controller/sync_controller.dart';
 import 'package:dermalyze/src/models/analysis_type.dart';
 import 'package:dermalyze/src/shared/widgets/app_bento_card.dart';
+import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
 import 'package:dermalyze/src/shared/widgets/app_clinical_data_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -251,6 +252,7 @@ class DiagnosisPage extends StatelessWidget {
           const SizedBox(height: 24),
           
           ClinicalDataForm(
+            backScope: BackScope.diagnosis,
             onSubmit: (record) => controller.startAnalysis(record, AnalysisType.diagnosis, context.read<SyncController>()),
           ),
         ],

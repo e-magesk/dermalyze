@@ -3,6 +3,8 @@ import 'package:dermalyze/src/modules/library/views/library_abcde_view.dart';
 import 'package:dermalyze/src/modules/library/views/library_diseases_view.dart';
 import 'package:dermalyze/src/modules/library/views/library_menu_views.dart';
 import 'package:dermalyze/src/modules/library/views/library_triage_view.dart';
+import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 
@@ -18,8 +20,34 @@ class LibraryPage extends StatefulWidget {
 class _LibraryPageState extends State<LibraryPage> {
   LibraryCategory _currentCategory = LibraryCategory.menu;
 
+  // Guardado no initState porque ler o Provider no dispose não é seguro.
+  late final BackHandlerRegistry _backRegistry;
+
+  @override
+  void initState() {
+    super.initState();
+    _backRegistry = context.read<BackHandlerRegistry>();
+    _backRegistry.register(BackScope.library, _handleBack);
+  }
+
+  @override
+  void dispose() {
+    _backRegistry.unregister(BackScope.library, _handleBack);
+    super.dispose();
+  }
+
   void _setCategory(LibraryCategory category) {
     setState(() => _currentCategory = category);
+  }
+
+  /// Volta da subpágina para o menu da Biblioteca. Retorna false quando já
+  /// está no menu, deixando o evento seguir para a MainPage.
+  bool _handleBack() {
+    if (_currentCategory != LibraryCategory.menu) {
+      _setCategory(LibraryCategory.menu);
+      return true;
+    }
+    return false;
   }
 
   @override

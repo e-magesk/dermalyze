@@ -1435,6 +1435,138 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.'**
   String get guideStep4Desc;
+
+  /// No description provided for @cropTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ajustar Lesão'**
+  String get cropTitle;
+
+  /// No description provided for @cropHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Arraste a imagem e use dois dedos para enquadrar a lesão dentro do quadrado.'**
+  String get cropHint;
+
+  /// No description provided for @cropBtnConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'CONFIRMAR'**
+  String get cropBtnConfirm;
+
+  /// No description provided for @cropBtnCancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'CANCELAR'**
+  String get cropBtnCancel;
+
+  /// No description provided for @cropBtnRotate.
+  ///
+  /// In pt, this message translates to:
+  /// **'GIRAR'**
+  String get cropBtnRotate;
+
+  /// No description provided for @cropProcessing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Processando imagem...'**
+  String get cropProcessing;
+
+  /// No description provided for @cropErrorLoad.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível abrir a imagem. Tente capturar novamente.'**
+  String get cropErrorLoad;
+
+  /// No description provided for @exitTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair do Dermalyze?'**
+  String get exitTitle;
+
+  /// No description provided for @exitMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você sairá do aplicativo. Os dados já coletados permanecem salvos no dispositivo.'**
+  String get exitMessage;
+
+  /// No description provided for @btnCancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get btnCancel;
+
+  /// No description provided for @btnExit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair'**
+  String get btnExit;
+
+  /// No description provided for @forgotPasswordLink.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esqueci minha senha'**
+  String get forgotPasswordLink;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Recuperar Senha'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe o e-mail cadastrado e enviaremos um link para você criar uma nova senha.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @forgotPasswordBtn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviar link de recuperação'**
+  String get forgotPasswordBtn;
+
+  /// No description provided for @forgotPasswordBackToLogin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar para o login'**
+  String get forgotPasswordBackToLogin;
+
+  /// No description provided for @forgotPasswordSentTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'E-mail enviado'**
+  String get forgotPasswordSentTitle;
+
+  /// No description provided for @forgotPasswordSentMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Se houver uma conta associada a {email}, você receberá um link para redefinir sua senha em alguns minutos. Verifique também a caixa de spam.'**
+  String forgotPasswordSentMessage(Object email);
+
+  /// No description provided for @forgotPasswordEmptyEmail.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe seu e-mail para continuar.'**
+  String get forgotPasswordEmptyEmail;
+
+  /// No description provided for @profileFallbackTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirme seu perfil'**
+  String get profileFallbackTitle;
+
+  /// No description provided for @profileFallbackMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível consultar seus dados no servidor. Confirme seu nome e perfil para continuar usando o app neste dispositivo.'**
+  String get profileFallbackMessage;
+
+  /// No description provided for @profileFallbackConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar e entrar'**
+  String get profileFallbackConfirm;
 }
 
 class _AppLocalizationsDelegate

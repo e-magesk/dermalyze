@@ -3,16 +3,27 @@ import 'dart:io';
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 import 'package:dermalyze/src/features/analysis/service/inference_service.dart';
 import 'package:dermalyze/src/models/clinical_record.dart';
+import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
 import 'package:dermalyze/src/shared/widgets/app_bento_card.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
+import 'package:dermalyze/src/shared/widgets/app_image_crop_page.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ClinicalDataForm extends StatefulWidget {
   final Function(ClinicalRecord) onSubmit;
   final int initialStep;
 
-  const ClinicalDataForm({super.key, required this.onSubmit, this.initialStep = 0});
+  /// Aba a que este formulário pertence, para que o botão de voltar do sistema
+  /// retroceda os passos do fluxo em vez de fechar o app.
+  final BackScope backScope;
+
+  const ClinicalDataForm({
+    super.key,
+    required this.onSubmit,
+    required this.backScope,
+    this.initialStep = 0,
+  });
 
   @override
   State<ClinicalDataForm> createState() => _ClinicalDataFormState();
@@ -38,10 +49,31 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
 
   final InferenceService _inferenceService = InferenceService();
 
+  // Guardado no initState porque ler o Provider no dispose não é seguro.
+  late final BackHandlerRegistry _backRegistry;
+
   @override
   void initState() {
     super.initState();
-    _currentStep = widget.initialStep; 
+    _currentStep = widget.initialStep;
+    _backRegistry = context.read<BackHandlerRegistry>();
+    _backRegistry.register(widget.backScope, _handleBack);
+  }
+
+  @override
+  void dispose() {
+    _backRegistry.unregister(widget.backScope, _handleBack);
+    super.dispose();
+  }
+
+  /// Volta um passo do formulário. Retorna false quando já está no primeiro,
+  /// deixando o evento seguir para a MainPage.
+  bool _handleBack() {
+    if (_currentStep > widget.initialStep) {
+      setState(() => _currentStep--);
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -448,34 +480,34 @@ final Map<String, String> regions = {
   // Fluxo: Pick -> Crop -> Update State
   Future<void> _pickAndCropImage(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
+    // O limite de lado é aplicado em código nativo pelo próprio picker, o que
+    // mantém a tela de recorte rápida. Os modelos ONNX reduzem para 224x224,
+    // então 2048 preserva qualidade de sobra.
+    final pickedFile = await picker.pickImage(
+      source: source,
+      maxWidth: 2048,
+      maxHeight: 2048,
+    );
 
     if (pickedFile != null) {
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: 'Ajustar Lesão',
-            toolbarColor: const Color(0xFF2563EB),
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-            aspectRatioPresets: [CropAspectRatioPreset.square],
-          ),
-          IOSUiSettings(
-            title: 'Ajustar Lesão',
-            aspectRatioPresets: [CropAspectRatioPreset.square],
-          ),
-        ],
+      if (!mounted) return;
+
+      // Tela de recorte própria: os botões de ação ficam no rodapé, porque o
+      // check do cropper nativo ficava escondido atrás do dermatoscópio.
+      final croppedPath = await Navigator.of(context).push<String>(
+        MaterialPageRoute(
+          builder: (_) => ImageCropPage(sourcePath: pickedFile.path),
+          fullscreenDialog: true,
+        ),
       );
 
-      if (croppedFile != null) {
+      if (croppedPath != null) {
         setState(() {
           _isImageValidating = true;
           _imagePath = null; // Limpa a imagem anterior, se houver
         });
 
-        final isValid = await _inferenceService.isValidImage(croppedFile.path);
+        final isValid = await _inferenceService.isValidImage(croppedPath);
 
         if (!mounted) return;
         setState(() {
@@ -484,7 +516,7 @@ final Map<String, String> regions = {
 
         if (isValid) {
           setState(() {
-            _imagePath = croppedFile.path;
+            _imagePath = croppedPath;
           });
         } else {
           final l10n = AppLocalizations.of(context)!;

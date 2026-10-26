@@ -725,4 +725,77 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get guideStep4Desc =>
       'O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.';
+
+  @override
+  String get cropTitle => 'Ajustar Lesão';
+
+  @override
+  String get cropHint =>
+      'Arraste a imagem e use dois dedos para enquadrar a lesão dentro do quadrado.';
+
+  @override
+  String get cropBtnConfirm => 'CONFIRMAR';
+
+  @override
+  String get cropBtnCancel => 'CANCELAR';
+
+  @override
+  String get cropBtnRotate => 'GIRAR';
+
+  @override
+  String get cropProcessing => 'Processando imagem...';
+
+  @override
+  String get cropErrorLoad =>
+      'Não foi possível abrir a imagem. Tente capturar novamente.';
+
+  @override
+  String get exitTitle => 'Sair do Dermalyze?';
+
+  @override
+  String get exitMessage =>
+      'Você sairá do aplicativo. Os dados já coletados permanecem salvos no dispositivo.';
+
+  @override
+  String get btnCancel => 'Cancelar';
+
+  @override
+  String get btnExit => 'Sair';
+
+  @override
+  String get forgotPasswordLink => 'Esqueci minha senha';
+
+  @override
+  String get forgotPasswordTitle => 'Recuperar Senha';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Informe o e-mail cadastrado e enviaremos um link para você criar uma nova senha.';
+
+  @override
+  String get forgotPasswordBtn => 'Enviar link de recuperação';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Voltar para o login';
+
+  @override
+  String get forgotPasswordSentTitle => 'E-mail enviado';
+
+  @override
+  String forgotPasswordSentMessage(Object email) {
+    return 'Se houver uma conta associada a $email, você receberá um link para redefinir sua senha em alguns minutos. Verifique também a caixa de spam.';
+  }
+
+  @override
+  String get forgotPasswordEmptyEmail => 'Informe seu e-mail para continuar.';
+
+  @override
+  String get profileFallbackTitle => 'Confirme seu perfil';
+
+  @override
+  String get profileFallbackMessage =>
+      'Não foi possível consultar seus dados no servidor. Confirme seu nome e perfil para continuar usando o app neste dispositivo.';
+
+  @override
+  String get profileFallbackConfirm => 'Confirmar e entrar';
 }

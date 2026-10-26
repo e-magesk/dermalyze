@@ -274,5 +274,31 @@
     "guideStep3Title": "Image Capture",
     "guideStep3Desc": "Take a clear macroscopic photo of the lesion. Avoid excessive shadows or reflections.",
     "guideStep4Title": "Score and Management",
-    "guideStep4Desc": "The system will generate a priority level or diagnostic report. Evaluate the recommended management according to the result obtained."
+    "guideStep4Desc": "The system will generate a priority level or diagnostic report. Evaluate the recommended management according to the result obtained.",
+
+    "cropTitle": "Adjust Lesion",
+    "cropHint": "Drag the image and pinch with two fingers to frame the lesion inside the square.",
+    "cropBtnConfirm": "CONFIRM",
+    "cropBtnCancel": "CANCEL",
+    "cropBtnRotate": "ROTATE",
+    "cropProcessing": "Processing image...",
+    "cropErrorLoad": "Could not open the image. Please capture it again.",
+
+    "exitTitle": "Exit Dermalyze?",
+    "exitMessage": "You will leave the application. Data already collected remains saved on the device.",
+    "btnCancel": "Cancel",
+    "btnExit": "Exit",
+
+    "forgotPasswordLink": "Forgot my password",
+    "forgotPasswordTitle": "Reset Password",
+    "forgotPasswordSubtitle": "Enter your registered e-mail and we will send you a link to create a new password.",
+    "forgotPasswordBtn": "Send reset link",
+    "forgotPasswordBackToLogin": "Back to login",
+    "forgotPasswordSentTitle": "E-mail sent",
+    "forgotPasswordSentMessage": "If there is an account associated with {email}, you will receive a link to reset your password in a few minutes. Please also check your spam folder.",
+    "forgotPasswordEmptyEmail": "Enter your e-mail to continue.",
+
+    "profileFallbackTitle": "Confirm your profile",
+    "profileFallbackMessage": "We could not reach the server to load your data. Confirm your name and profile to keep using the app on this device.",
+    "profileFallbackConfirm": "Confirm and sign in"
 }

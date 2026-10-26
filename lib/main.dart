@@ -12,7 +12,9 @@ import 'src/core/firebase_options/firebase_options.dart';
 import 'src/core/theme/app_colors.dart';
 import 'src/core/l10n/app_localizations.dart';
 import 'src/services/local_storage_service.dart';
+import 'src/shared/navigation/back_handler_registry.dart';
 
+import 'src/modules/login/pages/forgot_password_page.dart';
 import 'src/modules/login/pages/login_page.dart';
 import 'src/modules/register/pages/register_page.dart';
 import 'src/features/auth/repositories/auth_repository.dart';
@@ -33,6 +35,7 @@ void main() async {
         Provider(create: (_) => Dio()),
         Provider(create: (_) => LocalStorageService()),
         Provider(create: (_) => AuthRepository()),
+        Provider(create: (_) => BackHandlerRegistry()),
         
         // Repositórios de Dados
         ProxyProvider<Dio, UserApiRepository>(
@@ -95,6 +98,7 @@ class DermalyzeApp extends StatelessWidget {
       // Mantemos as rotas nomeadas para navegações específicas (como ir para o registro)
       routes: {
         '/register': (context) => const RegisterPage(),
+        '/forgot-password': (context) => const ForgotPasswordPage(),
       },
     );
   }

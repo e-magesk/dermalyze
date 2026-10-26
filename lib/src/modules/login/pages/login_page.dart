@@ -8,6 +8,9 @@ import '../../../core/l10n/app_localizations.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import '../controller/login_controller.dart';
 import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
+// OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart
+import 'package:dermalyze/src/features/auth/offline_profile_fallback.dart';
+import 'profile_fallback_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,13 +52,48 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     // Chamada ao controller da tela
-    final error = await _loginController.signIn(email, password);
+    final String? error;
+    try {
+      error = await _loginController.signIn(email, password);
+    } on MissingUserProfileException catch (pending) {
+      // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart
+      if (!mounted) return;
+      await _askForProfile(pending);
+      return;
+    }
 
     if (!mounted) return;
 
     if (error != null) {
       _handleLoginError(error, l10n);
     }
+  }
+
+  // --- OFFLINE_PROFILE_FALLBACK (temporário) -------------------------------
+  // Remover junto com o resto do fallback quando o backend estiver em produção
+  // e o perfil voltar a vir sempre do servidor.
+
+  /// Pergunta nome e perfil quando o login autenticou mas o app não descobriu
+  /// quem é o usuário. Desistindo, a sessão do Firebase é encerrada.
+  Future<void> _askForProfile(MissingUserProfileException pending) async {
+    final answer = await showDialog<ProfileAnswer>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const ProfileFallbackDialog(),
+    );
+
+    if (!mounted) return;
+
+    if (answer == null) {
+      await _authController.discardPendingProfile();
+      return;
+    }
+
+    await _authController.completeProfileOffline(
+      uid: pending.uid,
+      name: answer.name,
+      role: answer.role,
+    );
   }
 
   void _handleLoginError(String errorCode, AppLocalizations l10n) {
@@ -150,8 +188,21 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: _onLoginPressed,
                 isLoading: _loginController.isLoading,
               ),
-              
-              const SizedBox(height: 24),
+
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/forgot-password'),
+                child: Text(
+                  l10n.forgotPasswordLink,
+                  style: const TextStyle(
+                    color: AppColors.textMedium,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

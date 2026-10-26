@@ -726,4 +726,77 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get guideStep4Desc =>
       'The system will generate a priority level or diagnostic report. Evaluate the recommended management according to the result obtained.';
+
+  @override
+  String get cropTitle => 'Adjust Lesion';
+
+  @override
+  String get cropHint =>
+      'Drag the image and pinch with two fingers to frame the lesion inside the square.';
+
+  @override
+  String get cropBtnConfirm => 'CONFIRM';
+
+  @override
+  String get cropBtnCancel => 'CANCEL';
+
+  @override
+  String get cropBtnRotate => 'ROTATE';
+
+  @override
+  String get cropProcessing => 'Processing image...';
+
+  @override
+  String get cropErrorLoad =>
+      'Could not open the image. Please capture it again.';
+
+  @override
+  String get exitTitle => 'Exit Dermalyze?';
+
+  @override
+  String get exitMessage =>
+      'You will leave the application. Data already collected remains saved on the device.';
+
+  @override
+  String get btnCancel => 'Cancel';
+
+  @override
+  String get btnExit => 'Exit';
+
+  @override
+  String get forgotPasswordLink => 'Forgot my password';
+
+  @override
+  String get forgotPasswordTitle => 'Reset Password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your registered e-mail and we will send you a link to create a new password.';
+
+  @override
+  String get forgotPasswordBtn => 'Send reset link';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Back to login';
+
+  @override
+  String get forgotPasswordSentTitle => 'E-mail sent';
+
+  @override
+  String forgotPasswordSentMessage(Object email) {
+    return 'If there is an account associated with $email, you will receive a link to reset your password in a few minutes. Please also check your spam folder.';
+  }
+
+  @override
+  String get forgotPasswordEmptyEmail => 'Enter your e-mail to continue.';
+
+  @override
+  String get profileFallbackTitle => 'Confirm your profile';
+
+  @override
+  String get profileFallbackMessage =>
+      'We could not reach the server to load your data. Confirm your name and profile to keep using the app on this device.';
+
+  @override
+  String get profileFallbackConfirm => 'Confirm and sign in';
 }

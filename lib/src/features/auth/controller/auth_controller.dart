@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:dermalyze/src/features/auth/offline_profile_fallback.dart';
 import 'package:dermalyze/src/features/auth/repositories/auth_repository.dart';
 import 'package:dermalyze/src/features/auth/repositories/api_repository.dart';
 import 'package:dermalyze/src/services/local_storage_service.dart';
@@ -79,6 +80,15 @@ class AuthController extends ChangeNotifier {
         // Salva localmente com o UID para futuros acessos offline
         await _localStorage.saveUserData(uid: uid, role: role!, name: name!);
       } catch (e) {
+        // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart.
+        // Enquanto o cadastro não gravar no backend e o baseUrl for um IP de
+        // rede local, essa consulta falha para toda conta criada pelo app. Em
+        // vez de travar o login, a tela pergunta o perfil ao usuário.
+        // Mantemos a sessão do Firebase aberta: a LoginPage precisa do UID.
+        if (kOfflineProfileFallbackEnabled) {
+          throw MissingUserProfileException(uid: uid, email: email);
+        }
+
         // Se o usuário não existir no seu banco central, deslogamos do Firebase
         await _authRepository.logout();
         throw Exception('Usuário não encontrado no banco de dados do Dermalyze.');
@@ -95,6 +105,34 @@ class AuthController extends ChangeNotifier {
 
     _userName = name;
     state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
+    notifyListeners();
+  }
+
+  // -----------------------------------------------------
+  // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart
+  // -----------------------------------------------------
+
+  /// Conclui o login de um usuário já autenticado no Firebase cujo perfil não
+  /// foi encontrado nem localmente nem no backend, usando o que ele informou.
+  ///
+  /// Remover junto com o resto do fallback assim que o backend estiver em
+  /// produção: a partir daí o perfil deve vir sempre do servidor.
+  Future<void> completeProfileOffline({
+    required String uid,
+    required String name,
+    required String role,
+  }) async {
+    await _localStorage.saveUserData(uid: uid, role: role, name: name);
+
+    _userName = name;
+    state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
+    notifyListeners();
+  }
+
+  /// Desfaz o login pendente quando o usuário desiste de informar o perfil.
+  Future<void> discardPendingProfile() async {
+    await _authRepository.logout();
+    state = AuthState.unauthenticated;
     notifyListeners();
   }
 

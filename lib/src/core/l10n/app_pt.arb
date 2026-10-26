@@ -274,5 +274,31 @@
     "guideStep3Title": "Captura de Imagem",
     "guideStep3Desc": "Tire uma foto macroscópica nítida da lesão. Evite sombras ou reflexos excessivos.",
     "guideStep4Title": "Score e Conduta",
-    "guideStep4Desc": "O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido."
+    "guideStep4Desc": "O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.",
+
+    "cropTitle": "Ajustar Lesão",
+    "cropHint": "Arraste a imagem e use dois dedos para enquadrar a lesão dentro do quadrado.",
+    "cropBtnConfirm": "CONFIRMAR",
+    "cropBtnCancel": "CANCELAR",
+    "cropBtnRotate": "GIRAR",
+    "cropProcessing": "Processando imagem...",
+    "cropErrorLoad": "Não foi possível abrir a imagem. Tente capturar novamente.",
+
+    "exitTitle": "Sair do Dermalyze?",
+    "exitMessage": "Você sairá do aplicativo. Os dados já coletados permanecem salvos no dispositivo.",
+    "btnCancel": "Cancelar",
+    "btnExit": "Sair",
+
+    "forgotPasswordLink": "Esqueci minha senha",
+    "forgotPasswordTitle": "Recuperar Senha",
+    "forgotPasswordSubtitle": "Informe o e-mail cadastrado e enviaremos um link para você criar uma nova senha.",
+    "forgotPasswordBtn": "Enviar link de recuperação",
+    "forgotPasswordBackToLogin": "Voltar para o login",
+    "forgotPasswordSentTitle": "E-mail enviado",
+    "forgotPasswordSentMessage": "Se houver uma conta associada a {email}, você receberá um link para redefinir sua senha em alguns minutos. Verifique também a caixa de spam.",
+    "forgotPasswordEmptyEmail": "Informe seu e-mail para continuar.",
+
+    "profileFallbackTitle": "Confirme seu perfil",
+    "profileFallbackMessage": "Não foi possível consultar seus dados no servidor. Confirme seu nome e perfil para continuar usando o app neste dispositivo.",
+    "profileFallbackConfirm": "Confirmar e entrar"
 }

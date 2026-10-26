@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
+import 'package:dermalyze/src/features/auth/offline_profile_fallback.dart';
 class LoginController {
 
   final AuthController _authController;
@@ -14,9 +15,15 @@ class LoginController {
       isLoading.value = true;
       
       await _authController.login(email, password);
-      
+
       return null;
-    } 
+    }
+    // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart.
+    // A página precisa do UID para perguntar o perfil, então a exceção sobe
+    // em vez de virar texto de erro.
+    on MissingUserProfileException {
+      rethrow;
+    }
     on FirebaseAuthException catch (e) {
       return e.code; // Erros específicos do Firebase (senha errada, etc)
     } catch (e) {
