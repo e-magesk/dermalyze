@@ -1,27 +1,40 @@
 import 'dart:io';
 
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
+import 'package:dermalyze/src/core/theme/app_colors.dart';
 import 'package:dermalyze/src/features/analysis/service/inference_service.dart';
 import 'package:dermalyze/src/models/clinical_record.dart';
-import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
+import 'package:dermalyze/src/shared/navigation/section_navigation_registry.dart';
 import 'package:dermalyze/src/shared/widgets/app_bento_card.dart';
 import 'package:flutter/material.dart';
 import 'package:dermalyze/src/shared/widgets/app_image_crop_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+/// Como a foto da lesão é capturada em cada fluxo. Define os requisitos
+/// exibidos antes da captura.
+enum CaptureMode {
+  /// Triagem: foto comum da lesão, sem dermatoscópio.
+  macroscopic,
+
+  /// Análise Assistida: foto com o dermatoscópio acoplado ao tablet.
+  dermoscopic,
+}
+
 class ClinicalDataForm extends StatefulWidget {
   final Function(ClinicalRecord) onSubmit;
   final int initialStep;
+  final CaptureMode captureMode;
 
-  /// Aba a que este formulário pertence, para que o botão de voltar do sistema
-  /// retroceda os passos do fluxo em vez de fechar o app.
-  final BackScope backScope;
+  /// Seção a que este formulário pertence, para que o botão de voltar do
+  /// sistema e o toque na aba atual atinjam o fluxo certo.
+  final SectionScope sectionScope;
 
   const ClinicalDataForm({
     super.key,
     required this.onSubmit,
-    required this.backScope,
+    required this.sectionScope,
+    required this.captureMode,
     this.initialStep = 0,
   });
 
@@ -29,7 +42,7 @@ class ClinicalDataForm extends StatefulWidget {
   State<ClinicalDataForm> createState() => _ClinicalDataFormState();
 }
 
-class _ClinicalDataFormState extends State<ClinicalDataForm> {
+class _ClinicalDataFormState extends State<ClinicalDataForm> implements SectionNavigation {
   late int _currentStep;
   String? _imagePath;
   bool _isImageValidating = false;
@@ -49,26 +62,32 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
 
   final InferenceService _inferenceService = InferenceService();
 
+  /// Muda a cada volta ao início. Serve de chave para os campos (que guardam o
+  /// próprio texto) serem recriados vazios, e para descartar uma validação de
+  /// foto que termine depois do reinício.
+  int _generation = 0;
+
   // Guardado no initState porque ler o Provider no dispose não é seguro.
-  late final BackHandlerRegistry _backRegistry;
+  late final SectionNavigationRegistry _sections;
 
   @override
   void initState() {
     super.initState();
     _currentStep = widget.initialStep;
-    _backRegistry = context.read<BackHandlerRegistry>();
-    _backRegistry.register(widget.backScope, _handleBack);
+    _sections = context.read<SectionNavigationRegistry>();
+    _sections.register(widget.sectionScope, this);
   }
 
   @override
   void dispose() {
-    _backRegistry.unregister(widget.backScope, _handleBack);
+    _sections.unregister(widget.sectionScope, this);
     super.dispose();
   }
 
   /// Volta um passo do formulário. Retorna false quando já está no primeiro,
   /// deixando o evento seguir para a MainPage.
-  bool _handleBack() {
+  @override
+  bool handleBack() {
     if (_currentStep > widget.initialStep) {
       setState(() => _currentStep--);
       return true;
@@ -77,18 +96,45 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
   }
 
   @override
+  bool get hasProgress =>
+      _currentStep > widget.initialStep ||
+      _imagePath != null ||
+      _isImageValidating ||
+      _age != null ||
+      _history != null ||
+      _selectedRegion != null ||
+      _symptoms.values.any((answer) => answer != null);
+
+  @override
+  void resetToStart() {
+    setState(() {
+      _generation++;
+      _currentStep = widget.initialStep;
+      _imagePath = null;
+      _isImageValidating = false;
+      _age = null;
+      _history = null;
+      _selectedRegion = null;
+      _symptoms.updateAll((_, _) => null);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Column(
-      children: [
-        if (_currentStep == 0) _buildStep1(l10n),
-        if (_currentStep == 1) _buildStep2(l10n),
-        if (_currentStep == 2) _buildStep3(l10n),
-        
-        const SizedBox(height: 24),
-        _buildNavigationButtons(l10n),
-      ],
+    return KeyedSubtree(
+      key: ValueKey(_generation),
+      child: Column(
+        children: [
+          if (_currentStep == 0) _buildStep1(l10n),
+          if (_currentStep == 1) _buildStep2(l10n),
+          if (_currentStep == 2) _buildStep3(l10n),
+
+          const SizedBox(height: 24),
+          _buildNavigationButtons(l10n),
+        ],
+      ),
     );
   }
 
@@ -180,54 +226,128 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildStepHeader(l10n.formStep3Title, Icons.camera_alt_outlined),
+          const SizedBox(height: 16),
+
+          // Requisitos antes da captura, para não descobrir só quando a foto é recusada.
+          _buildPhotoRequirements(l10n),
           const SizedBox(height: 20),
-          
-          // Área de Preview ou Placeholder
-          GestureDetector(
-            onTap: _isImageValidating ? null : () => _showPickImageOptions(l10n),
-            child: Container(
-              height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF8FAFC),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFFE2E8F0)),
+
+          // Área de Preview ou Placeholder. Quadrada como o recorte, para a foto
+          // aparecer inteira.
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: GestureDetector(
+                  onTap: _isImageValidating ? null : () => _showPickImageOptions(l10n),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: const Color(0xFFE2E8F0)),
+                    ),
+                    child: _isImageValidating
+                        ? const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(color: Color(0xFF2563EB)),
+                              SizedBox(height: 16),
+                              Text("Validando qualidade da imagem...", style: TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold)),
+                            ],
+                          )
+                        : _imagePath == null
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.add_a_photo_outlined, color: Color(0xFF2563EB), size: 40),
+                                  const SizedBox(height: 12),
+                                  Text(l10n.formBtnCapture, style: const TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold)),
+                                ],
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(18),
+                                child: Image.file(File(_imagePath!), fit: BoxFit.cover),
+                              ),
+                  ),
+                ),
               ),
-              child: _isImageValidating
-                  ? const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(color: Color(0xFF2563EB)),
-                        SizedBox(height: 16),
-                        Text("Validando qualidade da imagem...", style: TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold)),
-                      ],
-                    )
-                  : _imagePath == null
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.add_a_photo_outlined, color: Color(0xFF2563EB), size: 40),
-                            const SizedBox(height: 12),
-                            Text(l10n.formBtnCapture, style: const TextStyle(color: Color(0xFF94A3B8), fontWeight: FontWeight.bold)),
-                          ],
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(18),
-                          child: Image.file(File(_imagePath!), fit: BoxFit.cover),
-                        ),
             ),
           ),
           
           if (_imagePath != null && !_isImageValidating)
-            Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: TextButton.icon(
-                onPressed: () => _showPickImageOptions(l10n),
-                icon: const Icon(Icons.refresh, size: 18),
-                label: Text(l10n.formBtnCapture.toUpperCase()),
-                style: TextButton.styleFrom(foregroundColor: const Color(0xFF2563EB)),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: TextButton.icon(
+                  onPressed: () => _showPickImageOptions(l10n),
+                  icon: const Icon(Icons.refresh, size: 18),
+                  label: Text(l10n.formBtnCapture.toUpperCase()),
+                  style: TextButton.styleFrom(foregroundColor: const Color(0xFF2563EB)),
+                ),
               ),
             ),
+        ],
+      ),
+    );
+  }
+
+  /// Requisitos da foto conforme o fluxo: sem dermatoscópio na Triagem, com
+  /// dermatoscópio na Análise Assistida.
+  Widget _buildPhotoRequirements(AppLocalizations l10n) {
+    final requirements = widget.captureMode == CaptureMode.dermoscopic
+        ? [l10n.photoReqDermo1, l10n.photoReqDermo2, l10n.photoReqDermo3, l10n.photoReqDermo4]
+        : [l10n.photoReqMacro1, l10n.photoReqMacro2, l10n.photoReqMacro3, l10n.photoReqMacro4];
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.p4Bg,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFDBEAFE)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.checklist_rounded, color: AppColors.primary, size: 18),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  l10n.photoRequirementsTitle,
+                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w900, color: AppColors.primary),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          for (final requirement in requirements)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 1),
+                    child: Icon(Icons.check_circle_outline, color: AppColors.primary, size: 16),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      requirement,
+                      style: const TextStyle(fontSize: 13, color: AppColors.textMedium, height: 1.4, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 4),
+          Text(
+            l10n.photoRequirementsFooter,
+            style: const TextStyle(fontSize: 11, color: AppColors.textLight, fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );
@@ -281,6 +401,8 @@ class _ClinicalDataFormState extends State<ClinicalDataForm> {
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
+      // Cinza claro: na cor padrão o exemplo parecia um campo já preenchido.
+      hintStyle: const TextStyle(color: AppColors.textLight, fontWeight: FontWeight.w500),
       filled: true,
       fillColor: const Color(0xFFF8FAFC),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
@@ -479,6 +601,8 @@ final Map<String, String> regions = {
 
   // Fluxo: Pick -> Crop -> Update State
   Future<void> _pickAndCropImage(ImageSource source) async {
+    // Se o formulário voltar ao início no meio do fluxo, o resultado é descartado.
+    final generation = _generation;
     final picker = ImagePicker();
     // O limite de lado é aplicado em código nativo pelo próprio picker, o que
     // mantém a tela de recorte rápida. Os modelos ONNX reduzem para 224x224,
@@ -490,7 +614,7 @@ final Map<String, String> regions = {
     );
 
     if (pickedFile != null) {
-      if (!mounted) return;
+      if (!mounted || generation != _generation) return;
 
       // Tela de recorte própria: os botões de ação ficam no rodapé, porque o
       // check do cropper nativo ficava escondido atrás do dermatoscópio.
@@ -502,6 +626,7 @@ final Map<String, String> regions = {
       );
 
       if (croppedPath != null) {
+        if (!mounted || generation != _generation) return;
         setState(() {
           _isImageValidating = true;
           _imagePath = null; // Limpa a imagem anterior, se houver
@@ -509,7 +634,7 @@ final Map<String, String> regions = {
 
         final isValid = await _inferenceService.isValidImage(croppedPath);
 
-        if (!mounted) return;
+        if (!mounted || generation != _generation) return;
         setState(() {
           _isImageValidating = false;
         });

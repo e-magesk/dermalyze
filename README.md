@@ -38,9 +38,19 @@ This project uses Firebase for secure user authentication and session management
     flutterfire configure
     ```
 
-#### 2. Local Backend (Research Server)
-The **Dermalyze** hybrid architecture connects to a local server for image and clinical data storage.
-*   Ensure your local backend is running. Access [https://github.com/e-magesk/dermalyze-backend.git](https://github.com/e-magesk/dermalyze-backend.git) to more information.
+#### 2. Cloud Firestore (access control)
+Version 1.0 runs without a backend server: images and clinical data never leave the device. Cloud Firestore stores only the health professionals' profiles (`users/{uid}`: `name`, `email`, `role`, `approved`, `createdAt`), so the Padtech team decides who can use the app.
+
+1.  Publish the security rules in [`firestore.rules`](firestore.rules) (Firebase Console → Firestore Database → Rules → Publish). They let the app create a user's own profile, always with `approved: false`, and never let the app change `approved` or `role`.
+
+#### Granting access and changing profiles
+Everything is done in the Firebase Console → Firestore Database → `users` collection. The Console has administrator access, so it is not limited by the rules.
+
+*   **Grant access:** open the user's document and set `approved` to `true`. The user can log in right away.
+*   **Change profile:** set `role` to `agent` (health agent) or `doctor`. An open app applies the change within seconds.
+*   **Revoke access:** set `approved` to `false`. An open, online app ends the session within seconds; an offline device ends it as soon as it reconnects.
+
+Users without access see a message asking them to contact the Padtech team. Accounts created before access control existed are asked to complete their registration on their next login, and then wait for approval like a new account.
 
 ## 🛠️ How to Run the Project
 1.  Clone this repository:

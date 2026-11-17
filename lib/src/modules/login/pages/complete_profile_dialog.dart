@@ -1,20 +1,15 @@
-/// OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart.
-///
-/// Arquivo inteiro faz parte do fallback: para removê-lo, apague este arquivo
-/// e a chamada em `login_page.dart`.
-library;
-
 import 'package:flutter/material.dart';
 
 import '../../../core/l10n/app_localizations.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/app_text_field.dart';
+import 'package:dermalyze/src/features/auth/access_control.dart';
 
-/// Resposta do diálogo de confirmação de perfil.
+/// Resposta do diálogo de completar o cadastro.
 class ProfileAnswer {
   final String name;
 
-  /// `'agent'` ou `'doctor'`, no mesmo formato gravado no armazenamento local.
+  /// [kRoleAgent] ou [kRoleDoctor], no formato do campo `role` do Firestore.
   final String role;
 
   const ProfileAnswer({required this.name, required this.role});
@@ -22,24 +17,24 @@ class ProfileAnswer {
 
 enum _ProfileOption { agent, doctor }
 
-/// Pede nome e perfil quando o login autenticou no Firebase mas o app não
-/// descobriu quem é o usuário — nem localmente, nem no servidor.
+/// Pede nome e perfil para contas que ainda não têm perfil no Firestore —
+/// criadas antes do controle de acesso, ou cujo cadastro falhou no meio.
 ///
 /// Devolve um [ProfileAnswer] via `Navigator.pop`, ou `null` se o usuário
-/// desistir.
+/// desistir. O perfil é criado pendente, até o Padtech liberar.
 ///
 /// É um widget próprio de propósito: assim o [TextEditingController] nasce e
 /// morre junto com o diálogo. Criá-lo fora e descartá-lo logo após o
 /// `await showDialog` o destruía no meio da animação de saída, enquanto o campo
 /// de texto ainda estava montado — o que quebrava a desmontagem da árvore.
-class ProfileFallbackDialog extends StatefulWidget {
-  const ProfileFallbackDialog({super.key});
+class CompleteProfileDialog extends StatefulWidget {
+  const CompleteProfileDialog({super.key});
 
   @override
-  State<ProfileFallbackDialog> createState() => _ProfileFallbackDialogState();
+  State<CompleteProfileDialog> createState() => _CompleteProfileDialogState();
 }
 
-class _ProfileFallbackDialogState extends State<ProfileFallbackDialog> {
+class _CompleteProfileDialogState extends State<CompleteProfileDialog> {
   final _nameController = TextEditingController();
   _ProfileOption _selected = _ProfileOption.agent;
 
@@ -56,7 +51,7 @@ class _ProfileFallbackDialogState extends State<ProfileFallbackDialog> {
     Navigator.of(context).pop(
       ProfileAnswer(
         name: name,
-        role: _selected == _ProfileOption.doctor ? 'doctor' : 'agent',
+        role: _selected == _ProfileOption.doctor ? kRoleDoctor : kRoleAgent,
       ),
     );
   }
@@ -69,7 +64,7 @@ class _ProfileFallbackDialogState extends State<ProfileFallbackDialog> {
       backgroundColor: AppColors.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       title: Text(
-        l10n.profileFallbackTitle,
+        l10n.completeProfileTitle,
         style: const TextStyle(fontWeight: FontWeight.w900, color: AppColors.textDark, fontSize: 18),
       ),
       content: SingleChildScrollView(
@@ -78,7 +73,7 @@ class _ProfileFallbackDialogState extends State<ProfileFallbackDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              l10n.profileFallbackMessage,
+              l10n.completeProfileMessage,
               style: const TextStyle(color: AppColors.textMedium, fontSize: 14, height: 1.5),
             ),
             const SizedBox(height: 20),
@@ -129,7 +124,7 @@ class _ProfileFallbackDialogState extends State<ProfileFallbackDialog> {
             return TextButton(
               onPressed: hasName ? _confirm : null,
               child: Text(
-                l10n.profileFallbackConfirm,
+                l10n.completeProfileConfirm,
                 style: TextStyle(
                   color: hasName ? AppColors.primary : AppColors.textLight,
                   fontWeight: FontWeight.w900,

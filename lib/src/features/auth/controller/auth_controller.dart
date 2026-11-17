@@ -1,174 +1,264 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:dermalyze/src/features/auth/offline_profile_fallback.dart';
+import 'dart:async';
+
+import 'package:dermalyze/src/features/auth/access_control.dart';
 import 'package:dermalyze/src/features/auth/repositories/auth_repository.dart';
-import 'package:dermalyze/src/features/auth/repositories/api_repository.dart';
+import 'package:dermalyze/src/features/auth/repositories/user_profile_repository.dart';
 import 'package:dermalyze/src/services/local_storage_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 enum AuthState { loading, unauthenticated, doctor, agent }
 
+/// Sessão do usuário e controle de acesso.
+///
+/// O perfil (agente/médico) e a liberação vêm do Firestore e são definidos pelo
+/// Padtech no Console. O armazenamento seguro local guarda uma cópia do perfil
+/// liberado, para que o app abra sem internet em campo.
 class AuthController extends ChangeNotifier {
   final AuthRepository _authRepository;
-  final UserApiRepository _apiRepository;
+  final UserProfileRepository _profileRepository;
   final LocalStorageService _localStorage;
+
+  /// Chamado sempre que a sessão termina, seja pelo botão de sair ou por
+  /// acesso revogado. O main.dart usa para fechar telas abertas e descartar
+  /// resultados de paciente em memória.
+  final VoidCallback? _onSessionEnded;
 
   AuthState state = AuthState.loading;
   String? _userName;
+  AccessNotice? _pendingNotice;
+
+  StreamSubscription<User?>? _authSubscription;
+  StreamSubscription<UserProfile?>? _profileSubscription;
 
   AuthController({
     required AuthRepository authRepository,
-    required UserApiRepository apiRepository,
+    required UserProfileRepository profileRepository,
     required LocalStorageService localStorage,
+    VoidCallback? onSessionEnded,
   })  : _authRepository = authRepository,
-        _apiRepository = apiRepository,
-        _localStorage = localStorage {
+        _profileRepository = profileRepository,
+        _localStorage = localStorage,
+        _onSessionEnded = onSessionEnded {
+    // O Firebase encerra a sessão sozinho quando a conta é desativada ou
+    // excluída no Console (pode levar até ~1h, a validade do token).
+    _authSubscription = _authRepository.authStateChanges().listen((user) {
+      if (user == null && _isSignedIn) {
+        _endSession(notice: AccessNotice.notGranted);
+      }
+    });
+
     checkAuthStatus();
   }
 
   String? get userName => _userName;
 
-  void setUserName(String name) {
-    _userName = name;
-    notifyListeners(); // Isso avisa a Home que o nome chegou!
+  bool get _isSignedIn => state == AuthState.doctor || state == AuthState.agent;
+
+  /// Aviso a ser exibido pela tela de login após o fim da sessão. É devolvido
+  /// uma única vez.
+  AccessNotice? consumeNotice() {
+    final notice = _pendingNotice;
+    _pendingNotice = null;
+    return notice;
   }
+
+  AuthState _stateForRole(String role) =>
+      role == kRoleDoctor ? AuthState.doctor : AuthState.agent;
 
   // -----------------------------------------------------
   // 1. VERIFICAÇÃO INICIAL (Quem foi o último a logar?)
   // -----------------------------------------------------
   Future<void> checkAuthStatus() async {
-    // Busca o UID do usuário que estava ativo por último
-    final currentUid = await _localStorage.getCurrentUid();
+    // O primeiro evento traz o usuário que o Firebase restaurou do aparelho.
+    final user = await _authRepository.authStateChanges().first;
+    final cachedUid = await _localStorage.getCurrentUid();
 
-    if (currentUid == null) {
-      state = AuthState.unauthenticated;
-    } else {
-      // Busca a role específica para esse UID no banco local
-      final role = await _localStorage.getRole(currentUid);
-      final name = await _localStorage.getName(currentUid);
-      
-      if (role != null) {
-        state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
-        _userName = name;
-      } else {
-        // Caso raro: UID existe mas os dados foram corrompidos
-        state = AuthState.unauthenticated;
-      }
+    String? role;
+    String? name;
+    if (user != null && user.uid == cachedUid) {
+      role = await _localStorage.getRole(user.uid);
+      name = await _localStorage.getName(user.uid);
     }
-    
-    notifyListeners(); 
+
+    if (user == null || role == null) {
+      // Sem sessão, ou sessão sem perfil liberado em cache — por exemplo, o
+      // app foi fechado no meio do "Complete seu cadastro".
+      if (user != null) await _authRepository.logout();
+      await _localStorage.clearCurrentUser();
+      state = AuthState.unauthenticated;
+      notifyListeners();
+      return;
+    }
+
+    // Perfil liberado em cache: entra mesmo sem internet (uso em campo). O
+    // listener confirma no servidor assim que houver conexão.
+    _userName = name;
+    state = _stateForRole(role);
+    notifyListeners();
+    _watchProfile(user.uid);
   }
 
   // -----------------------------------------------------
-  // 2. LOGIN (Com lógica de recuperação via API)
+  // 2. LOGIN
   // -----------------------------------------------------
+
+  /// Entra no app se o Padtech tiver liberado o acesso.
+  ///
+  /// Lança [AccessNotGrantedException] se o acesso não foi liberado e
+  /// [ProfileIncompleteException] se a conta ainda não tem perfil.
   Future<void> login(String email, String password) async {
     // A. Login no Firebase
     final credential = await _authRepository.loginWithEmail(email, password);
-    final uid = credential.user!.uid;
+    final user = credential.user!;
 
-    // B. Tenta buscar a role localmente usando o UID
-    String? role = await _localStorage.getRole(uid);
-    String? name = await _localStorage.getName(uid);
-
-    // C. Fallback: Se não achar local (app reinstalado), busca no Backend Python
-    if (role == null) {
-      try {
-        final userData = await _apiRepository.getUserByToken(uid);
-        role = userData['role'];
-        name = userData['full_name'];
-
-        // Salva localmente com o UID para futuros acessos offline
-        await _localStorage.saveUserData(uid: uid, role: role!, name: name!);
-      } catch (e) {
-        // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart.
-        // Enquanto o cadastro não gravar no backend e o baseUrl for um IP de
-        // rede local, essa consulta falha para toda conta criada pelo app. Em
-        // vez de travar o login, a tela pergunta o perfil ao usuário.
-        // Mantemos a sessão do Firebase aberta: a LoginPage precisa do UID.
-        if (kOfflineProfileFallbackEnabled) {
-          throw MissingUserProfileException(uid: uid, email: email);
-        }
-
-        // Se o usuário não existir no seu banco central, deslogamos do Firebase
-        await _authRepository.logout();
-        throw Exception('Usuário não encontrado no banco de dados do Dermalyze.');
-      }
-    } else {
-      // Se a role já existia localmente, apenas garantimos que esse UID 
-      // está marcado como o "current_uid" (usuário ativo)
-      await _localStorage.saveUserData(
-        uid: uid, 
-        role: role, 
-        name: name!,
-      );
+    // B. Perfil e liberação, direto do servidor
+    final UserProfile? profile;
+    try {
+      profile = await _profileRepository.fetchProfile(user.uid);
+    } catch (_) {
+      // Sem confirmar a liberação, não entra.
+      await _authRepository.logout();
+      rethrow;
     }
 
-    _userName = name;
-    state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
+    if (profile == null) {
+      // Conta anterior ao controle de acesso. A sessão fica aberta para a
+      // tela de login gravar o perfil.
+      throw const ProfileIncompleteException();
+    }
+
+    if (!profile.canAccess) {
+      await _authRepository.logout();
+      throw const AccessNotGrantedException();
+    }
+
+    // C. Guarda o perfil localmente para abrir offline nas próximas vezes
+    await _localStorage.saveUserData(uid: user.uid, role: profile.role, name: profile.name);
+
+    _userName = profile.name;
+    state = _stateForRole(profile.role);
     notifyListeners();
+    _watchProfile(user.uid);
   }
 
-  // -----------------------------------------------------
-  // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart
-  // -----------------------------------------------------
+  /// Cria o perfil de uma conta que ainda não tinha (ver
+  /// [ProfileIncompleteException]) e encerra a sessão: o perfil nasce pendente
+  /// até o Padtech liberar.
+  Future<void> completeProfile({required String name, required String role}) async {
+    final user = _authRepository.currentUser;
+    if (user == null) {
+      throw StateError('Nenhuma sessão ativa para completar o cadastro.');
+    }
 
-  /// Conclui o login de um usuário já autenticado no Firebase cujo perfil não
-  /// foi encontrado nem localmente nem no backend, usando o que ele informou.
-  ///
-  /// Remover junto com o resto do fallback assim que o backend estiver em
-  /// produção: a partir daí o perfil deve vir sempre do servidor.
-  Future<void> completeProfileOffline({
-    required String uid,
-    required String name,
-    required String role,
-  }) async {
-    await _localStorage.saveUserData(uid: uid, role: role, name: name);
-
-    _userName = name;
-    state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
-    notifyListeners();
+    try {
+      await user.updateDisplayName(name);
+      await _profileRepository.createProfile(
+        uid: user.uid,
+        name: name,
+        email: user.email!,
+        role: role,
+      );
+    } finally {
+      await _authRepository.logout();
+    }
   }
 
-  /// Desfaz o login pendente quando o usuário desiste de informar o perfil.
-  Future<void> discardPendingProfile() async {
-    await _authRepository.logout();
-    state = AuthState.unauthenticated;
-    notifyListeners();
-  }
+  /// Encerra a sessão aberta para completar o cadastro quando o usuário desiste.
+  Future<void> cancelProfileCompletion() => _authRepository.logout();
 
   // -----------------------------------------------------
   // 3. CADASTRO (Criação de novos usuários)
   // -----------------------------------------------------
+
+  /// Cria a conta e o perfil pendente, e encerra a sessão: o usuário só entra
+  /// depois que o Padtech liberar o acesso no Console.
+  ///
+  /// Se a criação do perfil falhar, a conta fica sem perfil e o próximo login
+  /// cai em [ProfileIncompleteException], que permite completar o cadastro.
   Future<void> register(String email, String password, String name, String role) async {
-    // 1. Cria no Firebase
     final credential = await _authRepository.registerWithEmail(email, password);
-    final uid = credential.user!.uid;
+    final user = credential.user!;
 
-    // 2. Envia para o seu Backend FastAPI na UFES
-    // await _apiRepository.registerInBackend(
-    //   fullName: name,
-    //   role: role,
-    //   firebaseToken: uid,
-    // );
+    try {
+      await user.updateDisplayName(name);
+      await _profileRepository.createProfile(
+        uid: user.uid,
+        name: name,
+        email: user.email ?? email,
+        role: role,
+      );
+    } finally {
+      await _authRepository.logout();
+    }
+  }
 
-    // 3. Salva no armazenamento seguro local usando o UID como chave
-    await _localStorage.saveUserData(uid: uid, role: role, name: name);
+  // -----------------------------------------------------
+  // 4. ACOMPANHAMENTO EM TEMPO REAL
+  // -----------------------------------------------------
 
-    _userName = name;
-    state = role == 'doctor' ? AuthState.doctor : AuthState.agent;
+  /// Aplica na hora o que o Padtech mudar no Console: revogar o acesso encerra
+  /// a sessão, trocar o perfil troca as abas disponíveis.
+  void _watchProfile(String uid) {
+    _profileSubscription?.cancel();
+    _profileSubscription = _profileRepository.watchProfile(uid).listen(
+      (profile) => _applyServerProfile(uid, profile),
+      // Erros não encerram a sessão: sem conseguir confirmar a revogação, o
+      // profissional não pode ficar travado no meio de um atendimento.
+      onError: (Object error) => debugPrint('Falha ao acompanhar o perfil: $error'),
+    );
+  }
+
+  Future<void> _applyServerProfile(String uid, UserProfile? profile) async {
+    if (!_isSignedIn) return;
+
+    if (profile == null || !profile.canAccess) {
+      await _endSession(notice: AccessNotice.notGranted);
+      return;
+    }
+
+    final newState = _stateForRole(profile.role);
+    if (newState == state && profile.name == _userName) return;
+
+    await _localStorage.saveUserData(uid: uid, role: profile.role, name: profile.name);
+    _userName = profile.name;
+    state = newState;
     notifyListeners();
   }
 
   // -----------------------------------------------------
-  // 4. LOGOUT
+  // 5. LOGOUT
   // -----------------------------------------------------
-  Future<void> logout() async {
-    await _authRepository.logout();
-    // Apenas limpa quem é o usuário ativo, mantendo os dados salvos 
-    // localmente para agilizar o próximo login desse mesmo usuário
-    await _localStorage.clearCurrentUser();
+  Future<void> logout() => _endSession();
+
+  Future<void> _endSession({AccessNotice? notice}) async {
+    if (!_isSignedIn) return;
+
+    // O estado muda antes de qualquer await: assim o authStateChanges disparado
+    // pelo próprio signOut não chama esta função de novo.
+    final profileSubscription = _profileSubscription;
+    _profileSubscription = null;
+    _pendingNotice = notice;
     _userName = null;
     state = AuthState.unauthenticated;
+    _onSessionEnded?.call();
     notifyListeners();
+
+    await profileSubscription?.cancel();
+
+    // O perfil em cache sai junto: um acesso revogado não pode continuar
+    // valendo offline neste aparelho. O próximo login busca tudo no servidor.
+    final uid = await _localStorage.getCurrentUid();
+    if (uid != null) await _localStorage.clearUserData(uid);
+    await _localStorage.clearCurrentUser();
+
+    await _authRepository.logout();
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    _profileSubscription?.cancel();
+    super.dispose();
   }
 }

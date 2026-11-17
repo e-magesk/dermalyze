@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @appSubtitle.
   ///
   /// In pt, this message translates to:
-  /// **'Software de Triagem e Diagnóstico PAD-UFES'**
+  /// **'Software de Triagem e Análise Assistida PAD-UFES'**
   String get appSubtitle;
 
   /// No description provided for @doctorAccess.
@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @diagnosticTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Diagnóstico Diferencial'**
+  /// **'Análise Assistida'**
   String get diagnosticTitle;
 
   /// No description provided for @msgSuccessLogin.
@@ -284,41 +284,17 @@ abstract class AppLocalizations {
   /// **'Olá, {userName}'**
   String helloUser(Object userName);
 
-  /// No description provided for @connectedUFES.
-  ///
-  /// In pt, this message translates to:
-  /// **'CONECTADO: LIFE-UFES'**
-  String get connectedUFES;
-
-  /// No description provided for @databaseUpdated.
-  ///
-  /// In pt, this message translates to:
-  /// **'Base de Dados Atualizada'**
-  String get databaseUpdated;
-
   /// No description provided for @clinicalTriage.
   ///
   /// In pt, this message translates to:
-  /// **'Triagem Clínica'**
+  /// **'Triagem'**
   String get clinicalTriage;
-
-  /// No description provided for @triageLevels.
-  ///
-  /// In pt, this message translates to:
-  /// **'NÍVEIS P1 - P5'**
-  String get triageLevels;
 
   /// No description provided for @differentialAnalysis.
   ///
   /// In pt, this message translates to:
-  /// **'Análise Diferencial'**
+  /// **'Análise Assistida'**
   String get differentialAnalysis;
-
-  /// No description provided for @aiDiagnosis.
-  ///
-  /// In pt, this message translates to:
-  /// **'DIAGNÓSTICO IA'**
-  String get aiDiagnosis;
 
   /// No description provided for @quickAccess.
   ///
@@ -353,7 +329,7 @@ abstract class AppLocalizations {
   /// No description provided for @navDiagnosis.
   ///
   /// In pt, this message translates to:
-  /// **'DIAGNÓSTICO'**
+  /// **'ANÁLISE ASSISTIDA'**
   String get navDiagnosis;
 
   /// No description provided for @navLibrary.
@@ -866,40 +842,16 @@ abstract class AppLocalizations {
   /// **'Nevo Melanocítico'**
   String get diagNevusName;
 
-  /// No description provided for @diagNevusDesc.
-  ///
-  /// In pt, this message translates to:
-  /// **'Lesão pigmentada benigna e estável (pinta comum). Composta por aglomerados de melanócitos com arquitetura regular, bordas bem definidas e coloração homogênea.'**
-  String get diagNevusDesc;
-
-  /// No description provided for @diagNevusConduta.
-  ///
-  /// In pt, this message translates to:
-  /// **'Acompanhamento clínico de rotina. Avaliação dermatoscópica anual. Biópsia excisional apenas recomendada se a lesão apresentar mudanças súbitas (Regra ABCDE) ou irritação constante.'**
-  String get diagNevusConduta;
-
   /// No description provided for @clinicalDiagnosis.
   ///
   /// In pt, this message translates to:
-  /// **'Diagnóstico Clínico'**
+  /// **'Análise Assistida'**
   String get clinicalDiagnosis;
-
-  /// No description provided for @diagnosisSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Análise detalhada para identificação de patologias específicas.'**
-  String get diagnosisSubtitle;
-
-  /// No description provided for @diagnosisSuggested.
-  ///
-  /// In pt, this message translates to:
-  /// **'Diagnóstico Sugerido:'**
-  String get diagnosisSuggested;
 
   /// No description provided for @diagnosisNew.
   ///
   /// In pt, this message translates to:
-  /// **'NOVO DIAGNÓSTICO'**
+  /// **'NOVA ANÁLISE'**
   String get diagnosisNew;
 
   /// No description provided for @analysisTryAgain.
@@ -907,24 +859,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'TENTAR NOVAMENTE'**
   String get analysisTryAgain;
-
-  /// No description provided for @analysisLabelConfidence.
-  ///
-  /// In pt, this message translates to:
-  /// **'Confiança'**
-  String get analysisLabelConfidence;
-
-  /// No description provided for @analysisResultsTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Resultados da Análise'**
-  String get analysisResultsTitle;
-
-  /// No description provided for @analysisClinicalFeatures.
-  ///
-  /// In pt, this message translates to:
-  /// **'Características Clínicas'**
-  String get analysisClinicalFeatures;
 
   /// No description provided for @analysisManagementTitle.
   ///
@@ -938,35 +872,11 @@ abstract class AppLocalizations {
   /// **'Nova Triagem'**
   String get triageNew;
 
-  /// No description provided for @syncStatusUpdated.
-  ///
-  /// In pt, this message translates to:
-  /// **'Base de dados atualizada'**
-  String get syncStatusUpdated;
-
-  /// No description provided for @syncStatusPending.
-  ///
-  /// In pt, this message translates to:
-  /// **'Aguardando conexão para enviar {count} dados...'**
-  String syncStatusPending(int count);
-
   /// No description provided for @libTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Biblioteca Técnica'**
+  /// **'Biblioteca'**
   String get libTitle;
-
-  /// No description provided for @libHeroTitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Conhecimento'**
-  String get libHeroTitle;
-
-  /// No description provided for @libHeroSubtitle.
-  ///
-  /// In pt, this message translates to:
-  /// **'Central de Apoio PAD-UFES'**
-  String get libHeroSubtitle;
 
   /// No description provided for @libMenuAbcdeTitle.
   ///
@@ -1057,12 +967,6 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'O Nível de Prioridade indica o grau de urgência clínica associado àquela condição.'**
   String get libDiseasesHeroDesc2;
-
-  /// No description provided for @libDiseasesEncyclopedia.
-  ///
-  /// In pt, this message translates to:
-  /// **'Enciclopédia Clínica'**
-  String get libDiseasesEncyclopedia;
 
   /// No description provided for @libTriageHeroTitle.
   ///
@@ -1376,66 +1280,6 @@ abstract class AppLocalizations {
   /// **'A decisão final sobre o diagnóstico, encaminhamento e tratamento permanece, em todos os casos, sob responsabilidade exclusiva do profissional de saúde assistente.'**
   String get guideRespFooter;
 
-  /// No description provided for @guideFlowTitleAgent.
-  ///
-  /// In pt, this message translates to:
-  /// **'Fluxo Triagem'**
-  String get guideFlowTitleAgent;
-
-  /// No description provided for @guideFlowTitleDoctor.
-  ///
-  /// In pt, this message translates to:
-  /// **'Fluxo Triagem/Diagnóstico'**
-  String get guideFlowTitleDoctor;
-
-  /// No description provided for @guideStep1Title.
-  ///
-  /// In pt, this message translates to:
-  /// **'Dados do Paciente'**
-  String get guideStep1Title;
-
-  /// No description provided for @guideStep1Desc.
-  ///
-  /// In pt, this message translates to:
-  /// **'Insira a idade e o histórico clínico de câncer de pele para contextualizar a análise.'**
-  String get guideStep1Desc;
-
-  /// No description provided for @guideStep2Title.
-  ///
-  /// In pt, this message translates to:
-  /// **'Sintomatologia'**
-  String get guideStep2Title;
-
-  /// No description provided for @guideStep2Desc.
-  ///
-  /// In pt, this message translates to:
-  /// **'Assinale a presença de coceira, dor, sangramento ou crescimento rápido da lesão.'**
-  String get guideStep2Desc;
-
-  /// No description provided for @guideStep3Title.
-  ///
-  /// In pt, this message translates to:
-  /// **'Captura de Imagem'**
-  String get guideStep3Title;
-
-  /// No description provided for @guideStep3Desc.
-  ///
-  /// In pt, this message translates to:
-  /// **'Tire uma foto macroscópica nítida da lesão. Evite sombras ou reflexos excessivos.'**
-  String get guideStep3Desc;
-
-  /// No description provided for @guideStep4Title.
-  ///
-  /// In pt, this message translates to:
-  /// **'Score e Conduta'**
-  String get guideStep4Title;
-
-  /// No description provided for @guideStep4Desc.
-  ///
-  /// In pt, this message translates to:
-  /// **'O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.'**
-  String get guideStep4Desc;
-
   /// No description provided for @cropTitle.
   ///
   /// In pt, this message translates to:
@@ -1550,23 +1394,521 @@ abstract class AppLocalizations {
   /// **'Informe seu e-mail para continuar.'**
   String get forgotPasswordEmptyEmail;
 
-  /// No description provided for @profileFallbackTitle.
+  /// No description provided for @triageResultTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Confirme seu perfil'**
-  String get profileFallbackTitle;
+  /// **'Resultado da Triagem'**
+  String get triageResultTitle;
 
-  /// No description provided for @profileFallbackMessage.
+  /// No description provided for @diagnosisResultTitle.
   ///
   /// In pt, this message translates to:
-  /// **'Não foi possível consultar seus dados no servidor. Confirme seu nome e perfil para continuar usando o app neste dispositivo.'**
-  String get profileFallbackMessage;
+  /// **'Hipótese Diagnóstica'**
+  String get diagnosisResultTitle;
 
-  /// No description provided for @profileFallbackConfirm.
+  /// No description provided for @quickAccessLibraryDesc.
   ///
   /// In pt, this message translates to:
-  /// **'Confirmar e entrar'**
-  String get profileFallbackConfirm;
+  /// **'ABCDE, doenças e metodologia P1–P5'**
+  String get quickAccessLibraryDesc;
+
+  /// No description provided for @accessNotGrantedTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acesso não liberado'**
+  String get accessNotGrantedTitle;
+
+  /// No description provided for @accessNotGrantedMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seu acesso não está liberado. Entre em contato com a equipe do Padtech para solicitar a liberação.'**
+  String get accessNotGrantedMessage;
+
+  /// No description provided for @accessRegisteredTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cadastro realizado'**
+  String get accessRegisteredTitle;
+
+  /// No description provided for @accessRegisteredMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para usar o app, entre em contato com a equipe do Padtech para solicitar a liberação do seu acesso.'**
+  String get accessRegisteredMessage;
+
+  /// No description provided for @btnOk.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entendi'**
+  String get btnOk;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem conexão com a internet. Verifique a rede e tente novamente.'**
+  String get errorNetwork;
+
+  /// No description provided for @completeProfileTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Complete seu cadastro'**
+  String get completeProfileTitle;
+
+  /// No description provided for @completeProfileMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua conta ainda não tem um perfil no Dermalyze. Informe seu nome e perfil para enviar o cadastro à equipe do Padtech.'**
+  String get completeProfileMessage;
+
+  /// No description provided for @completeProfileConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Enviar cadastro'**
+  String get completeProfileConfirm;
+
+  /// No description provided for @restartSectionTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar ao início?'**
+  String get restartSectionTitle;
+
+  /// No description provided for @restartSectionMessage.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os dados preenchidos e o resultado exibido serão descartados.'**
+  String get restartSectionMessage;
+
+  /// No description provided for @restartSectionConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar ao início'**
+  String get restartSectionConfirm;
+
+  /// No description provided for @triageIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tire uma foto da lesão do paciente para uma classificação rápida da prioridade de atendimento.'**
+  String get triageIntro;
+
+  /// No description provided for @diagnosisIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Informe os dados clínicos e fotografe a lesão com o dermatoscópio para obter uma hipótese diagnóstica que apoia a sua avaliação.'**
+  String get diagnosisIntro;
+
+  /// No description provided for @homeTriageDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Prioridade de atendimento a partir de uma foto'**
+  String get homeTriageDesc;
+
+  /// No description provided for @homeDiagnosisDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Hipótese diagnóstica com dados clínicos e dermatoscopia'**
+  String get homeDiagnosisDesc;
+
+  /// No description provided for @photoRequirementsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para a foto ser aceita'**
+  String get photoRequirementsTitle;
+
+  /// No description provided for @photoReqMacro1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotografe de perto, com a lesão no centro ocupando boa parte da imagem.'**
+  String get photoReqMacro1;
+
+  /// No description provided for @photoReqMacro2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mantenha o aparelho firme: a foto precisa estar nítida.'**
+  String get photoReqMacro2;
+
+  /// No description provided for @photoReqMacro3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use boa iluminação, sem sombras nem reflexos sobre a lesão.'**
+  String get photoReqMacro3;
+
+  /// No description provided for @photoReqMacro4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostre apenas a pele, sem roupas, objetos ou fundo.'**
+  String get photoReqMacro4;
+
+  /// No description provided for @photoReqDermo1.
+  ///
+  /// In pt, this message translates to:
+  /// **'Use o dermatoscópio acoplado ao tablet, em contato com a pele.'**
+  String get photoReqDermo1;
+
+  /// No description provided for @photoReqDermo2.
+  ///
+  /// In pt, this message translates to:
+  /// **'Centralize a lesão no campo do dermatoscópio.'**
+  String get photoReqDermo2;
+
+  /// No description provided for @photoReqDermo3.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ajuste o foco até as bordas e a pigmentação ficarem nítidas.'**
+  String get photoReqDermo3;
+
+  /// No description provided for @photoReqDermo4.
+  ///
+  /// In pt, this message translates to:
+  /// **'Evite bolhas de ar, reflexos e excesso de pelos sobre a lesão.'**
+  String get photoReqDermo4;
+
+  /// No description provided for @photoRequirementsFooter.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fotos que não atendem a esses requisitos são recusadas automaticamente.'**
+  String get photoRequirementsFooter;
+
+  /// No description provided for @confidenceTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confiança do modelo'**
+  String get confidenceTitle;
+
+  /// No description provided for @confidenceTriageDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostra o quanto o modelo está seguro desta prioridade, com base na foto. Não indica a chance de a lesão ser maligna. Quanto menor o valor, mais importante é a avaliação clínica.'**
+  String get confidenceTriageDesc;
+
+  /// No description provided for @confidenceDiagnosisDesc.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostra o quanto o modelo está seguro desta hipótese, com base na foto e nos dados clínicos. Não é uma confirmação diagnóstica. Quanto menor o valor, mais importante é a avaliação clínica.'**
+  String get confidenceDiagnosisDesc;
+
+  /// No description provided for @analyzedPhotoTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Foto analisada'**
+  String get analyzedPhotoTitle;
+
+  /// No description provided for @priorityShowAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ver todas as prioridades'**
+  String get priorityShowAll;
+
+  /// No description provided for @priorityHideAll.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ocultar prioridades'**
+  String get priorityHideAll;
+
+  /// No description provided for @libSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Material de consulta sobre a regra ABCDE, as principais doenças de pele e a metodologia de triagem.'**
+  String get libSubtitle;
+
+  /// No description provided for @libDiseasesSearchHint.
+  ///
+  /// In pt, this message translates to:
+  /// **'Buscar doença pelo nome'**
+  String get libDiseasesSearchHint;
+
+  /// No description provided for @libDiseasesFilterTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Filtrar por características'**
+  String get libDiseasesFilterTitle;
+
+  /// No description provided for @libDiseasesClearFilters.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar filtros'**
+  String get libDiseasesClearFilters;
+
+  /// No description provided for @libDiseasesNoResults.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma doença encontrada com esses critérios.'**
+  String get libDiseasesNoResults;
+
+  /// No description provided for @libImageCredits.
+  ///
+  /// In pt, this message translates to:
+  /// **'Créditos das imagens'**
+  String get libImageCredits;
+
+  /// No description provided for @libImageCreditsIntro.
+  ///
+  /// In pt, this message translates to:
+  /// **'Imagens ilustrativas temporárias, com licença aberta.'**
+  String get libImageCreditsIntro;
+
+  /// No description provided for @tagAsymmetry.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assimetria'**
+  String get tagAsymmetry;
+
+  /// No description provided for @tagIrregularBorders.
+  ///
+  /// In pt, this message translates to:
+  /// **'Bordas irregulares'**
+  String get tagIrregularBorders;
+
+  /// No description provided for @tagMultipleColors.
+  ///
+  /// In pt, this message translates to:
+  /// **'Várias cores'**
+  String get tagMultipleColors;
+
+  /// No description provided for @tagPigmented.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pigmentada'**
+  String get tagPigmented;
+
+  /// No description provided for @tagGrowth.
+  ///
+  /// In pt, this message translates to:
+  /// **'Crescimento ou mudança'**
+  String get tagGrowth;
+
+  /// No description provided for @tagBleeding.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sangramento'**
+  String get tagBleeding;
+
+  /// No description provided for @tagItching.
+  ///
+  /// In pt, this message translates to:
+  /// **'Coceira'**
+  String get tagItching;
+
+  /// No description provided for @tagScaling.
+  ///
+  /// In pt, this message translates to:
+  /// **'Descamação'**
+  String get tagScaling;
+
+  /// No description provided for @tagRedness.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vermelhidão'**
+  String get tagRedness;
+
+  /// No description provided for @tagRaised.
+  ///
+  /// In pt, this message translates to:
+  /// **'Elevação ou nódulo'**
+  String get tagRaised;
+
+  /// No description provided for @tagNonHealing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ferida que não cicatriza'**
+  String get tagNonHealing;
+
+  /// No description provided for @tagSunExposed.
+  ///
+  /// In pt, this message translates to:
+  /// **'Área exposta ao sol'**
+  String get tagSunExposed;
+
+  /// No description provided for @guideFaqTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Dúvidas frequentes'**
+  String get guideFaqTitle;
+
+  /// No description provided for @faqGeneralTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Gerais'**
+  String get faqGeneralTitle;
+
+  /// No description provided for @faqTriageTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Triagem'**
+  String get faqTriageTitle;
+
+  /// No description provided for @faqDiagnosisTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Análise Assistida'**
+  String get faqDiagnosisTitle;
+
+  /// No description provided for @faqLibraryTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Biblioteca'**
+  String get faqLibraryTitle;
+
+  /// No description provided for @faqAccountTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acesso e conta'**
+  String get faqAccountTitle;
+
+  /// No description provided for @faqWhatIsQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que o Dermalyze faz?'**
+  String get faqWhatIsQ;
+
+  /// No description provided for @faqWhatIsA.
+  ///
+  /// In pt, this message translates to:
+  /// **'O Dermalyze apoia a avaliação de lesões de pele. A Triagem classifica a prioridade de atendimento a partir de uma foto, e a Análise Assistida, usada por médicos, sugere uma hipótese diagnóstica com base na dermatoscopia e nos dados clínicos. A decisão final é sempre do profissional de saúde.'**
+  String get faqWhatIsA;
+
+  /// No description provided for @faqOfflineQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'O app funciona sem internet?'**
+  String get faqOfflineQ;
+
+  /// No description provided for @faqOfflineA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sim. A Triagem, a Análise Assistida e a Biblioteca funcionam sem internet, porque as análises são feitas no próprio aparelho. A internet só é necessária para entrar na conta, criar uma conta ou recuperar a senha.'**
+  String get faqOfflineA;
+
+  /// No description provided for @faqDataQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Os dados do paciente ficam salvos?'**
+  String get faqDataQ;
+
+  /// No description provided for @faqDataA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não. As fotos e os dados clínicos ficam apenas no aparelho, durante a análise, e não são enviados para nenhum servidor. O resultado não fica guardado: ao iniciar uma nova análise ou sair da conta, ele é descartado.'**
+  String get faqDataA;
+
+  /// No description provided for @faqConfidenceQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que significa a confiança do modelo?'**
+  String get faqConfidenceQ;
+
+  /// No description provided for @faqConfidenceA.
+  ///
+  /// In pt, this message translates to:
+  /// **'É o quanto o modelo está seguro do resultado, entre as opções que ele reconhece. Não é a chance de a lesão ser maligna nem uma confirmação diagnóstica. Quanto menor a confiança, mais peso deve ter a avaliação clínica.'**
+  String get faqConfidenceA;
+
+  /// No description provided for @faqTriageHowQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como usar a Triagem?'**
+  String get faqTriageHowQ;
+
+  /// No description provided for @faqTriageHowA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na aba Triagem, toque na área da foto, fotografe a lesão sem dermatoscópio e ajuste o enquadramento. Se a foto for aceita, toque em Analisar agora. O resultado mostra o nível de prioridade e a conduta recomendada.'**
+  String get faqTriageHowA;
+
+  /// No description provided for @faqPriorityLevelsQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que significam os níveis P1 a P5?'**
+  String get faqPriorityLevelsQ;
+
+  /// No description provided for @faqPriorityLevelsA.
+  ///
+  /// In pt, this message translates to:
+  /// **'São níveis de prioridade de atendimento, do mais urgente (P1, prioridade máxima) ao menos urgente (P5, prioridade mínima). A explicação de cada nível está na Biblioteca, em Metodologia e Triagem, e também pode ser aberta na tela de resultado.'**
+  String get faqPriorityLevelsA;
+
+  /// No description provided for @faqPhotoRejectedQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Por que minha foto foi recusada?'**
+  String get faqPhotoRejectedQ;
+
+  /// No description provided for @faqPhotoRejectedA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Antes da análise, o app verifica se a foto está nítida e se mostra uma lesão de pele. Fotos desfocadas, escuras, com reflexos ou que não mostram a pele são recusadas. Siga os requisitos exibidos na tela de captura e tente novamente.'**
+  String get faqPhotoRejectedA;
+
+  /// No description provided for @faqDiagnosisHowQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como usar a Análise Assistida?'**
+  String get faqDiagnosisHowQ;
+
+  /// No description provided for @faqDiagnosisHowA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na aba Análise Assistida, informe a idade, o histórico de câncer de pele, a região da lesão e os sintomas. Em seguida, fotografe a lesão com o dermatoscópio acoplado. O resultado mostra uma hipótese diagnóstica, o nível de prioridade e a conduta sugerida.'**
+  String get faqDiagnosisHowA;
+
+  /// No description provided for @faqReplacesDiagnosisQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'A hipótese diagnóstica substitui o diagnóstico médico?'**
+  String get faqReplacesDiagnosisQ;
+
+  /// No description provided for @faqReplacesDiagnosisA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não. A hipótese é um apoio à decisão e não substitui a anamnese, o exame clínico nem a biópsia. O diagnóstico e a conduta são sempre responsabilidade do médico.'**
+  String get faqReplacesDiagnosisA;
+
+  /// No description provided for @faqLibraryQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'O que encontro na Biblioteca?'**
+  String get faqLibraryQ;
+
+  /// No description provided for @faqLibraryA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Material de consulta: a regra ABCDE para avaliar lesões pigmentadas, as principais doenças de pele com busca e filtro por características, e a explicação dos níveis de prioridade P1 a P5.'**
+  String get faqLibraryA;
+
+  /// No description provided for @faqPasswordQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esqueci minha senha. O que faço?'**
+  String get faqPasswordQ;
+
+  /// No description provided for @faqPasswordA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na tela de login, toque em Esqueci minha senha e informe seu e-mail. Você receberá um link para criar uma nova senha.'**
+  String get faqPasswordA;
+
+  /// No description provided for @faqAccessQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Meu acesso não foi liberado. O que faço?'**
+  String get faqAccessQ;
+
+  /// No description provided for @faqAccessA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todo cadastro precisa ser liberado pela equipe do Padtech. Entre em contato com a equipe para solicitar a liberação; depois disso, basta entrar novamente.'**
+  String get faqAccessA;
+
+  /// No description provided for @faqLanguageQ.
+  ///
+  /// In pt, this message translates to:
+  /// **'Como troco o idioma do app?'**
+  String get faqLanguageQ;
+
+  /// No description provided for @faqLanguageA.
+  ///
+  /// In pt, this message translates to:
+  /// **'Na tela inicial, toque no ícone de engrenagem e escolha o idioma em Configurações.'**
+  String get faqLanguageA;
 }
 
 class _AppLocalizationsDelegate

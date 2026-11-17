@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importante para o context.read
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,10 +8,10 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import '../controller/login_controller.dart';
+import 'package:dermalyze/src/features/auth/access_control.dart';
 import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
-// OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart
-import 'package:dermalyze/src/features/auth/offline_profile_fallback.dart';
-import 'profile_fallback_dialog.dart';
+import 'access_message_dialog.dart';
+import 'complete_profile_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -32,6 +33,15 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _authController = context.read<AuthController>();
     _loginController = LoginController(_authController);
+
+    // A sessão pode ter terminado por revogação de acesso com o app aberto: o
+    // AuthRouter troca para esta tela e o aviso é mostrado assim que ela abre.
+    final notice = _authController.consumeNotice();
+    if (notice != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) showAccessMessage(context, notice);
+      });
+    }
   }
 
   @override
@@ -55,10 +65,13 @@ class _LoginPageState extends State<LoginPage> {
     final String? error;
     try {
       error = await _loginController.signIn(email, password);
-    } on MissingUserProfileException catch (pending) {
-      // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart
+    } on AccessNotGrantedException {
       if (!mounted) return;
-      await _askForProfile(pending);
+      await showAccessMessage(context, AccessNotice.notGranted);
+      return;
+    } on ProfileIncompleteException {
+      if (!mounted) return;
+      await _completeProfile();
       return;
     }
 
@@ -69,31 +82,46 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // --- OFFLINE_PROFILE_FALLBACK (temporário) -------------------------------
-  // Remover junto com o resto do fallback quando o backend estiver em produção
-  // e o perfil voltar a vir sempre do servidor.
+  /// Contas sem perfil no Firestore (anteriores ao controle de acesso): pede
+  /// nome e perfil, envia o cadastro e avisa que falta a liberação do Padtech.
+  Future<void> _completeProfile() async {
+    final l10n = AppLocalizations.of(context)!;
 
-  /// Pergunta nome e perfil quando o login autenticou mas o app não descobriu
-  /// quem é o usuário. Desistindo, a sessão do Firebase é encerrada.
-  Future<void> _askForProfile(MissingUserProfileException pending) async {
     final answer = await showDialog<ProfileAnswer>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => const ProfileFallbackDialog(),
+      builder: (_) => const CompleteProfileDialog(),
     );
 
-    if (!mounted) return;
-
     if (answer == null) {
-      await _authController.discardPendingProfile();
+      await _authController.cancelProfileCompletion();
       return;
     }
 
-    await _authController.completeProfileOffline(
-      uid: pending.uid,
-      name: answer.name,
-      role: answer.role,
-    );
+    final String? error = await _runCompleteProfile(answer);
+
+    if (!mounted) return;
+
+    if (error != null) {
+      _handleLoginError(error, l10n);
+      return;
+    }
+
+    await showAccessMessage(context, AccessNotice.registered);
+  }
+
+  Future<String?> _runCompleteProfile(ProfileAnswer answer) async {
+    try {
+      _loginController.isLoading.value = true;
+      await _authController.completeProfile(name: answer.name, role: answer.role);
+      return null;
+    } on FirebaseException catch (e) {
+      return e.code;
+    } catch (e) {
+      return e.toString();
+    } finally {
+      _loginController.isLoading.value = false;
+    }
   }
 
   void _handleLoginError(String errorCode, AppLocalizations l10n) {
@@ -112,6 +140,10 @@ class _LoginPageState extends State<LoginPage> {
         break;
       case 'invalid-email':
         message = l10n.errorInvalidEmail;
+        break;
+      case 'network-request-failed':
+      case 'unavailable':
+        message = l10n.errorNetwork;
         break;
       default:
         message = errorCode; 

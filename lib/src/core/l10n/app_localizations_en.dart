@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Dermalyze';
 
   @override
-  String get appSubtitle => 'PAD-UFES Screening and Diagnosis Software';
+  String get appSubtitle => 'PAD-UFES Screening and Assisted Analysis Software';
 
   @override
   String get doctorAccess => 'Doctor Access';
@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triageTitle => 'Risk Triage';
 
   @override
-  String get diagnosticTitle => 'Differential Diagnosis';
+  String get diagnosticTitle => 'Assisted Analysis';
 
   @override
   String get msgSuccessLogin => 'Login successful!';
@@ -105,22 +105,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get connectedUFES => 'CONNECTED: LIFE-UFES';
+  String get clinicalTriage => 'Triage';
 
   @override
-  String get databaseUpdated => 'Database Updated';
-
-  @override
-  String get clinicalTriage => 'Clinical Triage';
-
-  @override
-  String get triageLevels => 'LEVELS P1 - P5';
-
-  @override
-  String get differentialAnalysis => 'Differential Analysis';
-
-  @override
-  String get aiDiagnosis => 'AI DIAGNOSIS';
+  String get differentialAnalysis => 'Assisted Analysis';
 
   @override
   String get quickAccess => 'QUICK ACCESS';
@@ -138,7 +126,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navTriage => 'TRIAGE';
 
   @override
-  String get navDiagnosis => 'DIAGNOSIS';
+  String get navDiagnosis => 'ASSISTED ANALYSIS';
 
   @override
   String get navLibrary => 'LIBRARY';
@@ -417,37 +405,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get diagNevusName => 'Melanocytic Nevus';
 
   @override
-  String get diagNevusDesc =>
-      'Benign and stable pigmented lesion (common mole). Composed of clusters of melanocytes with regular architecture, well-defined borders, and homogeneous coloration.';
+  String get clinicalDiagnosis => 'Assisted Analysis';
 
   @override
-  String get diagNevusConduta =>
-      'Routine clinical follow-up. Annual dermoscopic evaluation. Excisional biopsy recommended only if the lesion shows sudden changes (ABCDE Rule) or constant irritation.';
-
-  @override
-  String get clinicalDiagnosis => 'Clinical Diagnosis';
-
-  @override
-  String get diagnosisSubtitle =>
-      'Detailed analysis for the identification of specific pathologies.';
-
-  @override
-  String get diagnosisSuggested => 'Suggested Diagnosis:';
-
-  @override
-  String get diagnosisNew => 'NEW DIAGNOSIS';
+  String get diagnosisNew => 'NEW ANALYSIS';
 
   @override
   String get analysisTryAgain => 'TRY AGAIN';
-
-  @override
-  String get analysisLabelConfidence => 'Confidence';
-
-  @override
-  String get analysisResultsTitle => 'Analysis Results';
-
-  @override
-  String get analysisClinicalFeatures => 'Clinical Features';
 
   @override
   String get analysisManagementTitle => 'Management and Guidance';
@@ -456,21 +420,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get triageNew => 'New Triage';
 
   @override
-  String get syncStatusUpdated => 'Database up to date';
-
-  @override
-  String syncStatusPending(int count) {
-    return 'Waiting for connection to send $count records...';
-  }
-
-  @override
-  String get libTitle => 'Technical Library';
-
-  @override
-  String get libHeroTitle => 'Knowledge';
-
-  @override
-  String get libHeroSubtitle => 'PAD-UFES Support Center';
+  String get libTitle => 'Library';
 
   @override
   String get libMenuAbcdeTitle => 'ABCDE Rule';
@@ -520,9 +470,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get libDiseasesHeroDesc2 =>
       'The Priority Level indicates the degree of clinical urgency associated with that condition.';
-
-  @override
-  String get libDiseasesEncyclopedia => 'Clinical Encyclopedia';
 
   @override
   String get libTriageHeroTitle => 'P1-P5 Methodology';
@@ -694,40 +641,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'The final decision on diagnosis, referral, and treatment remains, in all cases, the exclusive responsibility of the attending health professional.';
 
   @override
-  String get guideFlowTitleAgent => 'Triage Flow';
-
-  @override
-  String get guideFlowTitleDoctor => 'Triage/Diagnosis Flow';
-
-  @override
-  String get guideStep1Title => 'Patient Data';
-
-  @override
-  String get guideStep1Desc =>
-      'Enter the patient\'s age and clinical history of skin cancer to contextualize the analysis.';
-
-  @override
-  String get guideStep2Title => 'Symptomatology';
-
-  @override
-  String get guideStep2Desc =>
-      'Note the presence of itching, pain, bleeding, or rapid growth of the lesion.';
-
-  @override
-  String get guideStep3Title => 'Image Capture';
-
-  @override
-  String get guideStep3Desc =>
-      'Take a clear macroscopic photo of the lesion. Avoid excessive shadows or reflections.';
-
-  @override
-  String get guideStep4Title => 'Score and Management';
-
-  @override
-  String get guideStep4Desc =>
-      'The system will generate a priority level or diagnostic report. Evaluate the recommended management according to the result obtained.';
-
-  @override
   String get cropTitle => 'Adjust Lesion';
 
   @override
@@ -791,12 +704,295 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forgotPasswordEmptyEmail => 'Enter your e-mail to continue.';
 
   @override
-  String get profileFallbackTitle => 'Confirm your profile';
+  String get triageResultTitle => 'Triage Result';
 
   @override
-  String get profileFallbackMessage =>
-      'We could not reach the server to load your data. Confirm your name and profile to keep using the app on this device.';
+  String get diagnosisResultTitle => 'Diagnostic Hypothesis';
 
   @override
-  String get profileFallbackConfirm => 'Confirm and sign in';
+  String get quickAccessLibraryDesc => 'ABCDE, diseases and P1–P5 method';
+
+  @override
+  String get accessNotGrantedTitle => 'Access not granted';
+
+  @override
+  String get accessNotGrantedMessage =>
+      'Your access is not granted. Please contact the Padtech team to request access.';
+
+  @override
+  String get accessRegisteredTitle => 'Registration complete';
+
+  @override
+  String get accessRegisteredMessage =>
+      'To use the app, please contact the Padtech team to request access to your account.';
+
+  @override
+  String get btnOk => 'Got it';
+
+  @override
+  String get errorNetwork =>
+      'No internet connection. Check your network and try again.';
+
+  @override
+  String get completeProfileTitle => 'Complete your registration';
+
+  @override
+  String get completeProfileMessage =>
+      'Your account does not have a Dermalyze profile yet. Enter your name and profile to send your registration to the Padtech team.';
+
+  @override
+  String get completeProfileConfirm => 'Send registration';
+
+  @override
+  String get restartSectionTitle => 'Back to start?';
+
+  @override
+  String get restartSectionMessage =>
+      'The data entered and the result shown will be discarded.';
+
+  @override
+  String get restartSectionConfirm => 'Back to start';
+
+  @override
+  String get triageIntro =>
+      'Take a photo of the patient\'s lesion for a quick classification of care priority.';
+
+  @override
+  String get diagnosisIntro =>
+      'Enter the clinical data and photograph the lesion with the dermatoscope to get a diagnostic hypothesis that supports your assessment.';
+
+  @override
+  String get homeTriageDesc => 'Care priority from a photo';
+
+  @override
+  String get homeDiagnosisDesc =>
+      'Diagnostic hypothesis with clinical data and dermoscopy';
+
+  @override
+  String get photoRequirementsTitle => 'For the photo to be accepted';
+
+  @override
+  String get photoReqMacro1 =>
+      'Take the photo up close, with the lesion centered and filling most of the image.';
+
+  @override
+  String get photoReqMacro2 =>
+      'Hold the device steady: the photo must be sharp.';
+
+  @override
+  String get photoReqMacro3 =>
+      'Use good lighting, with no shadows or glare on the lesion.';
+
+  @override
+  String get photoReqMacro4 =>
+      'Show only the skin, with no clothes, objects or background.';
+
+  @override
+  String get photoReqDermo1 =>
+      'Use the dermatoscope attached to the tablet, in contact with the skin.';
+
+  @override
+  String get photoReqDermo2 =>
+      'Center the lesion in the dermatoscope\'s field.';
+
+  @override
+  String get photoReqDermo3 =>
+      'Adjust the focus until the borders and pigmentation are sharp.';
+
+  @override
+  String get photoReqDermo4 =>
+      'Avoid air bubbles, glare and excess hair over the lesion.';
+
+  @override
+  String get photoRequirementsFooter =>
+      'Photos that do not meet these requirements are rejected automatically.';
+
+  @override
+  String get confidenceTitle => 'Model confidence';
+
+  @override
+  String get confidenceTriageDesc =>
+      'Shows how sure the model is about this priority, based on the photo. It does not indicate the chance that the lesion is malignant. The lower the value, the more important the clinical assessment.';
+
+  @override
+  String get confidenceDiagnosisDesc =>
+      'Shows how sure the model is about this hypothesis, based on the photo and the clinical data. It is not a diagnostic confirmation. The lower the value, the more important the clinical assessment.';
+
+  @override
+  String get analyzedPhotoTitle => 'Analyzed photo';
+
+  @override
+  String get priorityShowAll => 'See all priority levels';
+
+  @override
+  String get priorityHideAll => 'Hide priority levels';
+
+  @override
+  String get libSubtitle =>
+      'Reference material on the ABCDE rule, the main skin diseases and the triage methodology.';
+
+  @override
+  String get libDiseasesSearchHint => 'Search disease by name';
+
+  @override
+  String get libDiseasesFilterTitle => 'Filter by characteristics';
+
+  @override
+  String get libDiseasesClearFilters => 'Clear filters';
+
+  @override
+  String get libDiseasesNoResults => 'No disease found with these criteria.';
+
+  @override
+  String get libImageCredits => 'Image credits';
+
+  @override
+  String get libImageCreditsIntro =>
+      'Temporary illustrative images, under open licenses.';
+
+  @override
+  String get tagAsymmetry => 'Asymmetry';
+
+  @override
+  String get tagIrregularBorders => 'Irregular borders';
+
+  @override
+  String get tagMultipleColors => 'Multiple colors';
+
+  @override
+  String get tagPigmented => 'Pigmented';
+
+  @override
+  String get tagGrowth => 'Growth or change';
+
+  @override
+  String get tagBleeding => 'Bleeding';
+
+  @override
+  String get tagItching => 'Itching';
+
+  @override
+  String get tagScaling => 'Scaling';
+
+  @override
+  String get tagRedness => 'Redness';
+
+  @override
+  String get tagRaised => 'Raised or nodule';
+
+  @override
+  String get tagNonHealing => 'Non-healing sore';
+
+  @override
+  String get tagSunExposed => 'Sun-exposed area';
+
+  @override
+  String get guideFaqTitle => 'Frequently asked questions';
+
+  @override
+  String get faqGeneralTitle => 'General';
+
+  @override
+  String get faqTriageTitle => 'Triage';
+
+  @override
+  String get faqDiagnosisTitle => 'Assisted Analysis';
+
+  @override
+  String get faqLibraryTitle => 'Library';
+
+  @override
+  String get faqAccountTitle => 'Access and account';
+
+  @override
+  String get faqWhatIsQ => 'What does Dermalyze do?';
+
+  @override
+  String get faqWhatIsA =>
+      'Dermalyze supports the assessment of skin lesions. Triage classifies care priority from a photo, and Assisted Analysis, used by doctors, suggests a diagnostic hypothesis based on dermoscopy and clinical data. The final decision always belongs to the health professional.';
+
+  @override
+  String get faqOfflineQ => 'Does the app work offline?';
+
+  @override
+  String get faqOfflineA =>
+      'Yes. Triage, Assisted Analysis and the Library work offline, because the analyses run on the device itself. Internet is only needed to sign in, create an account or reset your password.';
+
+  @override
+  String get faqDataQ => 'Is patient data saved?';
+
+  @override
+  String get faqDataA =>
+      'No. Photos and clinical data stay on the device only during the analysis and are not sent to any server. The result is not kept: it is discarded when you start a new analysis or sign out.';
+
+  @override
+  String get faqConfidenceQ => 'What does model confidence mean?';
+
+  @override
+  String get faqConfidenceA =>
+      'It is how sure the model is about the result, among the options it recognizes. It is not the chance that the lesion is malignant, nor a diagnostic confirmation. The lower the confidence, the more weight the clinical assessment should have.';
+
+  @override
+  String get faqTriageHowQ => 'How do I use Triage?';
+
+  @override
+  String get faqTriageHowA =>
+      'In the Triage tab, tap the photo area, photograph the lesion without a dermatoscope and adjust the framing. If the photo is accepted, tap Analyze now. The result shows the priority level and the recommended management.';
+
+  @override
+  String get faqPriorityLevelsQ => 'What do levels P1 to P5 mean?';
+
+  @override
+  String get faqPriorityLevelsA =>
+      'They are care priority levels, from the most urgent (P1, maximum priority) to the least urgent (P5, minimum priority). Each level is explained in the Library, under Methodology and Triage, and can also be opened on the result screen.';
+
+  @override
+  String get faqPhotoRejectedQ => 'Why was my photo rejected?';
+
+  @override
+  String get faqPhotoRejectedA =>
+      'Before the analysis, the app checks whether the photo is sharp and shows a skin lesion. Blurry or dark photos, photos with glare or photos that do not show the skin are rejected. Follow the requirements shown on the capture screen and try again.';
+
+  @override
+  String get faqDiagnosisHowQ => 'How do I use Assisted Analysis?';
+
+  @override
+  String get faqDiagnosisHowA =>
+      'In the Assisted Analysis tab, enter the age, skin cancer history, lesion region and symptoms. Then photograph the lesion with the attached dermatoscope. The result shows a diagnostic hypothesis, the priority level and the suggested management.';
+
+  @override
+  String get faqReplacesDiagnosisQ =>
+      'Does the diagnostic hypothesis replace the doctor\'s diagnosis?';
+
+  @override
+  String get faqReplacesDiagnosisA =>
+      'No. The hypothesis is decision support and does not replace the medical history, the clinical examination or the biopsy. Diagnosis and management are always the responsibility of the doctor.';
+
+  @override
+  String get faqLibraryQ => 'What is in the Library?';
+
+  @override
+  String get faqLibraryA =>
+      'Reference material: the ABCDE rule for assessing pigmented lesions, the main skin diseases with search and filtering by characteristics, and the explanation of priority levels P1 to P5.';
+
+  @override
+  String get faqPasswordQ => 'I forgot my password. What do I do?';
+
+  @override
+  String get faqPasswordA =>
+      'On the login screen, tap Forgot my password and enter your e-mail. You will receive a link to create a new password.';
+
+  @override
+  String get faqAccessQ => 'My access has not been granted. What do I do?';
+
+  @override
+  String get faqAccessA =>
+      'Every registration must be approved by the Padtech team. Contact the team to request access; after that, just sign in again.';
+
+  @override
+  String get faqLanguageQ => 'How do I change the app language?';
+
+  @override
+  String get faqLanguageA =>
+      'On the home screen, tap the gear icon and choose the language in Settings.';
 }

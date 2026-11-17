@@ -3,7 +3,7 @@ import 'package:dermalyze/src/modules/library/views/library_abcde_view.dart';
 import 'package:dermalyze/src/modules/library/views/library_diseases_view.dart';
 import 'package:dermalyze/src/modules/library/views/library_menu_views.dart';
 import 'package:dermalyze/src/modules/library/views/library_triage_view.dart';
-import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
+import 'package:dermalyze/src/shared/navigation/section_navigation_registry.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
@@ -17,22 +17,22 @@ class LibraryPage extends StatefulWidget {
   State<LibraryPage> createState() => _LibraryPageState();
 }
 
-class _LibraryPageState extends State<LibraryPage> {
+class _LibraryPageState extends State<LibraryPage> implements SectionNavigation {
   LibraryCategory _currentCategory = LibraryCategory.menu;
 
   // Guardado no initState porque ler o Provider no dispose não é seguro.
-  late final BackHandlerRegistry _backRegistry;
+  late final SectionNavigationRegistry _sections;
 
   @override
   void initState() {
     super.initState();
-    _backRegistry = context.read<BackHandlerRegistry>();
-    _backRegistry.register(BackScope.library, _handleBack);
+    _sections = context.read<SectionNavigationRegistry>();
+    _sections.register(SectionScope.library, this);
   }
 
   @override
   void dispose() {
-    _backRegistry.unregister(BackScope.library, _handleBack);
+    _sections.unregister(SectionScope.library, this);
     super.dispose();
   }
 
@@ -42,12 +42,36 @@ class _LibraryPageState extends State<LibraryPage> {
 
   /// Volta da subpágina para o menu da Biblioteca. Retorna false quando já
   /// está no menu, deixando o evento seguir para a MainPage.
-  bool _handleBack() {
+  @override
+  bool handleBack() {
     if (_currentCategory != LibraryCategory.menu) {
       _setCategory(LibraryCategory.menu);
       return true;
     }
     return false;
+  }
+
+  /// Ler a Biblioteca não gera nada que se perca: volta ao menu sem confirmar.
+  @override
+  bool get hasProgress => false;
+
+  @override
+  void resetToStart() {
+    if (_currentCategory != LibraryCategory.menu) _setCategory(LibraryCategory.menu);
+  }
+
+  /// Mesmo nome do item clicado no menu, para o breadcrumb.
+  String _categoryTitle(AppLocalizations l10n) {
+    switch (_currentCategory) {
+      case LibraryCategory.menu:
+        return l10n.libTitle;
+      case LibraryCategory.abcde:
+        return l10n.libMenuAbcdeTitle;
+      case LibraryCategory.diseases:
+        return l10n.libMenuDiseasesTitle;
+      case LibraryCategory.triage:
+        return l10n.libMenuTriageTitle;
+    }
   }
 
   @override
@@ -68,10 +92,12 @@ class _LibraryPageState extends State<LibraryPage> {
                 icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textMedium, size: 20),
                 onPressed: () => _setCategory(LibraryCategory.menu),
               ),
-        title: Text(
-          l10n.libTitle,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: AppColors.textDark, letterSpacing: -0.5),
-        ),
+        title: isMenu
+            ? Text(
+                l10n.libTitle,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: AppColors.textDark, letterSpacing: -0.5),
+              )
+            : _buildBreadcrumb(l10n),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -83,6 +109,38 @@ class _LibraryPageState extends State<LibraryPage> {
           ),
         ),
       ),
+    );
+  }
+
+  /// "Biblioteca Técnica › Principais Doenças": deixa claro onde o usuário está,
+  /// mesmo quando o título interno da subpágina é diferente do item clicado.
+  Widget _buildBreadcrumb(AppLocalizations l10n) {
+    return Row(
+      children: [
+        Flexible(
+          child: GestureDetector(
+            onTap: () => _setCategory(LibraryCategory.menu),
+            child: Text(
+              l10n.libTitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textMedium, letterSpacing: -0.5),
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 6),
+          child: Icon(Icons.chevron_right_rounded, color: AppColors.textLight, size: 20),
+        ),
+        Flexible(
+          child: Text(
+            _categoryTitle(l10n),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppColors.textDark, letterSpacing: -0.5),
+          ),
+        ),
+      ],
     );
   }
 

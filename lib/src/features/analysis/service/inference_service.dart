@@ -3,6 +3,16 @@ import 'package:dermalyze/src/models/clinical_record.dart';
 import 'package:dermalyze/src/features/analysis/service/ood_onnx_service.dart';
 import 'package:flutter/foundation.dart';
 
+/// Score mínimo do modelo OOD v2 para aceitar a foto.
+///
+/// O modelo é uma regressão de qualidade em que maior é melhor: o v1 limitava a
+/// saída a [1, 5] e aceitava acima de 1,5. O v2 não limita a saída, e este
+/// limiar foi definido pela equipe ao validar o modelo.
+const double kOodAcceptanceThreshold = 2.48;
+
+/// A foto pode seguir para a análise?
+bool isAcceptedOodScore(double score) => score >= kOodAcceptanceThreshold;
+
 class InferenceService {
   final OodOnnxService _oodService = OodOnnxService();
 
@@ -11,11 +21,12 @@ class InferenceService {
       // Chama o modelo ONNX real
       final double? score = await _oodService.predictQualityScore(imagePath);
       debugPrint('================================================================');
-      debugPrint('OOD Score: $score'); 
+      // O caminho permite comparar com tools/ood_reference.py na mesma imagem.
+      debugPrint('OOD Score: $score ($imagePath)');
       if (score == null) {
         return false; // Retorna inválido em caso de falha de leitura
       }
-      return score > 1.5;
+      return isAcceptedOodScore(score);
     } catch (e) {
       debugPrint('================================================================');
       debugPrint("Falha ao validar a imagem OOD: $e");

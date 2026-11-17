@@ -10,6 +10,8 @@ import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 // Importe os controllers da sua arquitetura
 import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
 import '../controller/register_controller.dart';
+import 'package:dermalyze/src/features/auth/access_control.dart';
+import 'package:dermalyze/src/modules/login/pages/access_message_dialog.dart';
 
 enum UserType { agent, doctor }
 
@@ -192,8 +194,8 @@ class _RegisterPageState extends State<RegisterPage> {
     // Validação básica do formulário
     if (_formKey.currentState!.validate()) {
       
-      // Converte o enum para a string que o FastAPI aguarda
-      final roleString = _selectedType == UserType.doctor ? 'doctor' : 'agent';
+      // Perfil solicitado; o Padtech confirma (ou corrige) ao liberar o acesso
+      final roleString = _selectedType == UserType.doctor ? kRoleDoctor : kRoleAgent;
       
       final l10n = AppLocalizations.of(context)!;
       
@@ -211,8 +213,10 @@ class _RegisterPageState extends State<RegisterPage> {
       if (error != null) {
         _handleRegisterError(error, l10n);
       } else {
-        // Sucesso absoluto! Fecha a tela de registro.
-        // O AuthRouter na main assumirá o controle e carregará o dashboard.
+        // Conta criada, mas pendente: só entra depois que o Padtech liberar.
+        // Avisa e volta para o login.
+        await showAccessMessage(context, AccessNotice.registered);
+        if (!mounted) return;
         Navigator.pop(context);
       }
     }
@@ -230,8 +234,12 @@ class _RegisterPageState extends State<RegisterPage> {
       case 'weak-password':
         message = "A senha é muito fraca.";
         break;
+      case 'network-request-failed':
+      case 'unavailable':
+        message = l10n.errorNetwork;
+        break;
       default:
-        message = errorCode; // Exibe a resposta do backend FastAPI
+        message = errorCode;
     }
     
     ScaffoldMessenger.of(context).showSnackBar(

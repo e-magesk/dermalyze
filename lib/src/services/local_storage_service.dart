@@ -29,6 +29,13 @@ class LocalStorageService {
     await _storage.delete(key: _keyCurrentUid);
   }
 
+  /// Apaga o perfil em cache de um usuário. Chamado ao encerrar a sessão, para
+  /// que um acesso revogado não continue valendo offline neste aparelho.
+  Future<void> clearUserData(String uid) async {
+    await _storage.delete(key: '${uid}_role');
+    await _storage.delete(key: '${uid}_name');
+  }
+
   Future<void> saveLanguage(String languageCode) async {
     await _storage.write(key: _keyLanguage, value: languageCode);
   }

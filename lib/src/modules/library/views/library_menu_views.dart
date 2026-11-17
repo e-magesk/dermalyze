@@ -14,64 +14,11 @@ class LibraryMenuView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Hero Card Azul
-        // Hero Card Azul (Ajustado)
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(40),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.3), 
-                blurRadius: 20, 
-                offset: const Offset(0, 10)
-              )
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Textos na esquerda
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.libHeroTitle,
-                      style: const TextStyle(
-                        fontSize: 28, 
-                        fontWeight: FontWeight.w900, 
-                        color: Colors.white, 
-                        fontStyle: FontStyle.italic, 
-                        letterSpacing: -1
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      l10n.libHeroSubtitle.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 10, 
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.white70, 
-                        letterSpacing: 2
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16), // Espaço de respiro
-              
-              // Ícone na direita
-              const Icon(
-                Icons.menu_book_rounded, 
-                color: Colors.white24, 
-                size: 64, // Aumentei um pouco para dar mais presença
-              ),
-            ],
-          ),
+        // O que a Biblioteca oferece. Substitui o banner "Conhecimento", que
+        // ocupava o maior destaque da tela sem nenhuma função.
+        Text(
+          l10n.libSubtitle,
+          style: const TextStyle(fontSize: 14, color: AppColors.textMedium, fontWeight: FontWeight.w500, height: 1.5),
         ),
         const SizedBox(height: 24),
 

@@ -2,6 +2,8 @@ import 'package:dermalyze/src/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:dermalyze/src/modules/library/widgets/evolution_example.dart';
+import 'package:dermalyze/src/modules/library/widgets/library_section_banner.dart';
 
 class LibraryAbcdeView extends StatelessWidget {
   final AppLocalizations l10n;
@@ -12,53 +14,10 @@ class LibraryAbcdeView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Hero Card ABCDE
-        Container(
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(40),
-                        border: const Border(
-              top: BorderSide(color: Color(0xFF4F46E5), width: 1.5), // Espessura normal
-              right: BorderSide(color: Color(0xFF4F46E5), width: 1.5), // Espessura normal
-              bottom: BorderSide(color: Color(0xFF4F46E5), width: 1.5), // Espessura normal
-              left: BorderSide(color: Color(0xFF4F46E5), width: 1.5), // Espessa (Destaque)
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Linha agrupando o Ícone e o Título
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(Icons.track_changes_rounded, color: AppColors.primary, size: 32),
-                  const SizedBox(width: 12), // Espaçamento horizontal entre ícone e texto
-                  Expanded(
-                    child: Text(
-                      l10n.libAbcdeHeroTitle, 
-                      style: const TextStyle(
-                        fontSize: 22, 
-                        fontWeight: FontWeight.w900, 
-                        color: AppColors.textDark, 
-                        letterSpacing: -1
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16), // Espaçamento vertical antes do subtítulo/descrição
-              Text(
-                l10n.libAbcdeHeroDesc1, 
-                style: const TextStyle(
-                  fontSize: 13, 
-                  color: AppColors.textMedium, 
-                  fontWeight: FontWeight.w500, 
-                  height: 1.5
-                ),
-              ),
-            ],
-          ),
+        LibrarySectionBanner(
+          icon: Icons.track_changes_rounded,
+          title: l10n.libAbcdeHeroTitle,
+          description: l10n.libAbcdeHeroDesc1,
         ),
         const SizedBox(height: 32),
         
@@ -127,12 +86,13 @@ class LibraryAbcdeView extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(20), border: Border.all(color: color.withValues(alpha: 0.1))),
             child: Center(
-              child: SvgPicture.asset(
-                assetPath,
+              child: SizedBox(
                 width: 80,
                 height: 80,
-                // Opcional: Descomente se quiser que as cores das imagens fiquem dinâmicas
-                // colorFilter: ColorFilter.mode(color.withValues(alpha: 0.8), BlendMode.srcIn),
+                // A letra E é animada: uma mancha estável e uma que cresce.
+                child: letter.toUpperCase() == 'E'
+                    ? EvolutionExample(changing: !isBenign)
+                    : SvgPicture.asset(assetPath),
               ),
             ),
           ),

@@ -12,7 +12,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get appName => 'Dermalyze';
 
   @override
-  String get appSubtitle => 'Software de Triagem e Diagnóstico PAD-UFES';
+  String get appSubtitle => 'Software de Triagem e Análise Assistida PAD-UFES';
 
   @override
   String get doctorAccess => 'Acesso Médico';
@@ -39,7 +39,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get triageTitle => 'Triagem de Risco';
 
   @override
-  String get diagnosticTitle => 'Diagnóstico Diferencial';
+  String get diagnosticTitle => 'Análise Assistida';
 
   @override
   String get msgSuccessLogin => 'Login realizado com sucesso!';
@@ -104,22 +104,10 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get connectedUFES => 'CONECTADO: LIFE-UFES';
+  String get clinicalTriage => 'Triagem';
 
   @override
-  String get databaseUpdated => 'Base de Dados Atualizada';
-
-  @override
-  String get clinicalTriage => 'Triagem Clínica';
-
-  @override
-  String get triageLevels => 'NÍVEIS P1 - P5';
-
-  @override
-  String get differentialAnalysis => 'Análise Diferencial';
-
-  @override
-  String get aiDiagnosis => 'DIAGNÓSTICO IA';
+  String get differentialAnalysis => 'Análise Assistida';
 
   @override
   String get quickAccess => 'ACESSO RÁPIDO';
@@ -137,7 +125,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navTriage => 'TRIAGEM';
 
   @override
-  String get navDiagnosis => 'DIAGNÓSTICO';
+  String get navDiagnosis => 'ANÁLISE ASSISTIDA';
 
   @override
   String get navLibrary => 'BIBLIOTECA';
@@ -416,37 +404,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get diagNevusName => 'Nevo Melanocítico';
 
   @override
-  String get diagNevusDesc =>
-      'Lesão pigmentada benigna e estável (pinta comum). Composta por aglomerados de melanócitos com arquitetura regular, bordas bem definidas e coloração homogênea.';
+  String get clinicalDiagnosis => 'Análise Assistida';
 
   @override
-  String get diagNevusConduta =>
-      'Acompanhamento clínico de rotina. Avaliação dermatoscópica anual. Biópsia excisional apenas recomendada se a lesão apresentar mudanças súbitas (Regra ABCDE) ou irritação constante.';
-
-  @override
-  String get clinicalDiagnosis => 'Diagnóstico Clínico';
-
-  @override
-  String get diagnosisSubtitle =>
-      'Análise detalhada para identificação de patologias específicas.';
-
-  @override
-  String get diagnosisSuggested => 'Diagnóstico Sugerido:';
-
-  @override
-  String get diagnosisNew => 'NOVO DIAGNÓSTICO';
+  String get diagnosisNew => 'NOVA ANÁLISE';
 
   @override
   String get analysisTryAgain => 'TENTAR NOVAMENTE';
-
-  @override
-  String get analysisLabelConfidence => 'Confiança';
-
-  @override
-  String get analysisResultsTitle => 'Resultados da Análise';
-
-  @override
-  String get analysisClinicalFeatures => 'Características Clínicas';
 
   @override
   String get analysisManagementTitle => 'Manejo e Conduta';
@@ -455,21 +419,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get triageNew => 'Nova Triagem';
 
   @override
-  String get syncStatusUpdated => 'Base de dados atualizada';
-
-  @override
-  String syncStatusPending(int count) {
-    return 'Aguardando conexão para enviar $count dados...';
-  }
-
-  @override
-  String get libTitle => 'Biblioteca Técnica';
-
-  @override
-  String get libHeroTitle => 'Conhecimento';
-
-  @override
-  String get libHeroSubtitle => 'Central de Apoio PAD-UFES';
+  String get libTitle => 'Biblioteca';
 
   @override
   String get libMenuAbcdeTitle => 'ABCDE do Câncer';
@@ -519,9 +469,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get libDiseasesHeroDesc2 =>
       'O Nível de Prioridade indica o grau de urgência clínica associado àquela condição.';
-
-  @override
-  String get libDiseasesEncyclopedia => 'Enciclopédia Clínica';
 
   @override
   String get libTriageHeroTitle => 'Metodologia P1-P5';
@@ -693,40 +640,6 @@ class AppLocalizationsPt extends AppLocalizations {
       'A decisão final sobre o diagnóstico, encaminhamento e tratamento permanece, em todos os casos, sob responsabilidade exclusiva do profissional de saúde assistente.';
 
   @override
-  String get guideFlowTitleAgent => 'Fluxo Triagem';
-
-  @override
-  String get guideFlowTitleDoctor => 'Fluxo Triagem/Diagnóstico';
-
-  @override
-  String get guideStep1Title => 'Dados do Paciente';
-
-  @override
-  String get guideStep1Desc =>
-      'Insira a idade e o histórico clínico de câncer de pele para contextualizar a análise.';
-
-  @override
-  String get guideStep2Title => 'Sintomatologia';
-
-  @override
-  String get guideStep2Desc =>
-      'Assinale a presença de coceira, dor, sangramento ou crescimento rápido da lesão.';
-
-  @override
-  String get guideStep3Title => 'Captura de Imagem';
-
-  @override
-  String get guideStep3Desc =>
-      'Tire uma foto macroscópica nítida da lesão. Evite sombras ou reflexos excessivos.';
-
-  @override
-  String get guideStep4Title => 'Score e Conduta';
-
-  @override
-  String get guideStep4Desc =>
-      'O sistema gerará um nível de prioridade ou laudo diagnóstico. Avalie a conduta recomendada conforme o resultado obtido.';
-
-  @override
   String get cropTitle => 'Ajustar Lesão';
 
   @override
@@ -790,12 +703,295 @@ class AppLocalizationsPt extends AppLocalizations {
   String get forgotPasswordEmptyEmail => 'Informe seu e-mail para continuar.';
 
   @override
-  String get profileFallbackTitle => 'Confirme seu perfil';
+  String get triageResultTitle => 'Resultado da Triagem';
 
   @override
-  String get profileFallbackMessage =>
-      'Não foi possível consultar seus dados no servidor. Confirme seu nome e perfil para continuar usando o app neste dispositivo.';
+  String get diagnosisResultTitle => 'Hipótese Diagnóstica';
 
   @override
-  String get profileFallbackConfirm => 'Confirmar e entrar';
+  String get quickAccessLibraryDesc => 'ABCDE, doenças e metodologia P1–P5';
+
+  @override
+  String get accessNotGrantedTitle => 'Acesso não liberado';
+
+  @override
+  String get accessNotGrantedMessage =>
+      'Seu acesso não está liberado. Entre em contato com a equipe do Padtech para solicitar a liberação.';
+
+  @override
+  String get accessRegisteredTitle => 'Cadastro realizado';
+
+  @override
+  String get accessRegisteredMessage =>
+      'Para usar o app, entre em contato com a equipe do Padtech para solicitar a liberação do seu acesso.';
+
+  @override
+  String get btnOk => 'Entendi';
+
+  @override
+  String get errorNetwork =>
+      'Sem conexão com a internet. Verifique a rede e tente novamente.';
+
+  @override
+  String get completeProfileTitle => 'Complete seu cadastro';
+
+  @override
+  String get completeProfileMessage =>
+      'Sua conta ainda não tem um perfil no Dermalyze. Informe seu nome e perfil para enviar o cadastro à equipe do Padtech.';
+
+  @override
+  String get completeProfileConfirm => 'Enviar cadastro';
+
+  @override
+  String get restartSectionTitle => 'Voltar ao início?';
+
+  @override
+  String get restartSectionMessage =>
+      'Os dados preenchidos e o resultado exibido serão descartados.';
+
+  @override
+  String get restartSectionConfirm => 'Voltar ao início';
+
+  @override
+  String get triageIntro =>
+      'Tire uma foto da lesão do paciente para uma classificação rápida da prioridade de atendimento.';
+
+  @override
+  String get diagnosisIntro =>
+      'Informe os dados clínicos e fotografe a lesão com o dermatoscópio para obter uma hipótese diagnóstica que apoia a sua avaliação.';
+
+  @override
+  String get homeTriageDesc => 'Prioridade de atendimento a partir de uma foto';
+
+  @override
+  String get homeDiagnosisDesc =>
+      'Hipótese diagnóstica com dados clínicos e dermatoscopia';
+
+  @override
+  String get photoRequirementsTitle => 'Para a foto ser aceita';
+
+  @override
+  String get photoReqMacro1 =>
+      'Fotografe de perto, com a lesão no centro ocupando boa parte da imagem.';
+
+  @override
+  String get photoReqMacro2 =>
+      'Mantenha o aparelho firme: a foto precisa estar nítida.';
+
+  @override
+  String get photoReqMacro3 =>
+      'Use boa iluminação, sem sombras nem reflexos sobre a lesão.';
+
+  @override
+  String get photoReqMacro4 =>
+      'Mostre apenas a pele, sem roupas, objetos ou fundo.';
+
+  @override
+  String get photoReqDermo1 =>
+      'Use o dermatoscópio acoplado ao tablet, em contato com a pele.';
+
+  @override
+  String get photoReqDermo2 => 'Centralize a lesão no campo do dermatoscópio.';
+
+  @override
+  String get photoReqDermo3 =>
+      'Ajuste o foco até as bordas e a pigmentação ficarem nítidas.';
+
+  @override
+  String get photoReqDermo4 =>
+      'Evite bolhas de ar, reflexos e excesso de pelos sobre a lesão.';
+
+  @override
+  String get photoRequirementsFooter =>
+      'Fotos que não atendem a esses requisitos são recusadas automaticamente.';
+
+  @override
+  String get confidenceTitle => 'Confiança do modelo';
+
+  @override
+  String get confidenceTriageDesc =>
+      'Mostra o quanto o modelo está seguro desta prioridade, com base na foto. Não indica a chance de a lesão ser maligna. Quanto menor o valor, mais importante é a avaliação clínica.';
+
+  @override
+  String get confidenceDiagnosisDesc =>
+      'Mostra o quanto o modelo está seguro desta hipótese, com base na foto e nos dados clínicos. Não é uma confirmação diagnóstica. Quanto menor o valor, mais importante é a avaliação clínica.';
+
+  @override
+  String get analyzedPhotoTitle => 'Foto analisada';
+
+  @override
+  String get priorityShowAll => 'Ver todas as prioridades';
+
+  @override
+  String get priorityHideAll => 'Ocultar prioridades';
+
+  @override
+  String get libSubtitle =>
+      'Material de consulta sobre a regra ABCDE, as principais doenças de pele e a metodologia de triagem.';
+
+  @override
+  String get libDiseasesSearchHint => 'Buscar doença pelo nome';
+
+  @override
+  String get libDiseasesFilterTitle => 'Filtrar por características';
+
+  @override
+  String get libDiseasesClearFilters => 'Limpar filtros';
+
+  @override
+  String get libDiseasesNoResults =>
+      'Nenhuma doença encontrada com esses critérios.';
+
+  @override
+  String get libImageCredits => 'Créditos das imagens';
+
+  @override
+  String get libImageCreditsIntro =>
+      'Imagens ilustrativas temporárias, com licença aberta.';
+
+  @override
+  String get tagAsymmetry => 'Assimetria';
+
+  @override
+  String get tagIrregularBorders => 'Bordas irregulares';
+
+  @override
+  String get tagMultipleColors => 'Várias cores';
+
+  @override
+  String get tagPigmented => 'Pigmentada';
+
+  @override
+  String get tagGrowth => 'Crescimento ou mudança';
+
+  @override
+  String get tagBleeding => 'Sangramento';
+
+  @override
+  String get tagItching => 'Coceira';
+
+  @override
+  String get tagScaling => 'Descamação';
+
+  @override
+  String get tagRedness => 'Vermelhidão';
+
+  @override
+  String get tagRaised => 'Elevação ou nódulo';
+
+  @override
+  String get tagNonHealing => 'Ferida que não cicatriza';
+
+  @override
+  String get tagSunExposed => 'Área exposta ao sol';
+
+  @override
+  String get guideFaqTitle => 'Dúvidas frequentes';
+
+  @override
+  String get faqGeneralTitle => 'Gerais';
+
+  @override
+  String get faqTriageTitle => 'Triagem';
+
+  @override
+  String get faqDiagnosisTitle => 'Análise Assistida';
+
+  @override
+  String get faqLibraryTitle => 'Biblioteca';
+
+  @override
+  String get faqAccountTitle => 'Acesso e conta';
+
+  @override
+  String get faqWhatIsQ => 'O que o Dermalyze faz?';
+
+  @override
+  String get faqWhatIsA =>
+      'O Dermalyze apoia a avaliação de lesões de pele. A Triagem classifica a prioridade de atendimento a partir de uma foto, e a Análise Assistida, usada por médicos, sugere uma hipótese diagnóstica com base na dermatoscopia e nos dados clínicos. A decisão final é sempre do profissional de saúde.';
+
+  @override
+  String get faqOfflineQ => 'O app funciona sem internet?';
+
+  @override
+  String get faqOfflineA =>
+      'Sim. A Triagem, a Análise Assistida e a Biblioteca funcionam sem internet, porque as análises são feitas no próprio aparelho. A internet só é necessária para entrar na conta, criar uma conta ou recuperar a senha.';
+
+  @override
+  String get faqDataQ => 'Os dados do paciente ficam salvos?';
+
+  @override
+  String get faqDataA =>
+      'Não. As fotos e os dados clínicos ficam apenas no aparelho, durante a análise, e não são enviados para nenhum servidor. O resultado não fica guardado: ao iniciar uma nova análise ou sair da conta, ele é descartado.';
+
+  @override
+  String get faqConfidenceQ => 'O que significa a confiança do modelo?';
+
+  @override
+  String get faqConfidenceA =>
+      'É o quanto o modelo está seguro do resultado, entre as opções que ele reconhece. Não é a chance de a lesão ser maligna nem uma confirmação diagnóstica. Quanto menor a confiança, mais peso deve ter a avaliação clínica.';
+
+  @override
+  String get faqTriageHowQ => 'Como usar a Triagem?';
+
+  @override
+  String get faqTriageHowA =>
+      'Na aba Triagem, toque na área da foto, fotografe a lesão sem dermatoscópio e ajuste o enquadramento. Se a foto for aceita, toque em Analisar agora. O resultado mostra o nível de prioridade e a conduta recomendada.';
+
+  @override
+  String get faqPriorityLevelsQ => 'O que significam os níveis P1 a P5?';
+
+  @override
+  String get faqPriorityLevelsA =>
+      'São níveis de prioridade de atendimento, do mais urgente (P1, prioridade máxima) ao menos urgente (P5, prioridade mínima). A explicação de cada nível está na Biblioteca, em Metodologia e Triagem, e também pode ser aberta na tela de resultado.';
+
+  @override
+  String get faqPhotoRejectedQ => 'Por que minha foto foi recusada?';
+
+  @override
+  String get faqPhotoRejectedA =>
+      'Antes da análise, o app verifica se a foto está nítida e se mostra uma lesão de pele. Fotos desfocadas, escuras, com reflexos ou que não mostram a pele são recusadas. Siga os requisitos exibidos na tela de captura e tente novamente.';
+
+  @override
+  String get faqDiagnosisHowQ => 'Como usar a Análise Assistida?';
+
+  @override
+  String get faqDiagnosisHowA =>
+      'Na aba Análise Assistida, informe a idade, o histórico de câncer de pele, a região da lesão e os sintomas. Em seguida, fotografe a lesão com o dermatoscópio acoplado. O resultado mostra uma hipótese diagnóstica, o nível de prioridade e a conduta sugerida.';
+
+  @override
+  String get faqReplacesDiagnosisQ =>
+      'A hipótese diagnóstica substitui o diagnóstico médico?';
+
+  @override
+  String get faqReplacesDiagnosisA =>
+      'Não. A hipótese é um apoio à decisão e não substitui a anamnese, o exame clínico nem a biópsia. O diagnóstico e a conduta são sempre responsabilidade do médico.';
+
+  @override
+  String get faqLibraryQ => 'O que encontro na Biblioteca?';
+
+  @override
+  String get faqLibraryA =>
+      'Material de consulta: a regra ABCDE para avaliar lesões pigmentadas, as principais doenças de pele com busca e filtro por características, e a explicação dos níveis de prioridade P1 a P5.';
+
+  @override
+  String get faqPasswordQ => 'Esqueci minha senha. O que faço?';
+
+  @override
+  String get faqPasswordA =>
+      'Na tela de login, toque em Esqueci minha senha e informe seu e-mail. Você receberá um link para criar uma nova senha.';
+
+  @override
+  String get faqAccessQ => 'Meu acesso não foi liberado. O que faço?';
+
+  @override
+  String get faqAccessA =>
+      'Todo cadastro precisa ser liberado pela equipe do Padtech. Entre em contato com a equipe para solicitar a liberação; depois disso, basta entrar novamente.';
+
+  @override
+  String get faqLanguageQ => 'Como troco o idioma do app?';
+
+  @override
+  String get faqLanguageA =>
+      'Na tela inicial, toque no ícone de engrenagem e escolha o idioma em Configurações.';
 }

@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:dermalyze/src/features/auth/access_control.dart';
 import 'package:dermalyze/src/features/auth/controller/auth_controller.dart';
-import 'package:dermalyze/src/features/auth/offline_profile_fallback.dart';
 class LoginController {
 
   final AuthController _authController;
@@ -10,24 +10,29 @@ class LoginController {
 
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
+  /// Retorna `null` em caso de sucesso ou o código do erro.
+  ///
+  /// [AccessNotGrantedException] e [ProfileIncompleteException] sobem para a
+  /// página, que mostra o diálogo correspondente.
   Future<String?> signIn(String email, String password) async {
     try {
       isLoading.value = true;
-      
+
       await _authController.login(email, password);
 
       return null;
     }
-    // OFFLINE_PROFILE_FALLBACK (temporário) — ver offline_profile_fallback.dart.
-    // A página precisa do UID para perguntar o perfil, então a exceção sobe
-    // em vez de virar texto de erro.
-    on MissingUserProfileException {
+    on AccessNotGrantedException {
       rethrow;
     }
-    on FirebaseAuthException catch (e) {
-      return e.code; // Erros específicos do Firebase (senha errada, etc)
+    on ProfileIncompleteException {
+      rethrow;
+    }
+    // Cobre o Auth (senha errada etc.) e o Firestore (sem rede etc.).
+    on FirebaseException catch (e) {
+      return e.code;
     } catch (e) {
-      return e.toString(); // Erros da API Python ou de falha de conexão
+      return e.toString();
     } finally {
       isLoading.value = false;
     }

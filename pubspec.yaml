@@ -38,10 +38,8 @@ dependencies:
   # --- Autenticação e Sessão ---
   firebase_core: ^4.7.0       # Essencial para inicializar qualquer serviço Firebase
   firebase_auth: ^6.4.0       # Para o login e criação de conta
-  
-  # --- Comunicação com o Backend (FastAPI) ---
-  dio: ^5.5.0                 # Cliente HTTP robusto para as chamadas à API
-  
+  cloud_firestore: ^6.10.2    # Perfil e liberação de acesso dos profissionais (sem dados de pacientes)
+
   # --- Persistência Local Segura ---
   flutter_secure_storage: ^9.2.2 # Para salvar a Role e o Token de forma criptografada
 
@@ -50,14 +48,12 @@ dependencies:
   
   # --- Utilitários para Imagens e Offline (Dermalyze) ---
   path_provider: ^2.1.5       # Para encontrar caminhos de pastas no celular
-  connectivity_plus: ^7.1.1
   flutter_svg: ^2.2.4
   image_picker: ^1.2.2
   path: ^1.9.1
   flutter_onnxruntime: ^1.6.0
   image: ^4.8.0
-  http: ^1.6.0
-  shared_preferences: ^2.5.5
+  shared_preferences: ^2.5.5  # Só para apagar a fila de sincronização antiga (ver main.dart); pode sair numa versão futura
 
 dev_dependencies:
   flutter_test:
@@ -86,8 +82,9 @@ flutter:
   assets:
     - assets/images/
     - assets/images/abcde/
+    - assets/images/diseases/
     - assets/models/diag_model_v2.onnx
-    - assets/models/ood_model.onnx
+    - assets/models/ood_model_v2.onnx
     - assets/models/mobilenet-triage-no-meta.onnx
 
   # To add assets to your application, add an assets section, like this:

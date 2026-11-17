@@ -1,5 +1,5 @@
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
-import 'package:dermalyze/src/modules/login/pages/profile_fallback_dialog.dart';
+import 'package:dermalyze/src/modules/login/pages/complete_profile_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,7 +26,7 @@ Future<_Host> _pumpHost(WidgetTester tester) async {
                 host.answer = await showDialog<ProfileAnswer>(
                   context: context,
                   barrierDismissible: false,
-                  builder: (_) => const ProfileFallbackDialog(),
+                  builder: (_) => const CompleteProfileDialog(),
                 );
                 host.closed = true;
               },
@@ -45,14 +45,14 @@ Future<_Host> _pumpHost(WidgetTester tester) async {
 }
 
 void main() {
-  group('ProfileFallbackDialog', () {
+  group('CompleteProfileDialog', () {
     testWidgets('confirma com perfil de agente e devolve nome e role', (tester) async {
       final host = await _pumpHost(tester);
 
       await tester.enterText(find.byType(TextFormField), '  Ana Teste  ');
       await tester.pump();
 
-      await tester.tap(find.text('Confirmar e entrar'));
+      await tester.tap(find.text('Enviar cadastro'));
       // pumpAndSettle roda a animação de saída até o fim: é aqui que o
       // controller descartado cedo demais derrubava a árvore.
       await tester.pumpAndSettle();
@@ -70,7 +70,7 @@ void main() {
       await tester.tap(find.text('Médico(a)'));
       await tester.pump();
 
-      await tester.tap(find.text('Confirmar e entrar'));
+      await tester.tap(find.text('Enviar cadastro'));
       await tester.pumpAndSettle();
 
       expect(host.answer, isNotNull);
@@ -118,7 +118,7 @@ void main() {
                         final answer = await showDialog<ProfileAnswer>(
                           context: innerContext,
                           barrierDismissible: false,
-                          builder: (_) => const ProfileFallbackDialog(),
+                          builder: (_) => const CompleteProfileDialog(),
                         );
                         if (answer != null) logged.value = true;
                       },
@@ -141,7 +141,7 @@ void main() {
       await tester.enterText(find.byType(TextFormField), 'Ana Teste');
       await tester.pump();
 
-      await tester.tap(find.text('Confirmar e entrar'));
+      await tester.tap(find.text('Enviar cadastro'));
       await tester.pumpAndSettle();
 
       expect(find.text('MAIN'), findsOneWidget);
@@ -152,7 +152,7 @@ void main() {
 
       TextButton confirmButton() => tester.widget<TextButton>(
             find.ancestor(
-              of: find.text('Confirmar e entrar'),
+              of: find.text('Enviar cadastro'),
               matching: find.byType(TextButton),
             ),
           );

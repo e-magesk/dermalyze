@@ -7,7 +7,7 @@ import 'package:dermalyze/src/modules/guide/pages/guide_page.dart';
 import 'package:dermalyze/src/modules/library/pages/library_page.dart';
 import 'package:dermalyze/src/modules/settings/pages/settings_page.dart';
 import 'package:dermalyze/src/modules/triage/pages/triage_page.dart';
-import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
+import 'package:dermalyze/src/shared/navigation/section_navigation_registry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -43,18 +43,104 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  /// Escopo de navegação interna da aba, quando ela tiver um.
-  BackScope? get _currentScope {
+  /// Seção com navegação interna da aba, quando ela tiver uma.
+  SectionScope? get _currentScope {
     switch (_currentIndex) {
       case _tabTriage:
-        return BackScope.triage;
+        return SectionScope.triage;
       case _tabDiagnosis:
-        return BackScope.diagnosis;
+        return SectionScope.diagnosis;
       case _tabLibrary:
-        return BackScope.library;
+        return SectionScope.library;
       default:
         return null;
     }
+  }
+
+  /// Análise associada à aba atual (Triagem ou Análise Assistida).
+  AnalysisType? get _currentAnalysisType {
+    switch (_currentIndex) {
+      case _tabTriage:
+        return AnalysisType.triage;
+      case _tabDiagnosis:
+        return AnalysisType.diagnosis;
+      default:
+        return null;
+    }
+  }
+
+  void _onNavTap(int index) {
+    if (index != _currentIndex) {
+      _changeTab(index);
+      return;
+    }
+    _restartCurrentSection();
+  }
+
+  /// Tocar de novo no ícone da aba atual volta ao início da seção. Em Triagem
+  /// e Análise Assistida, pede confirmação se houver dados ou resultado a perder.
+  Future<void> _restartCurrentSection() async {
+    final scope = _currentScope;
+    if (scope == null) return;
+
+    final sections = context.read<SectionNavigationRegistry>();
+    final analysis = context.read<AnalysisController>();
+    final type = _currentAnalysisType;
+
+    if (type != null) {
+      final analysisState = type == AnalysisType.triage ? analysis.triageState : analysis.diagState;
+      if (analysisState == AnalysisState.loading) return; // análise em curso
+
+      final hasResult = analysisState != AnalysisState.idle;
+      if (hasResult || sections.hasProgress(scope)) {
+        final confirmed = await _confirmRestart();
+        if (!confirmed || !mounted) return;
+      }
+
+      // Com resultado na tela o formulário nem está montado: limpar o
+      // resultado já o traz de volta zerado.
+      analysis.reset(type);
+    }
+
+    sections.resetToStart(scope);
+  }
+
+  Future<bool> _confirmRestart() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text(
+          l10n.restartSectionTitle,
+          style: const TextStyle(fontWeight: FontWeight.w900, color: AppColors.textDark, fontSize: 18),
+        ),
+        content: Text(
+          l10n.restartSectionMessage,
+          style: const TextStyle(color: AppColors.textMedium, fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(
+              l10n.btnCancel,
+              style: const TextStyle(color: AppColors.textMedium, fontWeight: FontWeight.w700),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(
+              l10n.restartSectionConfirm,
+              style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w900),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    return result ?? false;
   }
 
   /// Trata o botão de voltar do sistema operacional.
@@ -85,7 +171,7 @@ class _MainPageState extends State<MainPage> {
 
     // 2. Navegação interna da aba (passo do formulário, subpágina da Biblioteca).
     final scope = _currentScope;
-    if (scope != null && context.read<BackHandlerRegistry>().handleBack(scope)) {
+    if (scope != null && context.read<SectionNavigationRegistry>().handleBack(scope)) {
       return;
     }
 
@@ -142,19 +228,24 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = context.watch<AuthController>();
+    final isDoctor = authController.state == AuthState.doctor;
+    final l10n = AppLocalizations.of(context)!; // Atalho para as traduções
 
     final List<Widget> pages = [
       HomePage(onTabChange: _changeTab),
       TriagePage(),
       DiagnosisPage(),
       LibraryPage(),
-      GuidePage(),
+      GuidePage(isDoctor: isDoctor),
       SettingsPage(onTabChange: _changeTab),
     ];
 
-    final authController = context.watch<AuthController>();
-    final isDoctor = authController.state == AuthState.doctor;
-    final l10n = AppLocalizations.of(context)!; // Atalho para as traduções
+    // O Padtech pode trocar o perfil para agente no Console com o app aberto:
+    // a aba de Análise Assistida some e quem estava nela volta para a Home.
+    if (!isDoctor && _currentIndex == _tabDiagnosis) {
+      _currentIndex = _tabHome;
+    }
 
     return PopScope(
       // O voltar nunca desempilha sozinho: quem decide é _handleSystemBack.
@@ -205,7 +296,7 @@ class _MainPageState extends State<MainPage> {
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => setState(() => _currentIndex = realIndex),
+        onTap: () => _onNavTap(realIndex),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -213,6 +304,9 @@ class _MainPageState extends State<MainPage> {
             const SizedBox(height: 4),
             Text(
               label,
+              textAlign: TextAlign.center,
+              // "ANÁLISE ASSISTIDA" não cabe em uma linha em telas estreitas.
+              maxLines: 2,
               style: TextStyle(
                 color: color,
                 fontSize: 9,

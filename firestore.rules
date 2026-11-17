@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Perfis dos profissionais. Nenhum dado de paciente fica no Firestore.
+    match /users/{uid} {
+
+      // Cada usuário só lê o próprio perfil.
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      // Só cria o próprio perfil, e sempre pendente de liberação.
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasAll(['name', 'email', 'role', 'approved', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['name', 'email', 'role', 'approved', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 120
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.role in ['agent', 'doctor']
+        && request.resource.data.approved == false
+        && request.resource.data.createdAt == request.time;
+
+      // Liberar acesso e trocar o perfil: só pelo Console (acesso de administrador).
+      allow update, delete: if false;
+    }
+
+    // Todo o resto fica fechado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,20 +1,17 @@
 import 'package:dermalyze/src/core/theme/app_colors.dart';
-import 'package:dermalyze/src/features/sync/controller/sync_controller.dart';
 import 'package:dermalyze/src/models/analysis_type.dart';
-import 'package:dermalyze/src/shared/widgets/app_bento_card.dart';
-import 'package:dermalyze/src/shared/navigation/back_handler_registry.dart';
+import 'package:dermalyze/src/modules/guide/pages/guide_page.dart';
+import 'package:dermalyze/src/modules/guide/widgets/faq_help_button.dart';
+import 'package:dermalyze/src/shared/clinical/priority_level.dart';
+import 'package:dermalyze/src/shared/navigation/section_navigation_registry.dart';
+import 'package:dermalyze/src/shared/widgets/analysis_result_widgets.dart';
 import 'package:dermalyze/src/shared/widgets/app_clinical_data_form.dart';
+import 'package:dermalyze/src/shared/widgets/model_confidence_card.dart';
+import 'package:dermalyze/src/shared/widgets/priority_scale_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dermalyze/src/core/l10n/app_localizations.dart';
 import 'package:dermalyze/src/features/analysis/controller/analysis_controller.dart';
-
-class PriorityData {
-  final String label;
-  final Color color;
-  final Color bgColor;
-  PriorityData(this.label, this.color, this.bgColor);
-}
 
 class TriagePage extends StatelessWidget {
   const TriagePage({super.key});
@@ -33,18 +30,18 @@ class TriagePage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, AnalysisController controller, AppLocalizations l10n) {
-    // 1. Estado de Carregamento 
+    // 1. Estado de Carregamento
     if (controller.triageState == AnalysisState.loading) {
       return const Center(
         child: CircularProgressIndicator(color: Color(0xFF2563EB)),
       );
     }
 
-    // 2. ESTADO DE SUCESSO (LAUDO BENTO COM CORES DE RISCO)
+    // 2. ESTADO DE SUCESSO
     if (controller.triageState == AnalysisState.success && controller.triageResult != null) {
       final result = controller.triageResult!;
-      final triageData = _getTriageContent(result.label, l10n);
-      final priority = triageData['priority'] as PriorityData;
+      // Rótulo fora de P1–P5 não deveria acontecer; P3 evita subestimar o risco.
+      final level = PriorityLevel.fromCode(result.label) ?? PriorityLevel.p3;
 
       return SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -52,109 +49,41 @@ class TriagePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Título Principal
-            Text(
-              l10n.analysisResultsTitle,
+            ScreenTitleWithHelp(
+              title: l10n.triageResultTitle,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.textDark),
-            ),
-            const SizedBox(height: 24),
-
-            // CARD 1: Prioridade e Confiança
-            BentoCard(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.background, 
-                      borderRadius: BorderRadius.circular(100)
-                    ),
-                    child: Text(
-                      l10n.clinicalTriage.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 9, 
-                        fontWeight: FontWeight.w900, 
-                        color: AppColors.textLight, 
-                        letterSpacing: 1.2
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  
-                  // Nome do Nível (Ex: Prioridade Máxima) puxado do ARB
-                  Text(
-                    triageData['title']!,
-                    style: const TextStyle(
-                      fontSize: 32, 
-                      fontWeight: FontWeight.w900, 
-                      color: AppColors.textDark, 
-                      letterSpacing: -1.0
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  Row(
-                    children: [
-                      // Badge 1: Nível de Prioridade (P1) puxado do ARB
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: priority.bgColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Text(
-                          priority.label.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 12, 
-                            fontWeight: FontWeight.w900, 
-                            color: priority.color
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Badge 2: Confiança puxado do ARB
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(color: const Color(0xFFF1F5F9)), 
-                        ),
-                        child: Text(
-                          "${l10n.analysisLabelConfidence}: ${(result.confidence * 100).toStringAsFixed(1)}%",
-                          style: TextStyle(
-                            fontSize: 12, 
-                            fontWeight: FontWeight.w900, 
-                            color: priority.color 
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              helpSection: GuideSection.triage,
             ),
             const SizedBox(height: 16),
 
-            // CARD 2: Descrição Clínica da Triagem puxada do ARB
-            _buildBentoSection(
-              title: l10n.analysisClinicalFeatures,
-              content: triageData['desc']!,
-              icon: Icons.info_outline,
-              accentColor: priority.color,
-            ),
+            // CARD 1: a prioridade é a informação principal, então o card
+            // inteiro leva a cor dela.
+            _PriorityResultCard(level: level),
             const SizedBox(height: 16),
 
-            // CARD 3: Conduta Recomendada puxada do ARB
-            _buildBentoSection(
+            // CARD 2: Conduta recomendada
+            ResultSectionCard(
               title: l10n.analysisManagementTitle,
-              content: triageData['conduta']!,
+              content: level.conduct(l10n),
               icon: Icons.warning_amber_rounded,
-              accentColor: priority.color,
+              accentColor: level.color,
             ),
-            
+            const SizedBox(height: 16),
+
+            // CARD 3: Confiança, com a explicação do que ela significa
+            ModelConfidenceCard(
+              confidence: result.confidence,
+              explanation: l10n.confidenceTriageDesc,
+              accentColor: level.color,
+            ),
+
+            if (controller.triageImagePath != null) ...[
+              const SizedBox(height: 16),
+              AnalyzedPhotoCard(imagePath: controller.triageImagePath!),
+            ],
+
             const SizedBox(height: 40),
-            
+
             // Botão Finalizador (Nova Triagem) puxado do ARB
             SizedBox(
               width: double.infinity,
@@ -183,101 +112,100 @@ class TriagePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            l10n.clinicalTriage,
+          ScreenTitleWithHelp(
+            title: l10n.clinicalTriage,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Color(0xFF1E293B)),
+            helpSection: GuideSection.triage,
           ),
-          const SizedBox(height: 8),
+          // Para que serve a Triagem, para quem abre a tela pela primeira vez.
           Text(
-            l10n.triageLevels,
-            style: const TextStyle(fontSize: 12, color: Color(0xFF94A3B8), fontWeight: FontWeight.bold),
+            l10n.triageIntro,
+            style: const TextStyle(fontSize: 14, color: AppColors.textMedium, fontWeight: FontWeight.w500, height: 1.5),
           ),
           const SizedBox(height: 24),
-          
+
           ClinicalDataForm(
-            backScope: BackScope.triage,
+            sectionScope: SectionScope.triage,
+            captureMode: CaptureMode.macroscopic,
             initialStep: 2,
-            onSubmit: (record) => controller.startAnalysis(record, AnalysisType.triage, context.read<SyncController>()),
+            onSubmit: (record) => controller.startAnalysis(record, AnalysisType.triage),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildBentoSection({
-    required String title,
-    required String content,
-    required IconData icon,
-    Color accentColor = const Color(0xFF2563EB),
-  }) {
-    return BentoCard(
+/// Card principal do resultado: preenchido com a cor da prioridade, com o
+/// significado do nível e, sob demanda, a escala completa P1–P5.
+class _PriorityResultCard extends StatefulWidget {
+  final PriorityLevel level;
+
+  const _PriorityResultCard({required this.level});
+
+  @override
+  State<_PriorityResultCard> createState() => _PriorityResultCardState();
+}
+
+class _PriorityResultCardState extends State<_PriorityResultCard> {
+  bool _showScale = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final level = widget.level;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: level.fill,
+        borderRadius: BorderRadius.circular(32),
+        boxShadow: [
+          BoxShadow(color: level.fill.withValues(alpha: 0.25), blurRadius: 20, offset: const Offset(0, 10)),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(icon, size: 16, color: accentColor),
-              const SizedBox(width: 8),
-              Text(
-                title.toUpperCase(),
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: accentColor, letterSpacing: 1.1),
-              ),
-            ],
+          Text(
+            level.label(l10n),
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: -0.5),
           ),
           const SizedBox(height: 12),
           Text(
-            content,
-            style: const TextStyle(fontSize: 14, height: 1.6, color: Color(0xFF334155), fontWeight: FontWeight.w500),
+            level.description(l10n),
+            style: const TextStyle(fontSize: 15, height: 1.5, color: Colors.white, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 12),
+          TextButton.icon(
+            onPressed: () => setState(() => _showScale = !_showScale),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+            ),
+            icon: Icon(_showScale ? Icons.expand_less_rounded : Icons.expand_more_rounded),
+            label: Text(
+              _showScale ? l10n.priorityHideAll : l10n.priorityShowAll,
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
+          ),
+          AnimatedSize(
+            duration: const Duration(milliseconds: 200),
+            alignment: Alignment.topCenter,
+            child: _showScale
+                ? Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(24)),
+                    child: PriorityScaleList(highlight: level),
+                  )
+                : const SizedBox(width: double.infinity),
           ),
         ],
       ),
     );
-  }
-
-  Map<String, dynamic> _getTriageContent(String label, AppLocalizations l10n) {
-    switch (label.toUpperCase()) {
-      case 'P1':
-        return {
-          'title': l10n.triageP1Title,
-          'desc': l10n.triageP1Desc,
-          'conduta': l10n.triageP1Conduta,
-          'priority': PriorityData(l10n.triageP1Label, AppColors.p1Malign, AppColors.p1Bg)
-        };
-      case 'P2':
-        return {
-          'title': l10n.triageP2Title,
-          'desc': l10n.triageP2Desc,
-          'conduta': l10n.triageP2Conduta,
-          'priority': PriorityData(l10n.triageP2Label, AppColors.p2High, AppColors.p2Bg)
-        };
-      case 'P3':
-        return {
-          'title': l10n.triageP3Title,
-          'desc': l10n.triageP3Desc,
-          'conduta': l10n.triageP3Conduta,
-          'priority': PriorityData(l10n.triageP3Label, AppColors.p3Medium, AppColors.p3Bg)
-        };
-      case 'P4':
-        return {
-          'title': l10n.triageP4Title,
-          'desc': l10n.triageP4Desc,
-          'conduta': l10n.triageP4Conduta,
-          'priority': PriorityData(l10n.triageP4Label, AppColors.p4Low, AppColors.p4Bg)
-        };
-      case 'P5':
-        return {
-          'title': l10n.triageP5Title,
-          'desc': l10n.triageP5Desc,
-          'conduta': l10n.triageP5Conduta,
-          'priority': PriorityData(l10n.triageP5Label, const Color(0xFF059669), const Color(0xFFD1FAE5)) // Verde Emerald
-        };
-      default:
-        return {
-          'title': null,
-          'desc': null,
-          'conduta': null,
-          'priority': null
-        };
-    }
   }
 }

@@ -3,6 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  /// Usuário com sessão ativa no Firebase, se houver.
+  User? get currentUser => _firebaseAuth.currentUser;
+
+  /// Emite o usuário atual na inscrição e a cada login/logout, inclusive quando
+  /// o Firebase encerra a sessão sozinho (conta desativada ou excluída).
+  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
+
   Future<UserCredential> loginWithEmail(String email, String password) async {
     return await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
